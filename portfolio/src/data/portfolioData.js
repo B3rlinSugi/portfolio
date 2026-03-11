@@ -3,6 +3,7 @@ export const data = {
   title: "Junior Backend Developer",
   tagline: "I build reliable, scalable backend systems — from REST APIs and relational databases to secure authentication flows.",
   email: "berlinsugiyanto23@gmail.com",
+  whatsapp: "6281294500613",
   github: "https://github.com/B3rlinSugi",
   linkedin: "https://linkedin.com/in/berlinsugi",
   location: "Bekasi, West Java, Indonesia",
