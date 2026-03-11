@@ -64,7 +64,8 @@ export const data = {
     },
     {
       title: "Cash Flow Class — Financial System",
-      type: "Academic Project", period: "Jun 2023 – Jul 2023", with modern security standards, analytics, and export features.",
+      type: "Academic Project", period: "Jun 2023 – Jul 2023",
+      desc: "Upgraded a legacy organisation cash flow system with modern security standards, analytics, and export features.",
       points: [
         "Migrated legacy MD5 hashing to bcrypt — production-grade security with zero breaking changes",
         "Built 6-month analytics dashboard with Chart.js and deferred payment tracking",
@@ -80,7 +81,8 @@ export const data = {
     },
     {
       title: "Sistem Data Akademik — CRUD App",
-      type: "Academic Project", period: "Mar 2024 – Jul 2024", with multi-table relational database and role-based access control.",
+      type: "Academic Project", period: "Mar 2024 – Jul 2024",
+      desc: "Academic data management system with multi-table relational database and role-based access control.",
       points: [
         "Architected 3-table relational DB with FK constraints and RBAC for Admin and Staff roles",
         "Implemented search, filter, and pagination using PDO prepared statements",
