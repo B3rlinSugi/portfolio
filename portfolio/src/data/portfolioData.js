@@ -48,11 +48,11 @@ export const data = {
     {
       title: "TokoKu — E-Commerce Platform",
       type: "Personal Project", period: "Jan 2026 – Feb 2026",
-      desc: "Full-stack e-commerce backend supporting multiple payment methods with complete order lifecycle management.",
+      desc: "Full-stack e-commerce backend engineered for transaction reliability — from database design to secure payment flows.",
       points: [
-        "Designed a 10-table relational database covering full order flow — zero transaction failures during testing",
-        "Built voucher discount engine with RBAC authentication — zero unauthorised access incidents in QA",
-        "Delivered real-time stock management and admin analytics dashboard using Chart.js",
+        "Architected a 10-table relational database (InnoDB + FK constraints) covering the full order lifecycle — cart, checkout, payment, stock — with zero transaction failures across all payment methods during testing",
+        "Engineered a voucher discount engine and RBAC authentication system with bcrypt hashing and tokenized password reset, achieving zero unauthorized access incidents in QA",
+        "Built a real-time admin dashboard with sales analytics and 6-month revenue visualization using Chart.js, backed by aggregated SQL queries",
       ],
       tech: [
         { name:"PHP 8",    icon:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-plain.svg" },
@@ -65,11 +65,11 @@ export const data = {
     {
       title: "Cash Flow Class — Financial System",
       type: "Academic Project", period: "Jun 2023 – Jul 2023",
-      desc: "Upgraded a legacy organisation cash flow system with modern security standards, analytics, and export features.",
+      desc: "Legacy financial system modernized with production-grade security, real-time analytics, and auditable PDF reporting.",
       points: [
-        "Migrated legacy MD5 hashing to bcrypt — production-grade security with zero breaking changes",
-        "Built 6-month analytics dashboard with Chart.js and deferred payment tracking",
-        "Implemented PDF report export filterable by month and transaction type",
+        "Migrated legacy MD5 password hashing to bcrypt and redesigned the database schema with InnoDB engine and FK constraints — zero breaking changes to existing user data",
+        "Built a 6-month cash flow analytics dashboard with deferred payment tracking module featuring automatic status management (pending → settled) using Chart.js",
+        "Implemented server-side PDF report export filterable by month and transaction type, enabling clean auditable financial records for organizational use",
       ],
       tech: [
         { name:"PHP 8",      icon:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-plain.svg" },
@@ -82,11 +82,11 @@ export const data = {
     {
       title: "Sistem Data Akademik — CRUD App",
       type: "Academic Project", period: "Mar 2024 – Jul 2024",
-      desc: "Academic data management system with multi-table relational database and role-based access control.",
+      desc: "Academic data management system with multi-table relational design, role-based access control, and server-side performance optimization.",
       points: [
-        "Architected 3-table relational DB with FK constraints and RBAC for Admin and Staff roles",
-        "Implemented search, filter, and pagination using PDO prepared statements",
-        "Added PDF export and real-time student statistics dashboard via Chart.js",
+        "Designed a 3-table relational database with FK constraints and built two-tier RBAC differentiating Admin (full access) and Staff (scoped write) permissions with session validation on every route",
+        "Implemented server-side search, filter, and pagination using PDO prepared statements with SQL LIMIT/OFFSET — keeping response times consistent regardless of data volume",
+        "Added PDF export and a real-time student statistics dashboard via Chart.js, with data sourced from aggregated SQL queries per class",
       ],
       tech: [
         { name:"PHP 8",   icon:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-plain.svg" },
