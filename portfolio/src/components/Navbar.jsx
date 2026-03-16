@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 const Navbar = () => {
   const [active, setActive] = useState("hero");
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const links = ["about","skills","projects","certifications","organizations","contact"];
 
   useEffect(() => {
@@ -18,55 +19,110 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior:"smooth" });
+  const scrollTo = (id) => { document.getElementById(id)?.scrollIntoView({ behavior:"smooth" }); setMenuOpen(false); };
 
   return (
-    <nav style={{
-      position:"fixed", top:0, left:0, right:0, zIndex:100,
-      padding:"0 48px", height:62,
-      display:"flex", justifyContent:"space-between", alignItems:"center",
-      backdropFilter:"blur(24px)", WebkitBackdropFilter:"blur(24px)",
-      background: scrolled ? "rgba(28,27,46,0.96)" : "rgba(28,27,46,0.5)",
-      borderBottom: scrolled ? "1px solid rgba(147,51,234,0.15)" : "1px solid transparent",
-      transition:"all 0.3s ease",
-    }}>
-      <button onClick={() => scrollTo("hero")} style={{
-        background:"none", border:"none", cursor:"pointer", padding:0,
-        fontFamily:"'Inter',sans-serif", fontWeight:800, fontSize:20,
-        background:"linear-gradient(135deg,#C084FC,#EC4899)",
-        WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent",
-        letterSpacing:"-0.5px",
+    <>
+      <nav style={{
+        position:"fixed", top:0, left:0, right:0, zIndex:100,
+        padding:"0 48px", height:58,
+        display:"flex", justifyContent:"space-between", alignItems:"center",
+        backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)",
+        background: scrolled ? "rgba(250,250,252,0.97)" : "rgba(250,250,252,0.8)",
+        borderBottom: scrolled ? "1px solid #E2E4EA" : "1px solid transparent",
+        transition:"all 0.3s ease",
       }}>
-        BS<span style={{opacity:0.3,color:"#C084FC",WebkitTextFillColor:"rgba(192,132,252,0.3)"}}>.</span>
-      </button>
+        {/* Logo */}
+        <button onClick={() => scrollTo("hero")} style={{
+          background:"none", border:"none", cursor:"pointer", padding:0,
+          display:"flex", alignItems:"center", gap:10,
+        }}>
+          <div style={{
+            width:32, height:32, borderRadius:8,
+            background:"#0F172A",
+            display:"flex", alignItems:"center", justifyContent:"center",
+          }}>
+            <span style={{
+              fontFamily:"'JetBrains Mono','Fira Code',monospace",
+              fontWeight:700, fontSize:13, color:"#F8FAFC",
+              letterSpacing:"-0.5px",
+            }}>BS</span>
+          </div>
+          <div style={{ lineHeight:1 }}>
+            <div style={{
+              fontFamily:"'JetBrains Mono','Fira Code',monospace",
+              fontWeight:700, fontSize:13, color:"#0F172A", letterSpacing:"-0.3px",
+            }}>berlin.sugiyanto</div>
+            <div style={{ fontSize:10, color:"#64748B", fontFamily:"'JetBrains Mono',monospace", letterSpacing:"0.3px" }}>backend dev</div>
+          </div>
+        </button>
 
-      <ul className="nav-links" style={{display:"flex",gap:28,listStyle:"none"}}>
+        {/* Desktop Links */}
+        <ul className="nav-links" style={{display:"flex",gap:2,listStyle:"none",margin:0,padding:0}}>
+          {links.map((link) => (
+            <li key={link}>
+              <a href={"#"+link} onClick={(e)=>{e.preventDefault();scrollTo(link);}}
+                style={{
+                  color: active===link ? "#0F172A" : "#94A3B8",
+                  fontSize:11.5, fontWeight:500,
+                  letterSpacing:"0.8px", textTransform:"uppercase",
+                  textDecoration:"none", transition:"color 0.2s",
+                  padding:"6px 12px", borderRadius:6,
+                  background: active===link ? "#F1F5F9" : "transparent",
+                  display:"block",
+                  fontFamily:"'JetBrains Mono',monospace",
+                }}
+                onMouseEnter={(e)=>{ if(active!==link) e.currentTarget.style.color="#475569"; }}
+                onMouseLeave={(e)=>{ if(active!==link) e.currentTarget.style.color="#94A3B8"; }}
+              >
+                {link}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        {/* Mobile hamburger */}
+        <button className="nav-hamburger" onClick={()=>setMenuOpen(!menuOpen)} style={{
+          display:"none", background:"none", border:"none", cursor:"pointer",
+          padding:6, flexDirection:"column", gap:5, alignItems:"center", justifyContent:"center",
+        }}>
+          <span style={{width:22,height:2,background:"#0F172A",display:"block",borderRadius:2,transition:"all 0.3s",transform:menuOpen?"rotate(45deg) translateY(7px)":"none"}}/>
+          <span style={{width:22,height:2,background:"#0F172A",display:"block",borderRadius:2,transition:"all 0.3s",opacity:menuOpen?0:1}}/>
+          <span style={{width:22,height:2,background:"#0F172A",display:"block",borderRadius:2,transition:"all 0.3s",transform:menuOpen?"rotate(-45deg) translateY(-7px)":"none"}}/>
+        </button>
+      </nav>
+
+      {/* Mobile Menu */}
+      <div className="mobile-menu" style={{
+        position:"fixed", top:58, left:0, right:0, zIndex:99,
+        background:"rgba(250,250,252,0.98)", backdropFilter:"blur(20px)",
+        borderBottom:"1px solid #E2E4EA",
+        padding: menuOpen ? "16px 24px 20px" : "0 24px",
+        maxHeight: menuOpen ? "400px" : "0",
+        overflow:"hidden",
+        transition:"all 0.3s ease",
+      }}>
         {links.map((link) => (
-          <li key={link}>
-            <a href={"#"+link} onClick={(e)=>{e.preventDefault();scrollTo(link);}}
-              style={{
-                color: active===link ? "#C084FC" : "#4A4870",
-                fontSize:11, fontWeight: active===link ? 600 : 500,
-                letterSpacing:"1.8px", textTransform:"uppercase",
-                textDecoration:"none", transition:"color 0.2s",
-                position:"relative", paddingBottom:3,
-              }}
-              onMouseEnter={(e)=>{ if(active!==link) e.currentTarget.style.color="#8B87A8"; }}
-              onMouseLeave={(e)=>{ if(active!==link) e.currentTarget.style.color="#4A4870"; }}
-            >
-              {link}
-              {active===link && (
-                <span style={{
-                  position:"absolute", bottom:-2, left:0, right:0, height:1,
-                  background:"linear-gradient(to right,#9333EA,#EC4899,transparent)",
-                  borderRadius:1,
-                }}/>
-              )}
-            </a>
-          </li>
+          <a key={link} href={"#"+link} onClick={(e)=>{e.preventDefault();scrollTo(link);}}
+            style={{
+              display:"block", padding:"10px 0",
+              color: active===link ? "#0F172A" : "#64748B",
+              fontSize:13, fontWeight:500,
+              letterSpacing:"0.8px", textTransform:"uppercase",
+              textDecoration:"none", fontFamily:"'JetBrains Mono',monospace",
+              borderBottom:"1px solid #F1F5F9",
+            }}
+          >{link}</a>
         ))}
-      </ul>
-    </nav>
+      </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .nav-links { display: none !important; }
+          .nav-hamburger { display: flex !important; }
+        }
+      `}</style>
+    </>
   );
 };
 
