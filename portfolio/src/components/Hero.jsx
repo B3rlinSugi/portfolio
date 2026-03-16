@@ -1,6 +1,69 @@
 import { data } from "../data/portfolioData";
 import { useEffect, useState } from "react";
 
+// Tokenize one line of code into colored spans — pure React, no dangerouslySetInnerHTML
+const CodeLine = ({ lineNum, text }) => {
+  const tokens = [];
+  let s = text;
+
+  while (s.length > 0) {
+    // keywords
+    const kwMatch = s.match(/^(const|true|false)\b/);
+    if (kwMatch) {
+      tokens.push({ t: kwMatch[0], c: "#A78BFA", w: "600" });
+      s = s.slice(kwMatch[0].length);
+      continue;
+    }
+    // property keys (name: / role: / etc)
+    const keyMatch = s.match(/^(name|role|stack|available)(?=:)/);
+    if (keyMatch) {
+      tokens.push({ t: keyMatch[0], c: "#38BDF8", w: "500" });
+      s = s.slice(keyMatch[0].length);
+      continue;
+    }
+    // string literals
+    if (s[0] === '"') {
+      const end = s.indexOf('"', 1);
+      if (end !== -1) {
+        tokens.push({ t: s.slice(0, end + 1), c: "#34D399", w: "400" });
+        s = s.slice(end + 1);
+        continue;
+      }
+    }
+    // punctuation
+    if (/^[{}\[\]:,;=]/.test(s)) {
+      tokens.push({ t: s[0], c: "#94A3B8", w: "400" });
+      s = s.slice(1);
+      continue;
+    }
+    // word
+    const wordMatch = s.match(/^\w+/);
+    if (wordMatch) {
+      tokens.push({ t: wordMatch[0], c: "#E2E8F0", w: "400" });
+      s = s.slice(wordMatch[0].length);
+      continue;
+    }
+    // space / other
+    tokens.push({ t: s[0], c: "#E2E8F0", w: "400" });
+    s = s.slice(1);
+  }
+
+  return (
+    <div style={{ display:"flex", alignItems:"baseline", lineHeight:1.85 }}>
+      <span style={{
+        color:"#475569", marginRight:20, userSelect:"none",
+        fontSize:11, minWidth:18, textAlign:"right", flexShrink:0,
+        fontFamily:"'JetBrains Mono','Fira Code',monospace",
+      }}>{String(lineNum).padStart(2,"0")}</span>
+      <span>
+        {tokens.map((tok, i) => (
+          <span key={i} style={{ color:tok.c, fontWeight:tok.w }}>{tok.t}</span>
+        ))}
+      </span>
+    </div>
+  );
+};
+
 const Hero = () => {
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior:"smooth" });
   const [typed, setTyped] = useState("");
@@ -12,46 +75,30 @@ const Hero = () => {
     const interval = setInterval(() => {
       if (i <= fullText.length) { setTyped(fullText.slice(0, i)); i++; }
       else clearInterval(interval);
-    }, 28);
+    }, 26);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    const c = setInterval(() => setShowCursor(p=>!p), 530);
+    const c = setInterval(() => setShowCursor(p => !p), 530);
     return () => clearInterval(c);
   }, []);
 
-  const formatCode = (text) => {
-    return text.split("\n").map((line, i) => {
-      let formatted = line
-        .replace(/(const|true|false)/g, '<span style="color:#7C3AED;font-weight:600">$1</span>')
-        .replace(/(".*?")/g, '<span style="color:#059669">$1</span>')
-        .replace(/(\[.*?\])/g, (m) => m.replace(/(".*?")/g, '<span style="color:#059669">$1</span>'))
-        .replace(/(name|role|stack|available):/g, '<span style="color:#0EA5E9">$1</span>:');
-      return `<span style="color:#94A3B8;margin-right:16px;user-select:none;font-size:11px">${String(i+1).padStart(2,"0")}</span>${formatted}`;
-    }).join("\n");
-  };
+  const lines = typed.split("\n");
 
   return (
     <section id="hero" style={{
       minHeight:"100vh", display:"flex", alignItems:"center",
-      background:"#F8FAFC",
-      position:"relative",
-      padding:"80px 0 0",
-      overflow:"hidden",
+      background:"#F8FAFC", position:"relative",
+      padding:"80px 0 0", overflow:"hidden",
     }}>
-      {/* Grid background */}
+      {/* Grid bg */}
       <div style={{
         position:"absolute", inset:0, pointerEvents:"none",
         backgroundImage:"linear-gradient(#E2E8F0 1px,transparent 1px),linear-gradient(90deg,#E2E8F0 1px,transparent 1px)",
-        backgroundSize:"40px 40px",
-        opacity:0.5,
+        backgroundSize:"40px 40px", opacity:0.5,
       }}/>
-      {/* Top accent bar */}
-      <div style={{
-        position:"absolute", top:0, left:0, right:0, height:3,
-        background:"linear-gradient(to right,#7C3AED,#0EA5E9,#059669)",
-      }}/>
+      <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:"linear-gradient(to right,#7C3AED,#0EA5E9,#059669)"}}/>
 
       <div style={{
         maxWidth:1200, margin:"0 auto", padding:"0 48px",
@@ -61,7 +108,6 @@ const Hero = () => {
 
         {/* LEFT */}
         <div>
-          {/* Status badge */}
           <div style={{
             display:"inline-flex", alignItems:"center", gap:8,
             background:"#F0FDF4", border:"1px solid #86EFAC",
@@ -70,27 +116,25 @@ const Hero = () => {
             letterSpacing:"0.5px", marginBottom:28,
             fontFamily:"'JetBrains Mono',monospace",
           }}>
-            <span style={{width:7,height:7,borderRadius:"50%",background:"#22C55E",display:"inline-block",animation:"pulse-dot 2s infinite"}}/>
+            <span style={{width:7,height:7,borderRadius:"50%",background:"#22C55E",animation:"pulse-dot 2s infinite",display:"inline-block"}}/>
             available_for_work: true
           </div>
 
           <h1 style={{
-            fontFamily:"'Syne','Plus Jakarta Sans',sans-serif",
+            fontFamily:"'Syne',sans-serif",
             fontSize:"clamp(40px,5vw,68px)",
             fontWeight:800, lineHeight:1.05,
             marginBottom:18, letterSpacing:"-2px", color:"#0F172A",
           }}>
             Berlin<br/>
-            <span style={{
-              background:"linear-gradient(135deg,#7C3AED,#0EA5E9)",
-              WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent",
-            }}>Sugiyanto</span>
+            <span style={{background:"linear-gradient(135deg,#7C3AED,#0EA5E9)",WebkitBackgroundClip:"text",backgroundClip:"text",color:"transparent"}}>
+              Sugiyanto
+            </span>
           </h1>
 
-          <div style={{
-            display:"flex", alignItems:"center", gap:10, marginBottom:16,
-          }}>
+          <div style={{marginBottom:16}}>
             <div style={{
+              display:"inline-block",
               fontFamily:"'JetBrains Mono',monospace",
               fontSize:13, fontWeight:600, color:"#475569",
               background:"#F1F5F9", border:"1px solid #E2E8F0",
@@ -105,13 +149,12 @@ const Hero = () => {
 
           <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:40}} className="hero-btns">
             <a href={data.github} target="_blank" rel="noreferrer" style={{
-              display:"inline-flex", alignItems:"center", gap:8,
-              padding:"11px 22px", borderRadius:8,
-              background:"#0F172A", color:"#F8FAFC",
-              fontSize:13.5, fontWeight:600, textDecoration:"none",
+              display:"inline-flex",alignItems:"center",gap:8,
+              padding:"11px 22px",borderRadius:8,
+              background:"#0F172A",color:"#F8FAFC",
+              fontSize:13.5,fontWeight:600,textDecoration:"none",
               fontFamily:"'Plus Jakarta Sans',sans-serif",
-              transition:"all 0.2s",
-              boxShadow:"0 2px 8px rgba(15,23,42,0.15)",
+              transition:"all 0.2s",boxShadow:"0 2px 8px rgba(15,23,42,0.15)",
             }}
               onMouseEnter={(e)=>{e.currentTarget.style.background="#1E293B";e.currentTarget.style.transform="translateY(-1px)";}}
               onMouseLeave={(e)=>{e.currentTarget.style.background="#0F172A";e.currentTarget.style.transform="none";}}
@@ -122,10 +165,10 @@ const Hero = () => {
               GitHub
             </a>
             <button onClick={()=>scrollTo("contact")} style={{
-              display:"inline-flex", alignItems:"center", gap:8,
-              padding:"11px 22px", borderRadius:8,
-              background:"transparent", color:"#0F172A",
-              fontSize:13.5, fontWeight:600, cursor:"pointer",
+              display:"inline-flex",alignItems:"center",gap:8,
+              padding:"11px 22px",borderRadius:8,
+              background:"transparent",color:"#0F172A",
+              fontSize:13.5,fontWeight:600,cursor:"pointer",
               border:"1.5px solid #CBD5E1",
               fontFamily:"'Plus Jakarta Sans',sans-serif",
               transition:"all 0.2s",
@@ -134,10 +177,10 @@ const Hero = () => {
               onMouseLeave={(e)=>{e.currentTarget.style.borderColor="#CBD5E1";e.currentTarget.style.transform="none";}}
             >Get in Touch</button>
             <a href="/cv.pdf" download="Berlin_Sugiyanto_CV.pdf" style={{
-              display:"inline-flex", alignItems:"center", gap:8,
-              padding:"11px 22px", borderRadius:8,
-              background:"#F0FDF4", color:"#16A34A",
-              fontSize:13.5, fontWeight:600, textDecoration:"none",
+              display:"inline-flex",alignItems:"center",gap:8,
+              padding:"11px 22px",borderRadius:8,
+              background:"#F0FDF4",color:"#16A34A",
+              fontSize:13.5,fontWeight:600,textDecoration:"none",
               border:"1.5px solid #86EFAC",
               fontFamily:"'Plus Jakarta Sans',sans-serif",
               transition:"all 0.2s",
@@ -152,89 +195,83 @@ const Hero = () => {
             </a>
           </div>
 
-          {/* Stats row */}
-          <div style={{
-            display:"flex", gap:0, paddingTop:24,
-            borderTop:"1px solid #E2E8F0",
-          }} className="hero-stats-row">
+          <div style={{display:"flex",gap:0,paddingTop:24,borderTop:"1px solid #E2E8F0"}} className="hero-stats-row">
             {[["3.63","GPA / 4.00"],["3+","Projects"],["3yr","Org Exp"]].map(([n,l],i)=>(
               <div key={l} style={{
-                flex:1, textAlign:"center",
+                flex:1,textAlign:"center",
                 borderRight:i<2?"1px solid #E2E8F0":"none",
                 padding:"0 16px",
               }}>
-                <div style={{
-                  fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800,
-                  color:"#0F172A", lineHeight:1, letterSpacing:"-1px",
-                }}>{n}</div>
-                <div style={{
-                  fontSize:10, color:"#94A3B8", letterSpacing:"1.2px",
-                  textTransform:"uppercase", marginTop:5,
-                  fontFamily:"'JetBrains Mono',monospace",
-                }}>{l}</div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,color:"#0F172A",lineHeight:1,letterSpacing:"-1px"}}>{n}</div>
+                <div style={{fontSize:10,color:"#94A3B8",letterSpacing:"1.2px",textTransform:"uppercase",marginTop:5,fontFamily:"'JetBrains Mono',monospace"}}>{l}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* RIGHT — terminal code block */}
-        <div style={{ position:"relative" }} className="hero-terminal-wrap">
-          {/* Terminal window */}
+        {/* RIGHT — terminal */}
+        <div style={{position:"relative"}} className="hero-terminal-wrap">
           <div style={{
-            background:"#0F172A",
-            borderRadius:14,
-            overflow:"hidden",
+            background:"#0F172A", borderRadius:14, overflow:"hidden",
             boxShadow:"0 24px 60px rgba(15,23,42,0.18),0 8px 24px rgba(15,23,42,0.08)",
             border:"1px solid #1E293B",
           }}>
             {/* Title bar */}
             <div style={{
-              display:"flex", alignItems:"center", gap:8,
-              padding:"12px 16px",
-              background:"#1E293B",
+              display:"flex",alignItems:"center",gap:8,
+              padding:"12px 16px",background:"#1E293B",
               borderBottom:"1px solid #334155",
             }}>
               <span style={{width:11,height:11,borderRadius:"50%",background:"#EF4444"}}/>
               <span style={{width:11,height:11,borderRadius:"50%",background:"#F59E0B"}}/>
               <span style={{width:11,height:11,borderRadius:"50%",background:"#22C55E"}}/>
-              <span style={{
-                marginLeft:12, fontSize:11.5, color:"#64748B",
-                fontFamily:"'JetBrains Mono',monospace",
-              }}>~/portfolio/src/developer.ts</span>
+              <span style={{marginLeft:12,fontSize:11.5,color:"#64748B",fontFamily:"'JetBrains Mono',monospace"}}>
+                ~/portfolio/src/developer.ts
+              </span>
             </div>
-            {/* Code area */}
+
+            {/* Code — React rendered */}
             <div style={{
-              padding:"24px 24px 28px",
+              padding:"22px 24px 26px",
               fontFamily:"'JetBrains Mono','Fira Code',monospace",
-              fontSize:13.5, lineHeight:1.9,
-              color:"#E2E8F0",
-              minHeight:240,
+              fontSize:13.5, minHeight:236,
             }}>
-              <pre style={{margin:0,whiteSpace:"pre-wrap",wordBreak:"break-word"}}
-                dangerouslySetInnerHTML={{__html: formatCode(typed) + (showCursor ? '<span style="background:#7C3AED;color:transparent">|</span>' : '')}}
-              />
+              {lines.map((line, i) => (
+                <div key={i} style={{display:"flex",alignItems:"baseline"}}>
+                  <CodeLine lineNum={i+1} text={line}/>
+                  {i === lines.length - 1 && (
+                    <span style={{
+                      display:"inline-block", width:8, height:"0.9em",
+                      background:showCursor?"#7C3AED":"transparent",
+                      marginLeft:1, verticalAlign:"text-bottom",
+                    }}/>
+                  )}
+                </div>
+              ))}
             </div>
-            {/* Bottom bar */}
+
+            {/* Status bar */}
             <div style={{
-              display:"flex", justifyContent:"space-between", alignItems:"center",
-              padding:"8px 16px",
-              background:"#7C3AED",
+              display:"flex",justifyContent:"space-between",alignItems:"center",
+              padding:"8px 16px",background:"#7C3AED",
             }}>
-              <span style={{fontSize:11,color:"rgba(255,255,255,0.85)",fontFamily:"'JetBrains Mono',monospace"}}>NORMAL</span>
+              <span style={{fontSize:11,color:"rgba(255,255,255,0.9)",fontFamily:"'JetBrains Mono',monospace"}}>NORMAL</span>
               <span style={{fontSize:11,color:"rgba(255,255,255,0.7)",fontFamily:"'JetBrains Mono',monospace"}}>TypeScript · UTF-8</span>
-              <span style={{fontSize:11,color:"rgba(255,255,255,0.7)",fontFamily:"'JetBrains Mono',monospace"}}>Ln {typed.split("\n").length}, Col {typed.split("\n").pop().length}</span>
+              <span style={{fontSize:11,color:"rgba(255,255,255,0.7)",fontFamily:"'JetBrains Mono',monospace"}}>
+                Ln {lines.length}, Col {lines[lines.length-1]?.length ?? 0}
+              </span>
             </div>
           </div>
 
-          {/* Stack badges floating */}
+          {/* Floating stack badges */}
           <div style={{
-            position:"absolute", top:-16, right:-16,
-            display:"flex", flexDirection:"column", gap:8,
+            position:"absolute",top:-16,right:-16,
+            display:"flex",flexDirection:"column",gap:8,
           }} className="hero-badges">
             {[
-              {label:"PHP 8", color:"#7C3AED", bg:"#F5F3FF"},
-              {label:"MySQL", color:"#0EA5E9", bg:"#F0F9FF"},
-              {label:"Laravel", color:"#EF4444", bg:"#FEF2F2"},
+              {label:"PHP 8",color:"#7C3AED",bg:"#F5F3FF"},
+              {label:"MySQL",color:"#0284C7",bg:"#F0F9FF"},
+              {label:"Laravel",color:"#DC2626",bg:"#FEF2F2"},
             ].map(({label,color,bg})=>(
               <div key={label} style={{
                 background:bg, border:`1px solid ${color}30`,
@@ -242,17 +279,16 @@ const Hero = () => {
                 fontSize:11.5, fontWeight:700, color,
                 fontFamily:"'JetBrains Mono',monospace",
                 boxShadow:"0 2px 8px rgba(0,0,0,0.06)",
-                whiteSpace:"nowrap",
               }}>{label}</div>
             ))}
           </div>
 
           {/* Location badge */}
           <div style={{
-            position:"absolute", bottom:-16, left:0,
-            background:"#FFFFFF", border:"1px solid #E2E8F0",
-            borderRadius:10, padding:"10px 16px",
-            display:"flex", alignItems:"center", gap:8,
+            position:"absolute",bottom:-16,left:0,
+            background:"#FFFFFF",border:"1px solid #E2E8F0",
+            borderRadius:10,padding:"10px 16px",
+            display:"flex",alignItems:"center",gap:8,
             boxShadow:"0 4px 16px rgba(15,23,42,0.08)",
           }} className="hero-location">
             <span style={{fontSize:16}}>📍</span>
@@ -274,7 +310,7 @@ const Hero = () => {
         }
         @media (max-width:480px){
           .hero-btns{ flex-direction:column; }
-          .hero-btns a, .hero-btns button{ justify-content:center; }
+          .hero-btns a,.hero-btns button{ justify-content:center; }
           .hero-stats-row > div{ padding:0 8px !important; }
         }
       `}</style>
