@@ -33,7 +33,11 @@ const Projects = () => {
 
   return (
     <section id="projects" ref={ref} style={{ background: "var(--navy-2)", borderTop: "1px solid rgba(59,130,246,0.07)" }}>
-      <p className="s-label" style={{ opacity: visible ? 1 : 0, transition: "opacity .5s" }}>projects</p>
+      <p className="s-label" style={{ opacity: visible ? 1 : 0, transition: "opacity .5s", fontFamily: "'JetBrains Mono',monospace" }}>
+        <span style={{ color: "rgba(6,182,212,0.5)" }}>&lt;</span>
+        projects
+        <span style={{ color: "rgba(6,182,212,0.5)" }}> /&gt;</span>
+      </p>
       <h2 className="s-title" style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>Projects I've built</h2>
 
       <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: 24, alignItems: "start" }} className="split-panel">

@@ -1,165 +1,232 @@
 import { data } from "../data/portfolioData";
 import { useEffect, useRef, useState } from "react";
 
-/* ── Rich particle canvas ── */
-const ParticleCanvas = () => {
+/* ── Aurora Background ── */
+const AuroraBackground = () => (
+  <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0, pointerEvents: "none" }}>
+    {/* Aurora waves */}
+    <div style={{ position: "absolute", top: "-20%", left: "-10%", width: "80%", height: "70%", background: "radial-gradient(ellipse, rgba(29,78,216,0.18) 0%, rgba(6,182,212,0.08) 40%, transparent 70%)", animation: "aurora1 12s ease-in-out infinite", filter: "blur(40px)", borderRadius: "60% 40% 70% 30% / 50% 60% 40% 50%" }} />
+    <div style={{ position: "absolute", top: "10%", right: "-15%", width: "65%", height: "60%", background: "radial-gradient(ellipse, rgba(6,182,212,0.12) 0%, rgba(139,92,246,0.06) 45%, transparent 70%)", animation: "aurora2 15s ease-in-out infinite", filter: "blur(50px)", borderRadius: "40% 60% 30% 70% / 60% 40% 60% 40%" }} />
+    <div style={{ position: "absolute", bottom: "0%", left: "20%", width: "70%", height: "50%", background: "radial-gradient(ellipse, rgba(139,92,246,0.1) 0%, rgba(29,78,216,0.07) 50%, transparent 70%)", animation: "aurora3 18s ease-in-out infinite", filter: "blur(60px)", borderRadius: "50% 50% 60% 40% / 40% 50% 50% 60%" }} />
+    <div style={{ position: "absolute", top: "40%", left: "30%", width: "50%", height: "40%", background: "radial-gradient(ellipse, rgba(6,182,212,0.07) 0%, rgba(59,130,246,0.05) 50%, transparent 70%)", animation: "aurora4 20s ease-in-out infinite", filter: "blur(55px)" }} />
+
+    {/* Subtle grid */}
+    <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(59,130,246,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.03) 1px,transparent 1px)", backgroundSize: "60px 60px", maskImage: "radial-gradient(ellipse at center,black 20%,transparent 80%)" }} />
+
+    <style>{`
+      @keyframes aurora1{0%,100%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(5%,8%) scale(1.1) rotate(5deg)}66%{transform:translate(-3%,4%) scale(0.95) rotate(-3deg)}}
+      @keyframes aurora2{0%,100%{transform:translate(0,0) scale(1) rotate(0deg)}40%{transform:translate(-6%,5%) scale(1.08) rotate(-4deg)}70%{transform:translate(3%,-3%) scale(0.92) rotate(6deg)}}
+      @keyframes aurora3{0%,100%{transform:translate(0,0) scale(1)}30%{transform:translate(4%,-6%) scale(1.12)}60%{transform:translate(-5%,4%) scale(0.9)}}
+      @keyframes aurora4{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-4%,5%) scale(1.15)}}
+    `}</style>
+  </div>
+);
+
+/* ── Floating Photo with Glow Ring ── */
+const FloatingPhoto = ({ visible }) => {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const ref = useRef(null);
-  useEffect(() => {
-    const canvas = ref.current; if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let W = canvas.width = canvas.offsetWidth;
-    let H = canvas.height = canvas.offsetHeight;
 
-    // Particles
-    const count = 90;
-    const dots = Array.from({ length: count }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-      r: Math.random() * 1.5 + 0.4,
-      a: Math.random() * 0.35 + 0.05,
-      color: Math.random() > 0.6 ? "6,182,212" : "59,130,246",
-    }));
+  const handleMouseMove = e => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    setTilt({ x: ((e.clientY - cy) / (rect.height / 2)) * 6, y: -((e.clientX - cx) / (rect.width / 2)) * 6 });
+  };
+  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
 
-    // Noise blobs (large slow circles for depth)
-    const blobs = Array.from({ length: 4 }, (_, i) => ({
-      x: Math.random() * W, y: Math.random() * H,
-      r: 180 + Math.random() * 120,
-      vx: (Math.random() - 0.5) * 0.12,
-      vy: (Math.random() - 0.5) * 0.12,
-      color: i % 2 === 0 ? "29,78,216" : "6,182,212",
-    }));
-
-    let raf;
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H);
-
-      // Draw blobs
-      blobs.forEach(b => {
-        b.x += b.vx; b.y += b.vy;
-        if (b.x < -b.r) b.x = W + b.r;
-        if (b.x > W + b.r) b.x = -b.r;
-        if (b.y < -b.r) b.y = H + b.r;
-        if (b.y > H + b.r) b.y = -b.r;
-        const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
-        g.addColorStop(0, `rgba(${b.color},0.045)`);
-        g.addColorStop(1, `rgba(${b.color},0)`);
-        ctx.fillStyle = g;
-        ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
-      });
-
-      // Draw dots
-      dots.forEach(d => {
-        d.x += d.vx; d.y += d.vy;
-        if (d.x < 0 || d.x > W) d.vx *= -1;
-        if (d.y < 0 || d.y > H) d.vy *= -1;
-        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${d.color},${d.a})`; ctx.fill();
-      });
-
-      // Draw connections
-      for (let i = 0; i < dots.length; i++) {
-        for (let j = i + 1; j < dots.length; j++) {
-          const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 110) {
-            ctx.beginPath();
-            ctx.moveTo(dots[i].x, dots[i].y);
-            ctx.lineTo(dots[j].x, dots[j].y);
-            ctx.strokeStyle = `rgba(59,130,246,${0.07 * (1 - dist / 110)})`;
-            ctx.lineWidth = 0.6; ctx.stroke();
-          }
-        }
-      }
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-    const onResize = () => { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; };
-    window.addEventListener("resize", onResize);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", onResize); };
-  }, []);
-  return <canvas ref={ref} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} />;
-};
-
-const Metric = ({ n, l, i }) => {
-  const [v, setV] = useState(0);
-  const end = parseFloat(n), suffix = n.replace(/[\d.]/g, ""), isFloat = n.includes(".");
-  useEffect(() => {
-    const t = setTimeout(() => {
-      const t0 = performance.now();
-      const tick = now => { const p = Math.min((now - t0) / 1200, 1), e = 1 - Math.pow(1 - p, 3); setV(isFloat ? (e * end).toFixed(2) : Math.floor(e * end)); if (p < 1) requestAnimationFrame(tick); };
-      requestAnimationFrame(tick);
-    }, 800 + i * 150);
-    return () => clearTimeout(t);
-  }, []);
   return (
-    <div style={{ padding: "14px 22px", borderRadius: 12, background: "rgba(15,31,56,0.7)", border: "1px solid rgba(59,130,246,0.15)", position: "relative", overflow: "hidden", animation: `fadeUp 0.6s cubic-bezier(.22,1,.36,1) ${0.7 + i * 0.1}s both`, minWidth: 110, textAlign: "center" }}>
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(to right,#1D4ED8,#06B6D4)" }} />
-      <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 28, fontWeight: 800, color: "#F0F6FF", lineHeight: 1, letterSpacing: "-1px" }}>{v}{suffix}</div>
-      <div style={{ fontSize: 9, color: "#6B84A8", letterSpacing: "1.5px", textTransform: "uppercase", marginTop: 5, fontFamily: "'JetBrains Mono',monospace" }}>{l}</div>
+    <div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
+      style={{
+        position: "relative", width: 300, height: 300, flexShrink: 0,
+        opacity: visible ? 1 : 0,
+        animation: visible ? "photoFloat 5s ease-in-out infinite" : "none",
+        transition: "opacity 0.8s ease 0.5s",
+      }}
+    >
+      {/* Outer rotating ring 1 */}
+      <div style={{ position: "absolute", inset: -20, borderRadius: "50%", border: "1.5px solid transparent", background: "linear-gradient(rgba(6,14,30,0),rgba(6,14,30,0)) padding-box, linear-gradient(135deg,#3B82F6,transparent 50%,#06B6D4) border-box", animation: "ringRotate1 7s linear infinite", pointerEvents: "none" }} />
+      {/* Outer rotating ring 2 */}
+      <div style={{ position: "absolute", inset: -30, borderRadius: "50%", border: "1px solid transparent", background: "linear-gradient(rgba(6,14,30,0),rgba(6,14,30,0)) padding-box, linear-gradient(225deg,#8B5CF6,transparent 55%,#06B6D4) border-box", animation: "ringRotate2 11s linear infinite", pointerEvents: "none" }} />
+      {/* Glow pulse */}
+      <div style={{ position: "absolute", inset: -12, borderRadius: "50%", background: "radial-gradient(circle,rgba(59,130,246,0.22),rgba(6,182,212,0.1) 55%,transparent 75%)", animation: "glowPulse 3.5s ease-in-out infinite", filter: "blur(8px)", pointerEvents: "none" }} />
+
+      {/* Photo container */}
+      <div style={{
+        width: 300, height: 300, borderRadius: "50%", overflow: "hidden",
+        border: "3px solid rgba(59,130,246,0.4)",
+        boxShadow: "0 0 0 1px rgba(6,182,212,0.15), 0 30px 70px rgba(0,0,0,0.6)",
+        position: "relative", zIndex: 2,
+        transform: `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transition: "transform 0.3s ease",
+      }}>
+        <img src="/foto2.jpg" alt="Berlin Sugiyanto"
+          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
+          onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
+        />
+        <div style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", background: "var(--navy-3)", flexDirection: "column" }}>
+          <span style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 800, fontSize: 52, color: "var(--blue-3)" }}>BS</span>
+        </div>
+        {/* Shine overlay */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%, rgba(6,182,212,0.04) 100%)", borderRadius: "50%", pointerEvents: "none" }} />
+      </div>
+
+      {/* Floating dots on ring */}
+      {[0, 120, 240].map((deg, i) => {
+        const rad = (deg * Math.PI) / 180;
+        const r = 160;
+        const x = 150 + r * Math.cos(rad);
+        const y = 150 + r * Math.sin(rad);
+        const colors = ["#3B82F6", "#06B6D4", "#8B5CF6"];
+        return <div key={i} style={{ position: "absolute", width: 9, height: 9, borderRadius: "50%", background: colors[i], boxShadow: `0 0 12px ${colors[i]}`, left: x - 4.5, top: y - 4.5, zIndex: 5, animation: `dotFloat${i} ${2.5 + i * 0.6}s ease-in-out infinite` }} />;
+      })}
+
+      <style>{`
+        @keyframes photoFloat{0%,100%{transform:translateY(0px)}50%{transform:translateY(-14px)}}
+        @keyframes ringRotate1{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes ringRotate2{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+        @keyframes glowPulse{0%,100%{opacity:0.55;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+        @keyframes dotFloat0{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+        @keyframes dotFloat1{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+        @keyframes dotFloat2{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+      `}</style>
     </div>
   );
 };
 
+/* ── Neon Glow Metric ── */
+const NeonMetric = ({ n, l, i }) => {
+  const [v, setV] = useState(0);
+  const [glowing, setGlowing] = useState(false);
+  const end = parseFloat(n), suffix = n.replace(/[\d.]/g, ""), isFloat = n.includes(".");
+  const colors = ["#3B82F6", "#06B6D4", "#8B5CF6"];
+  const color = colors[i % colors.length];
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const t0 = performance.now();
+      const tick = now => {
+        const p = Math.min((now - t0) / 1400, 1), e = 1 - Math.pow(1 - p, 3);
+        setV(isFloat ? (e * end).toFixed(2) : Math.floor(e * end));
+        if (p < 1) requestAnimationFrame(tick);
+        else { setGlowing(true); setTimeout(() => setGlowing(false), 800); }
+      };
+      requestAnimationFrame(tick);
+    }, 900 + i * 180);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div style={{
+      padding: "16px 24px", borderRadius: 14,
+      background: "rgba(15,31,56,0.7)",
+      border: `1px solid ${glowing ? color + "60" : "rgba(59,130,246,0.15)"}`,
+      position: "relative", overflow: "hidden",
+      animation: `fadeUp 0.6s cubic-bezier(.22,1,.36,1) ${0.7 + i * 0.1}s both`,
+      minWidth: 110, textAlign: "center",
+      boxShadow: glowing ? `0 0 30px ${color}30, 0 0 60px ${color}10` : "none",
+      transition: "border-color 0.4s, box-shadow 0.4s",
+    }}>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(to right,${color},${color}80)` }} />
+      {/* Neon pulse overlay */}
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at center,${color}08,transparent 70%)`, animation: `neonPulse${i} 2.5s ease-in-out infinite ${i * 0.4}s`, pointerEvents: "none" }} />
+      <div style={{ fontFamily: "'Clash Display','Syne',sans-serif", fontSize: 30, fontWeight: 700, color: "#F0F6FF", lineHeight: 1, letterSpacing: "-1px", textShadow: glowing ? `0 0 20px ${color}` : "none", transition: "text-shadow 0.4s", position: "relative" }}>{v}{suffix}</div>
+      <div style={{ fontSize: 9, color: "#6B84A8", letterSpacing: "1.5px", textTransform: "uppercase", marginTop: 6, fontFamily: "'JetBrains Mono',monospace" }}>{l}</div>
+      <style>{`
+        @keyframes neonPulse${i}{0%,100%{opacity:0.4}50%{opacity:0.9}}
+      `}</style>
+    </div>
+  );
+};
+
+/* ── Scan Highlight Title ── */
+const ScanTitle = ({ text, visible }) => (
+  <div style={{
+    fontSize: "clamp(11px,1.1vw,13px)", color: "var(--muted)", fontWeight: 400,
+    letterSpacing: "6px", textTransform: "uppercase",
+    fontFamily: "'JetBrains Mono',monospace", marginBottom: 22,
+    animation: "fadeUp 0.6s cubic-bezier(.22,1,.36,1) 0.3s both",
+    position: "relative", display: "inline-block", overflow: "hidden",
+  }}>
+    {text}
+    {/* Scan light */}
+    <div style={{
+      position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+      background: "linear-gradient(90deg,transparent 0%,rgba(6,182,212,0.4) 50%,transparent 100%)",
+      backgroundSize: "200% 100%",
+      animation: visible ? "scanLight 2.5s ease-in-out infinite 1s" : "none",
+      pointerEvents: "none",
+    }} />
+    <style>{`@keyframes scanLight{0%{background-position:200% 0}100%{background-position:-200% 0}}`}</style>
+  </div>
+);
+
 const Hero = () => {
+  const [visible, setVisible] = useState(false);
   const go = id => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  useEffect(() => { setTimeout(() => setVisible(true), 100); }, []);
 
   return (
     <section id="hero" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", padding: 0, maxWidth: "none", overflow: "hidden", background: "var(--navy)" }}>
-
-      <ParticleCanvas />
-
-      {/* Ambient glows */}
-      <div style={{ position: "absolute", top: "-20%", left: "-10%", width: "55%", height: "70%", background: "radial-gradient(ellipse,rgba(29,78,216,0.1),transparent 65%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "-10%", right: "0", width: "40%", height: "55%", background: "radial-gradient(ellipse,rgba(6,182,212,0.07),transparent 65%)", pointerEvents: "none" }} />
+      <AuroraBackground />
 
       {/* ── Content ── */}
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 820, margin: "0 auto", padding: "100px 48px 80px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", width: "100%" }} className="hero-content">
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 1100, margin: "0 auto", padding: "100px 48px 80px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 60, width: "100%" }} className="hero-layout">
 
-        {/* Status badge */}
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(6,182,212,0.06)", border: "1px solid rgba(6,182,212,0.2)", padding: "7px 18px", borderRadius: 100, marginBottom: 36, animation: "fadeUp 0.5s cubic-bezier(.22,1,.36,1) 0.1s both" }}>
-          <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#06B6D4", boxShadow: "0 0 8px rgba(6,182,212,0.8)", animation: "pulse-dot 2s infinite", flexShrink: 0 }} />
-          <span style={{ fontSize: 11, fontWeight: 600, color: "var(--cyan)", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "1px" }}>Open to Work</span>
-          <span style={{ width: 1, height: 12, background: "rgba(6,182,212,0.3)" }} />
-          <span style={{ fontSize: 11, color: "#6B84A8", fontFamily: "'Outfit',sans-serif" }}>Junior Backend Developer</span>
+        {/* LEFT: text */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+          {/* Status badge */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(6,182,212,0.06)", border: "1px solid rgba(6,182,212,0.2)", padding: "7px 18px", borderRadius: 100, marginBottom: 32, animation: "fadeUp 0.5s cubic-bezier(.22,1,.36,1) 0.1s both" }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#06B6D4", boxShadow: "0 0 8px rgba(6,182,212,0.8)", animation: "pulse-dot 2s infinite", flexShrink: 0 }} />
+            <span style={{ fontSize: 11, fontWeight: 600, color: "var(--cyan)", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "1px" }}>Open to Work</span>
+            <span style={{ width: 1, height: 12, background: "rgba(6,182,212,0.3)" }} />
+            <span style={{ fontSize: 11, color: "#6B84A8", fontFamily: "'Outfit',sans-serif" }}>Junior Backend Developer</span>
+          </div>
+
+          {/* Name with Clash Display */}
+          <h1 style={{ fontFamily: "'Clash Display','Syne',sans-serif", fontWeight: 700, lineHeight: 0.9, letterSpacing: "-3px", margin: "0 0 18px", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.2s both" }}>
+            <span style={{ display: "block", fontSize: "clamp(58px,8.5vw,108px)", color: "#FFFFFF" }}>Berlin</span>
+            <span style={{
+              display: "block", fontSize: "clamp(58px,8.5vw,108px)",
+              background: "linear-gradient(135deg,#3B82F6,#06B6D4 50%,#38BDF8)",
+              WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
+              backgroundSize: "200%", animation: "gradShift 4s ease infinite",
+            }}>Sugiyanto</span>
+          </h1>
+
+          {/* Backend Developer with scan highlight */}
+          <ScanTitle text="Backend Developer" visible={visible} />
+
+          <p style={{ fontSize: 15, color: "#8BA4C8", maxWidth: 420, lineHeight: 1.9, marginBottom: 36, fontFamily: "'Outfit',sans-serif", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.35s both" }}>
+            {data.tagline}
+          </p>
+
+          {/* CTA */}
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 48, animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.42s both" }} className="hero-btns">
+            <a href={data.github} target="_blank" rel="noreferrer" className="btn-primary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
+              GitHub
+            </a>
+            <button onClick={() => go("contact")} className="btn-outline">Get in Touch</button>
+            <a href="/cv.pdf" download style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 20px", borderRadius: 8, background: "rgba(6,182,212,0.07)", color: "var(--cyan)", fontSize: 13.5, fontWeight: 600, textDecoration: "none", border: "1px solid rgba(6,182,212,0.25)", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(6,182,212,0.14)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(6,182,212,0.07)"; e.currentTarget.style.transform = "none"; }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+              Download CV
+            </a>
+          </div>
+
+          {/* Neon Metrics */}
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.5s both" }}>
+            {[["3.63", "GPA / 4.00"], ["3+", "Projects"], ["3yr", "Org Exp"]].map(([n, l], i) => <NeonMetric key={l} n={n} l={l} i={i} />)}
+          </div>
         </div>
 
-        {/* ── Name with Syne font ── */}
-        <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, lineHeight: 0.9, letterSpacing: "-3px", margin: "0 0 18px", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.2s both" }}>
-          <span style={{ display: "block", fontSize: "clamp(62px,9.5vw,116px)", color: "#FFFFFF" }}>Berlin</span>
-          <span style={{
-            display: "block", fontSize: "clamp(62px,9.5vw,116px)",
-            background: "linear-gradient(135deg,#3B82F6,#06B6D4 50%,#38BDF8)",
-            WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
-            backgroundSize: "200%", animation: "gradShift 4s ease infinite",
-          }}>Sugiyanto</span>
-        </h1>
-
-        <div style={{ fontSize: "clamp(11px,1.1vw,14px)", color: "var(--muted)", fontWeight: 400, letterSpacing: "5px", textTransform: "uppercase", fontFamily: "'JetBrains Mono',monospace", marginBottom: 22, animation: "fadeUp 0.6s cubic-bezier(.22,1,.36,1) 0.3s both" }}>
-          Backend Developer
-        </div>
-
-        <p style={{ fontSize: 15, color: "#8BA4C8", maxWidth: 460, lineHeight: 1.9, marginBottom: 36, fontFamily: "'Outfit',sans-serif", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.35s both" }}>
-          {data.tagline}
-        </p>
-
-        {/* CTA */}
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 48, justifyContent: "center", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.42s both" }} className="hero-btns">
-          <a href={data.github} target="_blank" rel="noreferrer" className="btn-primary">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
-            GitHub
-          </a>
-          <button onClick={() => go("contact")} className="btn-outline">Get in Touch</button>
-          <a href="/cv.pdf" download style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 20px", borderRadius: 8, background: "rgba(6,182,212,0.07)", color: "var(--cyan)", fontSize: 13.5, fontWeight: 600, textDecoration: "none", border: "1px solid rgba(6,182,212,0.25)", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
-            onMouseEnter={e => { e.currentTarget.style.background = "rgba(6,182,212,0.14)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(6,182,212,0.07)"; e.currentTarget.style.transform = "none"; }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-            Download CV
-          </a>
-        </div>
-
-        {/* Metrics */}
-        <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.5s both" }}>
-          {[["3.63","GPA / 4.00"],["3+","Projects"],["3yr","Org Exp"]].map(([n,l],i) => <Metric key={l} n={n} l={l} i={i} />)}
+        {/* RIGHT: floating photo */}
+        <div className="hero-photo" style={{ flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <FloatingPhoto visible={visible} />
         </div>
       </div>
 
@@ -171,14 +238,17 @@ const Hero = () => {
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
+        @import url('https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap');
         @keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(6,182,212,.5)}70%{box-shadow:0 0 0 9px rgba(6,182,212,0)}}
         @keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
         @keyframes scrollPulse{0%,100%{opacity:0.4}50%{opacity:1}}
-        @media(max-width:600px){
-          .hero-content{padding:88px 24px 60px !important;}
+        @media(max-width:900px){
+          .hero-layout{flex-direction:column !important;align-items:center !important;text-align:center !important;padding:88px 24px 60px !important;}
+          .hero-layout>div:first-child{align-items:center !important;}
           .hero-btns{flex-direction:column;align-items:center;}
           .hero-btns a,.hero-btns button{justify-content:center;width:100%;max-width:280px;}
+          .hero-photo{order:-1;}
         }
       `}</style>
     </section>
