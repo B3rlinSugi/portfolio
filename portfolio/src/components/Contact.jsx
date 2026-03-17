@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { data } from "../data/portfolioData";
+import { LangContext, i18n } from "./Navbar";
 
 function useTypewriter(text, speed = 38, started = false, delay = 0) {
   const [displayed, setDisplayed] = useState("");
@@ -24,41 +25,25 @@ const Cursor = ({ visible }) => (
   <span style={{ display: "inline-block", width: 2, height: "1em", background: "#06B6D4", marginLeft: 2, verticalAlign: "middle", animation: "blink 1s step-end infinite", opacity: visible ? 1 : 0, transition: "opacity 0.2s" }} />
 );
 
-/* ── Terminal Status Badge ── */
+/* ── Terminal Status Badge — simplified to avoid render errors ── */
 const TerminalStatus = ({ visible }) => {
-  const [step, setStep] = useState(0);
+  const [linesDone, setLinesDone] = useState(0);
+
+  useEffect(() => {
+    if (!visible) return;
+    const timers = [
+      setTimeout(() => setLinesDone(1), 500),
+      setTimeout(() => setLinesDone(2), 1200),
+      setTimeout(() => setLinesDone(3), 2000),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [visible]);
+
   const lines = [
     { text: "> checking_availability...", color: "#6B84A8" },
     { text: "> status: available_for_work ✓", color: "#10B981" },
     { text: "> location: Bekasi, West Java · Remote OK", color: "#06B6D4" },
   ];
-  const [displayed, setDisplayed] = useState(["", "", ""]);
-
-  useEffect(() => {
-    if (!visible) return;
-    let lineIdx = 0;
-    let charIdx = 0;
-
-    const typeNext = () => {
-      if (lineIdx >= lines.length) return;
-      const iv = setInterval(() => {
-        charIdx++;
-        setDisplayed(prev => {
-          const next = [...prev];
-          next[lineIdx] = lines[lineIdx].text.slice(0, charIdx);
-          return next;
-        });
-        if (charIdx >= lines[lineIdx].text.length) {
-          clearInterval(iv);
-          charIdx = 0;
-          lineIdx++;
-          if (lineIdx < lines.length) setTimeout(typeNext, 200);
-        }
-      }, 28);
-    };
-
-    setTimeout(typeNext, 400);
-  }, [visible]);
 
   return (
     <div style={{
@@ -68,10 +53,8 @@ const TerminalStatus = ({ visible }) => {
       fontFamily: "'JetBrains Mono',monospace", fontSize: 11.5,
       opacity: visible ? 1 : 0, transition: "opacity 0.5s ease 0.2s",
       boxShadow: "0 0 20px rgba(16,185,129,0.1), 0 4px 20px rgba(0,0,0,0.3)",
-      backdropFilter: "blur(12px)",
-      minWidth: 340,
+      backdropFilter: "blur(12px)", minWidth: 300,
     }}>
-      {/* Terminal header */}
       <div style={{ display: "flex", alignItems: "center", gap: 6, paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.06)", marginBottom: 4 }}>
         <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#EF4444" }} />
         <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#F59E0B" }} />
@@ -79,10 +62,15 @@ const TerminalStatus = ({ visible }) => {
         <span style={{ marginLeft: 8, fontSize: 9.5, color: "var(--muted)" }}>status.sh</span>
       </div>
       {lines.map((line, i) => (
-        <div key={i} style={{ color: line.color, minHeight: 18 }}>
-          {displayed[i]}
-          {displayed[i] && displayed[i].length < line.text.length && (
-            <span style={{ animation: "blink 0.7s step-end infinite", color: "#06B6D4" }}>▌</span>
+        <div key={i} style={{
+          color: line.color, minHeight: 18,
+          opacity: linesDone > i ? 1 : 0,
+          transform: linesDone > i ? "translateY(0)" : "translateY(4px)",
+          transition: "opacity 0.4s ease, transform 0.4s ease",
+        }}>
+          {line.text}
+          {linesDone === i + 1 && linesDone < lines.length && (
+            <span style={{ animation: "blink 0.7s step-end infinite", color: "#06B6D4", marginLeft: 2 }}>▌</span>
           )}
         </div>
       ))}
@@ -161,6 +149,8 @@ const Contact = () => {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   const [cardsDone, setCardsDone] = useState([false, false, false, false]);
+  const lang = useContext(LangContext);
+  const t = i18n[lang].contact;
   const markDone = i => setCardsDone(prev => { const n = [...prev]; n[i] = true; return n; });
   const canType = i => i === 0 ? visible : cardsDone[i - 1];
 
@@ -170,8 +160,8 @@ const Contact = () => {
     return () => obs.disconnect();
   }, []);
 
-  const line1 = useTypewriter("Let's work together.", 52, visible, 200);
-  const sub = useTypewriter("Actively seeking Junior Backend Developer roles.", 26, line1.done, 80);
+  const line1 = useTypewriter(t.headline, 52, visible, 200);
+  const sub = useTypewriter(t.sub, 26, line1.done, 80);
 
   return (
     <section id="contact" ref={ref} style={{ background: "var(--navy)", borderTop: "1px solid rgba(59,130,246,0.07)", paddingBottom: 80 }}>
@@ -183,7 +173,6 @@ const Contact = () => {
       </p>
 
       <div style={{ maxWidth: 780, margin: "0 auto" }}>
-        {/* Headline */}
         <div style={{ marginBottom: 28, textAlign: "center" }}>
           <h2 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, lineHeight: 1.0, letterSpacing: "-3px", margin: "0 0 16px", fontSize: "clamp(38px,5vw,68px)" }}>
             <span style={{ color: "var(--white)", display: "block", minHeight: "1.1em" }}>
@@ -195,35 +184,30 @@ const Contact = () => {
           </p>
         </div>
 
-        {/* Terminal Status Badge */}
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 36 }}>
           <TerminalStatus visible={visible} />
         </div>
 
-        {/* 2x2 Magnetic contact grid */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 24 }} className="contact-grid">
           {contactItems.map((item, i) => (
             <MagneticCard key={item.label} item={item} index={i} visible={visible} prevDone={canType(i)} onDone={() => markDone(i)} />
           ))}
         </div>
 
-        {/* Work type chips */}
         <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 28, opacity: visible ? 1 : 0, transition: "opacity 0.5s ease 0.6s" }}>
-          {["Full-time", "Hybrid", "Magang", "Kontrak", "Remote"].map(t => (
-            <span key={t} style={{ fontSize: 11.5, color: "var(--cyan)", background: "rgba(6,182,212,0.07)", border: "1px solid rgba(6,182,212,0.22)", padding: "5px 16px", borderRadius: 100, fontWeight: 600, fontFamily: "'JetBrains Mono',monospace" }}>{t}</span>
+          {["Full-time", "Hybrid", "Magang", "Kontrak", "Remote"].map(tag => (
+            <span key={tag} style={{ fontSize: 11.5, color: "var(--cyan)", background: "rgba(6,182,212,0.07)", border: "1px solid rgba(6,182,212,0.22)", padding: "5px 16px", borderRadius: 100, fontWeight: 600, fontFamily: "'JetBrains Mono',monospace" }}>{tag}</span>
           ))}
         </div>
 
-        {/* CTA */}
         <div style={{ display: "flex", flexDirection: "column", gap: 10, opacity: cardsDone[1] ? 1 : 0, transform: cardsDone[1] ? "translateY(0)" : "translateY(16px)", transition: "opacity 0.6s ease, transform 0.6s cubic-bezier(.22,1,.36,1)" }}>
-          <a href={`mailto:${data.email}`} className="btn-primary" style={{ justifyContent: "center", textAlign: "center", width: "100%", padding: "14px 24px", fontSize: 15 }}>Send Email ✉</a>
-          <a href={data.linkedin} target="_blank" rel="noreferrer" className="btn-outline" style={{ justifyContent: "center", textAlign: "center", width: "100%", padding: "14px 24px", fontSize: 15 }}>Connect on LinkedIn</a>
+          <a href={`mailto:${data.email}`} className="btn-primary" style={{ justifyContent: "center", textAlign: "center", width: "100%", padding: "14px 24px", fontSize: 15 }}>{t.send}</a>
+          <a href={data.linkedin} target="_blank" rel="noreferrer" className="btn-outline" style={{ justifyContent: "center", textAlign: "center", width: "100%", padding: "14px 24px", fontSize: 15 }}>{t.connect}</a>
         </div>
       </div>
 
-      {/* Footer */}
       <div style={{ marginTop: 64, paddingTop: 24, borderTop: "1px solid rgba(59,130,246,0.07)", fontSize: 11.5, color: "var(--muted)", textAlign: "center", fontFamily: "'JetBrains Mono',monospace", opacity: visible ? 1 : 0, transition: "opacity 0.6s ease 1.2s" }}>
-        built with <span style={{ color: "var(--blue-3)", fontWeight: 700 }}>React</span> by Berlin Sugiyanto Hutajulu · 2026
+        {t.built} <span style={{ color: "var(--blue-3)", fontWeight: 700 }}>React</span> by Berlin Sugiyanto Hutajulu · 2026
       </div>
 
       <style>{`

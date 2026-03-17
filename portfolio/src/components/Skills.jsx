@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { data } from "../data/portfolioData";
+import { LangContext, i18n } from "./Navbar";
 
 const categoryColors = {
   "Languages":              { color: "#3B82F6", bg: "rgba(59,130,246,0.08)",  border: "rgba(59,130,246,0.25)"  },
@@ -103,6 +104,8 @@ const AccordionItem = ({ category, visible, defaultOpen = false, delay = 0 }) =>
 const Skills = () => {
   const ref = useRef(null);
   const [started, setStarted] = useState(false);
+  const lang = useContext(LangContext);
+  const t = i18n[lang].skills;
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setStarted(true); obs.disconnect(); } }, { threshold: 0.06 });
     if (ref.current) obs.observe(ref.current);
@@ -111,13 +114,12 @@ const Skills = () => {
 
   return (
     <section id="skills" ref={ref} style={{ background: "var(--navy)", borderTop: "1px solid rgba(59,130,246,0.07)" }}>
-      {/* JSX tag label */}
       <p className="s-label" style={{ opacity: started ? 1 : 0, transition: "opacity .5s", fontFamily: "'JetBrains Mono',monospace" }}>
         <span style={{ color: "rgba(6,182,212,0.5)" }}>&lt;</span>
-        skills
+        {t.label}
         <span style={{ color: "rgba(6,182,212,0.5)" }}> /&gt;</span>
       </p>
-      <h2 className="s-title" style={{ opacity: started ? 1 : 0, transform: started ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>What I work with</h2>
+      <h2 className="s-title" style={{ opacity: started ? 1 : 0, transform: started ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>{t.title}</h2>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {data.skills.map((cat, i) => (
@@ -132,7 +134,7 @@ const Skills = () => {
       </div>
 
       <p style={{ textAlign: "center", fontSize: 11, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", marginTop: 20, opacity: started ? 0.6 : 0, transition: "opacity 0.6s ease 0.8s", letterSpacing: "0.5px" }}>
-        click any category to expand · hover skills to inspect
+        {t.hint}
       </p>
 
       <style>{`

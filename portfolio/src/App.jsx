@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-import Navbar from "./components/Navbar";
+import Navbar, { LangContext, i18n } from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Skills from "./components/Skills";
@@ -27,52 +27,72 @@ const GradientMesh = () => (
   </div>
 );
 
-/* ── Glitch Text Reveal Loader ── */
+/* ── Glitch Text Reveal Loader — Split Line ── */
 const Loader = ({ onDone }) => {
   const [fadeOut, setFadeOut] = useState(false);
-  const [glitchActive, setGlitchActive] = useState(true);
   const [progress, setProgress] = useState(0);
   const [showSub, setShowSub] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
-  const fullName = "Berlin Sugiyanto";
-  const [displayed, setDisplayed] = useState("");
+
+  // Line 1: "Berlin" — glitches first
+  const [line1, setLine1] = useState("");
+  const [line1Done, setLine1Done] = useState(false);
+  const [line1Glitch, setLine1Glitch] = useState(true);
+
+  // Line 2: "Sugiyanto" — glitches after line1 done
+  const [line2, setLine2] = useState("");
+  const [line2Done, setLine2Done] = useState(false);
+  const [line2Glitch, setLine2Glitch] = useState(false);
+
   const glitchChars = "!@#$%^&*<>[]{}|\\?~`ABCDEFabcdef0123456789";
 
-  useEffect(() => {
-    let glitchCount = 0;
-    const maxGlitch = 22;
-
-    const glitchInterval = setInterval(() => {
-      glitchCount++;
-      const revealed = Math.floor((glitchCount / maxGlitch) * fullName.length);
-      let text = fullName.slice(0, revealed);
-      const remaining = fullName.length - revealed;
-      for (let i = 0; i < Math.min(remaining, 5); i++) {
+  const glitchReveal = (word, setter, setDone, setGlitch, onComplete) => {
+    let count = 0;
+    const max = 18;
+    const iv = setInterval(() => {
+      count++;
+      const revealed = Math.floor((count / max) * word.length);
+      let text = word.slice(0, revealed);
+      const rem = word.length - revealed;
+      for (let i = 0; i < Math.min(rem, 4); i++) {
         text += glitchChars[Math.floor(Math.random() * glitchChars.length)];
       }
-      setDisplayed(text);
-
-      if (glitchCount >= maxGlitch) {
-        clearInterval(glitchInterval);
-        setDisplayed(fullName);
-        setGlitchActive(false);
-        setTimeout(() => setShowSub(true), 100);
-        setTimeout(() => setShowProgress(true), 300);
-
-        let p = 0;
-        const progressInterval = setInterval(() => {
-          p += Math.random() * 15 + 8;
-          if (p >= 100) {
-            p = 100;
-            clearInterval(progressInterval);
-            setTimeout(() => { setFadeOut(true); setTimeout(onDone, 650); }, 400);
-          }
-          setProgress(Math.min(p, 100));
-        }, 100);
+      setter(text);
+      if (count >= max) {
+        clearInterval(iv);
+        setter(word);
+        setDone(true);
+        setGlitch(false);
+        onComplete();
       }
     }, 55);
+  };
 
-    return () => clearInterval(glitchInterval);
+  useEffect(() => {
+    // Line 1 starts after 200ms
+    setTimeout(() => {
+      glitchReveal("Berlin", setLine1, setLine1Done, setLine1Glitch, () => {
+        // Line 2 starts 150ms after line 1 done
+        setLine2Glitch(true);
+        setTimeout(() => {
+          glitchReveal("Sugiyanto", setLine2, setLine2Done, setLine2Glitch, () => {
+            setTimeout(() => setShowSub(true), 100);
+            setTimeout(() => setShowProgress(true), 280);
+            // Progress bar
+            let p = 0;
+            const pi = setInterval(() => {
+              p += Math.random() * 15 + 8;
+              if (p >= 100) {
+                p = 100;
+                clearInterval(pi);
+                setTimeout(() => { setFadeOut(true); setTimeout(onDone, 650); }, 400);
+              }
+              setProgress(Math.min(p, 100));
+            }, 100);
+          });
+        }, 150);
+      });
+    }, 200);
   }, []);
 
   return (
@@ -88,50 +108,61 @@ const Loader = ({ onDone }) => {
       <div style={{ position: "absolute", top: "15%", left: "10%", width: "45vw", height: "45vw", background: "radial-gradient(circle,rgba(29,78,216,0.15),transparent 65%)", filter: "blur(70px)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "15%", right: "10%", width: "40vw", height: "40vw", background: "radial-gradient(circle,rgba(6,182,212,0.1),transparent 65%)", filter: "blur(70px)", pointerEvents: "none" }} />
 
-      <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
-        {/* Glitch name */}
-        <div style={{ position: "relative", lineHeight: 1 }}>
-          <h1 style={{
-            fontFamily: "'Clash Display','Syne',sans-serif",
-            fontSize: "clamp(40px,8vw,90px)",
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "-2px",
-            margin: 0,
-            lineHeight: 1,
-            animation: glitchActive ? "glitchMain 0.12s infinite" : "none",
-            textShadow: glitchActive
-              ? "3px 0 #06B6D4, -3px 0 #3B82F6, 0 0 30px rgba(6,182,212,0.6)"
-              : "0 0 50px rgba(6,182,212,0.25), 0 0 100px rgba(29,78,216,0.1)",
-            transition: "text-shadow 0.5s ease",
-          }}>
-            {displayed}
-            <span style={{
-              color: "#06B6D4",
-              animation: "cursorBlink 0.8s step-end infinite",
-              opacity: glitchActive ? 1 : (showSub ? 0 : 1),
-              transition: "opacity 0.3s",
-            }}>_</span>
-          </h1>
-          {/* Glitch chromatic aberration layers */}
-          {glitchActive && (
-            <>
-              <h1 aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, fontFamily: "'Clash Display','Syne',sans-serif", fontSize: "clamp(40px,8vw,90px)", fontWeight: 700, color: "#06B6D4", letterSpacing: "-2px", margin: 0, lineHeight: 1, opacity: 0.45, animation: "glitchLayerR 0.1s infinite", clipPath: "inset(15% 0 55% 0)", pointerEvents: "none", userSelect: "none" }}>{displayed}</h1>
-              <h1 aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, fontFamily: "'Clash Display','Syne',sans-serif", fontSize: "clamp(40px,8vw,90px)", fontWeight: 700, color: "#3B82F6", letterSpacing: "-2px", margin: 0, lineHeight: 1, opacity: 0.4, animation: "glitchLayerB 0.13s infinite", clipPath: "inset(55% 0 15% 0)", pointerEvents: "none", userSelect: "none" }}>{displayed}</h1>
-            </>
-          )}
+      <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
+        {/* Split name */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", lineHeight: 0.92, gap: 0 }}>
+          {/* Line 1: Berlin — white */}
+          <div style={{ position: "relative" }}>
+            <h1 style={{
+              fontFamily: "'Clash Display','Syne',sans-serif",
+              fontSize: "clamp(52px,10vw,110px)",
+              fontWeight: 700, color: "#FFFFFF",
+              letterSpacing: "-3px", margin: 0, lineHeight: 1,
+              animation: line1Glitch ? "glitchMain 0.12s infinite" : "none",
+              textShadow: line1Glitch
+                ? "3px 0 #06B6D4,-3px 0 #3B82F6,0 0 30px rgba(6,182,212,0.6)"
+                : line1Done ? "0 0 60px rgba(255,255,255,0.15)" : "none",
+              transition: "text-shadow 0.5s ease",
+            }}>
+              {line1}{!line1Done && <span style={{ animation: "cursorBlink 0.7s step-end infinite", color: "#06B6D4" }}>_</span>}
+            </h1>
+            {line1Glitch && <>
+              <h1 aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, fontFamily: "'Clash Display','Syne',sans-serif", fontSize: "clamp(52px,10vw,110px)", fontWeight: 700, color: "#06B6D4", letterSpacing: "-3px", margin: 0, lineHeight: 1, opacity: 0.4, animation: "glitchLayerR 0.1s infinite", clipPath: "inset(20% 0 50% 0)", pointerEvents: "none", userSelect: "none" }}>{line1}</h1>
+              <h1 aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, fontFamily: "'Clash Display','Syne',sans-serif", fontSize: "clamp(52px,10vw,110px)", fontWeight: 700, color: "#3B82F6", letterSpacing: "-3px", margin: 0, lineHeight: 1, opacity: 0.35, animation: "glitchLayerB 0.13s infinite", clipPath: "inset(55% 0 10% 0)", pointerEvents: "none", userSelect: "none" }}>{line1}</h1>
+            </>}
+          </div>
+
+          {/* Line 2: Sugiyanto — gradient biru-cyan */}
+          <div style={{ position: "relative" }}>
+            <h1 style={{
+              fontFamily: "'Clash Display','Syne',sans-serif",
+              fontSize: "clamp(52px,10vw,110px)",
+              fontWeight: 700,
+              background: "linear-gradient(135deg,#3B82F6,#06B6D4 55%,#38BDF8)",
+              WebkitBackgroundClip: "text", backgroundClip: "text",
+              color: line2.length > 0 ? "transparent" : "#3B82F6",
+              letterSpacing: "-3px", margin: 0, lineHeight: 1,
+              backgroundSize: "200%",
+              animation: line2Glitch ? "glitchMain 0.12s infinite, gradShiftLoader 3s ease infinite" : line2Done ? "gradShiftLoader 3s ease infinite" : "none",
+              textShadow: line2Glitch ? "3px 0 #06B6D4,-3px 0 #3B82F6" : "none",
+              minHeight: "1em", minWidth: "4ch",
+            }}>
+              {line2}{line2.length > 0 && !line2Done && <span style={{ animation: "cursorBlink 0.7s step-end infinite", color: "#06B6D4", WebkitTextFillColor: "#06B6D4" }}>_</span>}
+            </h1>
+            {line2Glitch && line2.length > 0 && <>
+              <h1 aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, fontFamily: "'Clash Display','Syne',sans-serif", fontSize: "clamp(52px,10vw,110px)", fontWeight: 700, color: "#06B6D4", letterSpacing: "-3px", margin: 0, lineHeight: 1, opacity: 0.4, animation: "glitchLayerR 0.1s infinite", clipPath: "inset(20% 0 50% 0)", pointerEvents: "none", userSelect: "none" }}>{line2}</h1>
+              <h1 aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, fontFamily: "'Clash Display','Syne',sans-serif", fontSize: "clamp(52px,10vw,110px)", fontWeight: 700, color: "#3B82F6", letterSpacing: "-3px", margin: 0, lineHeight: 1, opacity: 0.35, animation: "glitchLayerB 0.13s infinite", clipPath: "inset(55% 0 10% 0)", pointerEvents: "none", userSelect: "none" }}>{line2}</h1>
+            </>}
+          </div>
         </div>
 
         {/* Subtitle */}
         <div style={{
           fontSize: 11, letterSpacing: "6px", textTransform: "uppercase",
           fontFamily: "'JetBrains Mono',monospace", color: "#06B6D4",
-          opacity: showSub ? 1 : 0,
-          transform: showSub ? "translateY(0)" : "translateY(10px)",
+          opacity: showSub ? 1 : 0, transform: showSub ? "translateY(0)" : "translateY(10px)",
           transition: "opacity 0.5s ease, transform 0.5s ease",
-        }}>
-          Backend Developer
-        </div>
+        }}>Backend Developer</div>
 
         {/* Progress */}
         <div style={{ width: 260, opacity: showProgress ? 1 : 0, transition: "opacity 0.4s ease" }}>
@@ -139,9 +170,7 @@ const Loader = ({ onDone }) => {
             <div style={{ height: "100%", borderRadius: 4, background: "linear-gradient(to right,#1D4ED8,#06B6D4)", width: progress + "%", transition: "width 0.12s ease", boxShadow: "0 0 14px rgba(6,182,212,0.7)" }} />
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <span style={{ fontSize: 9.5, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace" }}>
-              {progress < 100 ? "> initializing_portfolio..." : "> ready."}
-            </span>
+            <span style={{ fontSize: 9.5, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace" }}>{progress < 100 ? "> initializing_portfolio..." : "> ready."}</span>
             <span style={{ fontSize: 9.5, color: "var(--muted-2)", fontFamily: "'JetBrains Mono',monospace" }}>{Math.floor(progress)}%</span>
           </div>
         </div>
@@ -149,9 +178,10 @@ const Loader = ({ onDone }) => {
 
       <style>{`
         @keyframes glitchMain{0%{transform:translate(0)}20%{transform:translate(-2px,1px)}40%{transform:translate(2px,-1px)}60%{transform:translate(-1px,2px)}80%{transform:translate(1px,-1px)}100%{transform:translate(0)}}
-        @keyframes glitchLayerR{0%{transform:translate(-4px,0);clip-path:inset(15% 0 55% 0)}50%{transform:translate(4px,0);clip-path:inset(35% 0 35% 0)}100%{transform:translate(-4px,0);clip-path:inset(15% 0 55% 0)}}
-        @keyframes glitchLayerB{0%{transform:translate(4px,0);clip-path:inset(55% 0 15% 0)}50%{transform:translate(-4px,0);clip-path:inset(65% 0 5% 0)}100%{transform:translate(4px,0);clip-path:inset(55% 0 15% 0)}}
+        @keyframes glitchLayerR{0%{transform:translate(-4px,0);clip-path:inset(20% 0 50% 0)}50%{transform:translate(4px,0);clip-path:inset(35% 0 35% 0)}100%{transform:translate(-4px,0);clip-path:inset(20% 0 50% 0)}}
+        @keyframes glitchLayerB{0%{transform:translate(4px,0);clip-path:inset(55% 0 10% 0)}50%{transform:translate(-4px,0);clip-path:inset(65% 0 5% 0)}100%{transform:translate(4px,0);clip-path:inset(55% 0 10% 0)}}
         @keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+        @keyframes gradShiftLoader{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
       `}</style>
     </div>
   );
@@ -202,6 +232,8 @@ const BackToTop = () => {
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [lang, setLang] = useState("en");
+
   useEffect(() => {
     if (loading) return;
     const bar = document.getElementById("progress-bar");
@@ -211,12 +243,12 @@ function App() {
   }, [loading]);
 
   return (
-    <>
+    <LangContext.Provider value={lang}>
       {loading && <Loader onDone={() => setLoading(false)} />}
       <GradientMesh />
       <div style={{ background: "transparent", minHeight: "100vh", opacity: loading ? 0 : 1, transition: "opacity 0.5s ease 0.1s", position: "relative", zIndex: 1 }}>
         <div id="progress-bar" style={{ position: "fixed", top: 0, left: 0, height: 3, background: "linear-gradient(to right,#1D4ED8,#06B6D4)", zIndex: 201, width: "0%", transition: "width 0.08s linear", pointerEvents: "none" }} />
-        <Navbar />
+        <Navbar lang={lang} setLang={setLang} />
         <Hero />
         <About />
         <Skills />
@@ -227,7 +259,7 @@ function App() {
         <SectionDots />
         <BackToTop />
       </div>
-    </>
+    </LangContext.Provider>
   );
 }
 

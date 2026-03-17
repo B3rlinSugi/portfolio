@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { LangContext, i18n } from "./Navbar";
 import { data } from "../data/portfolioData";
 
 const OrgSection = ({ org, index, visible }) => {
@@ -81,6 +82,8 @@ const OrgSection = ({ org, index, visible }) => {
 const Organizations = () => {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
+  const lang = useContext(LangContext);
+  const t = i18n[lang].organizations;
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.04 });
     if (ref.current) obs.observe(ref.current);
@@ -92,10 +95,10 @@ const Organizations = () => {
       {/* JSX tag label */}
       <p className="s-label" style={{ opacity: visible ? 1 : 0, transition: "opacity .5s", fontFamily: "'JetBrains Mono',monospace" }}>
         <span style={{ color: "rgba(6,182,212,0.5)" }}>&lt;</span>
-        organizations
+        {t.label}
         <span style={{ color: "rgba(6,182,212,0.5)" }}> /&gt;</span>
       </p>
-      <h2 className="s-title" style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>Organisational Journey</h2>
+      <h2 className="s-title" style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>{t.title}</h2>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         {data.organizations.map((org, i) => (
           <OrgSection key={org.role} org={org} index={i} visible={visible} />

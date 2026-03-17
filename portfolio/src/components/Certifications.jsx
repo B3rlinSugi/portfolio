@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { LangContext, i18n } from "./Navbar";
 import { data } from "../data/portfolioData";
 
 const accentColors = ["#3B82F6", "#06B6D4", "#8B5CF6", "#10B981", "#F59E0B", "#EF4444"];
@@ -65,6 +66,8 @@ const Certifications = () => {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   const [lineHeight, setLineHeight] = useState(0);
+  const lang = useContext(LangContext);
+  const t = i18n[lang].certifications;
 
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => {
@@ -100,10 +103,10 @@ const Certifications = () => {
       {/* JSX tag label */}
       <p className="s-label" style={{ opacity: visible ? 1 : 0, transition: "opacity .5s", fontFamily: "'JetBrains Mono',monospace" }}>
         <span style={{ color: "rgba(6,182,212,0.5)" }}>&lt;</span>
-        certifications
+        {t.label}
         <span style={{ color: "rgba(6,182,212,0.5)" }}> /&gt;</span>
       </p>
-      <h2 className="s-title" style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>Training & Certifications</h2>
+      <h2 className="s-title" style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>{t.title}</h2>
 
       {/* Timeline */}
       <div style={{ position: "relative", maxWidth: 800, margin: "0 auto" }}>
@@ -169,7 +172,7 @@ const Certifications = () => {
 
       {/* Total count */}
       <div style={{ marginTop: 20, textAlign: "center", fontSize: 11, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", opacity: visible ? 0.6 : 0, transition: "opacity 0.5s ease 0.5s" }}>
-        {data.certifications.length} certifications total
+        {data.certifications.length} {t.total}
       </div>
 
       <style>{`

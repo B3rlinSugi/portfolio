@@ -1,5 +1,6 @@
 import { data } from "../data/portfolioData";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { LangContext, i18n } from "./Navbar";
 
 /* ── Aurora Background ── */
 const AuroraBackground = () => (
@@ -22,71 +23,64 @@ const AuroraBackground = () => (
   </div>
 );
 
-/* ── Floating Photo with Glow Ring ── */
-const FloatingPhoto = ({ visible }) => {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const ref = useRef(null);
-
-  const handleMouseMove = e => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    setTilt({ x: ((e.clientY - cy) / (rect.height / 2)) * 6, y: -((e.clientX - cx) / (rect.width / 2)) * 6 });
-  };
-  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
-
+/* ── Hologram Photo Frame ── */
+const HologramPhoto = ({ visible }) => {
   return (
-    <div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
-      style={{
-        position: "relative", width: 300, height: 300, flexShrink: 0,
-        opacity: visible ? 1 : 0,
-        animation: visible ? "photoFloat 5s ease-in-out infinite" : "none",
-        transition: "opacity 0.8s ease 0.5s",
-      }}
-    >
-      {/* Outer rotating ring 1 */}
-      <div style={{ position: "absolute", inset: -20, borderRadius: "50%", border: "1.5px solid transparent", background: "linear-gradient(rgba(6,14,30,0),rgba(6,14,30,0)) padding-box, linear-gradient(135deg,#3B82F6,transparent 50%,#06B6D4) border-box", animation: "ringRotate1 7s linear infinite", pointerEvents: "none" }} />
-      {/* Outer rotating ring 2 */}
-      <div style={{ position: "absolute", inset: -30, borderRadius: "50%", border: "1px solid transparent", background: "linear-gradient(rgba(6,14,30,0),rgba(6,14,30,0)) padding-box, linear-gradient(225deg,#8B5CF6,transparent 55%,#06B6D4) border-box", animation: "ringRotate2 11s linear infinite", pointerEvents: "none" }} />
-      {/* Glow pulse */}
-      <div style={{ position: "absolute", inset: -12, borderRadius: "50%", background: "radial-gradient(circle,rgba(59,130,246,0.22),rgba(6,182,212,0.1) 55%,transparent 75%)", animation: "glowPulse 3.5s ease-in-out infinite", filter: "blur(8px)", pointerEvents: "none" }} />
+    <div style={{
+      position: "relative", width: 320, height: 320, flexShrink: 0,
+      opacity: visible ? 1 : 0, transition: "opacity 0.8s ease 0.5s",
+    }}>
+      {/* Outer hologram rings */}
+      <div style={{ position: "absolute", inset: -24, borderRadius: "50%", border: "1px solid rgba(6,182,212,0.3)", animation: "holoRing1 3s linear infinite", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: -40, borderRadius: "50%", border: "1px dashed rgba(59,130,246,0.2)", animation: "holoRing2 5s linear infinite reverse", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: -56, borderRadius: "50%", border: "1px solid rgba(139,92,246,0.15)", animation: "holoRing1 8s linear infinite", pointerEvents: "none" }} />
 
-      {/* Photo container */}
+      {/* Rotating beam */}
+      <div style={{ position: "absolute", inset: -24, borderRadius: "50%", background: "conic-gradient(from 0deg, transparent 0deg, rgba(6,182,212,0.4) 20deg, transparent 40deg)", animation: "holoBeam 2.5s linear infinite", pointerEvents: "none", filter: "blur(2px)" }} />
+
+      {/* Photo circle */}
       <div style={{
-        width: 300, height: 300, borderRadius: "50%", overflow: "hidden",
-        border: "3px solid rgba(59,130,246,0.4)",
-        boxShadow: "0 0 0 1px rgba(6,182,212,0.15), 0 30px 70px rgba(0,0,0,0.6)",
+        width: 320, height: 320, borderRadius: "50%", overflow: "hidden",
+        border: "2px solid rgba(6,182,212,0.5)",
+        boxShadow: "0 0 30px rgba(6,182,212,0.3), 0 0 60px rgba(29,78,216,0.2), inset 0 0 30px rgba(6,182,212,0.05)",
         position: "relative", zIndex: 2,
-        transform: `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-        transition: "transform 0.3s ease",
       }}>
         <img src="/foto2.jpg" alt="Berlin Sugiyanto"
           style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
           onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
         />
-        <div style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", background: "var(--navy-3)", flexDirection: "column" }}>
+        <div style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", background: "var(--navy-3)" }}>
           <span style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 800, fontSize: 52, color: "var(--blue-3)" }}>BS</span>
         </div>
-        {/* Shine overlay */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%, rgba(6,182,212,0.04) 100%)", borderRadius: "50%", pointerEvents: "none" }} />
+
+        {/* Scanlines overlay */}
+        <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(6,182,212,0.025) 3px, rgba(6,182,212,0.025) 4px)", borderRadius: "50%", pointerEvents: "none", zIndex: 3 }} />
+
+        {/* Hologram color shift overlay */}
+        <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "linear-gradient(135deg, rgba(6,182,212,0.08) 0%, transparent 50%, rgba(59,130,246,0.06) 100%)", animation: "holoShift 4s ease-in-out infinite", pointerEvents: "none", zIndex: 4 }} />
+
+        {/* Flicker */}
+        <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "rgba(6,182,212,0.04)", animation: "holoFlicker 6s ease-in-out infinite", pointerEvents: "none", zIndex: 5 }} />
       </div>
 
-      {/* Floating dots on ring */}
-      {[0, 120, 240].map((deg, i) => {
+      {/* Corner accents */}
+      {[0, 90, 180, 270].map((deg, i) => {
         const rad = (deg * Math.PI) / 180;
-        const r = 160;
-        const x = 150 + r * Math.cos(rad);
-        const y = 150 + r * Math.sin(rad);
-        const colors = ["#3B82F6", "#06B6D4", "#8B5CF6"];
-        return <div key={i} style={{ position: "absolute", width: 9, height: 9, borderRadius: "50%", background: colors[i], boxShadow: `0 0 12px ${colors[i]}`, left: x - 4.5, top: y - 4.5, zIndex: 5, animation: `dotFloat${i} ${2.5 + i * 0.6}s ease-in-out infinite` }} />;
+        const r = 172;
+        const x = 160 + r * Math.cos(rad);
+        const y = 160 + r * Math.sin(rad);
+        const colors = ["#06B6D4", "#3B82F6", "#8B5CF6", "#06B6D4"];
+        return (
+          <div key={i} style={{ position: "absolute", width: 10, height: 10, borderRadius: "50%", background: colors[i], boxShadow: `0 0 14px ${colors[i]}, 0 0 28px ${colors[i]}50`, left: x - 5, top: y - 5, zIndex: 6, animation: `dotFloat${i % 3} ${2 + i * 0.4}s ease-in-out infinite` }} />
+        );
       })}
 
       <style>{`
-        @keyframes photoFloat{0%,100%{transform:translateY(0px)}50%{transform:translateY(-14px)}}
-        @keyframes ringRotate1{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-        @keyframes ringRotate2{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-        @keyframes glowPulse{0%,100%{opacity:0.55;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+        @keyframes holoRing1{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes holoRing2{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+        @keyframes holoBeam{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes holoShift{0%,100%{opacity:0.6;background:linear-gradient(135deg,rgba(6,182,212,0.08) 0%,transparent 50%,rgba(59,130,246,0.06) 100%)}50%{opacity:1;background:linear-gradient(135deg,rgba(59,130,246,0.1) 0%,transparent 50%,rgba(6,182,212,0.08) 100%)}}
+        @keyframes holoFlicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:0.6}94%{opacity:1}96%{opacity:0.7}97%{opacity:1}}
         @keyframes dotFloat0{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
         @keyframes dotFloat1{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
         @keyframes dotFloat2{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
@@ -164,6 +158,8 @@ const ScanTitle = ({ text, visible }) => (
 
 const Hero = () => {
   const [visible, setVisible] = useState(false);
+  const lang = useContext(LangContext);
+  const t = i18n[lang].hero;
   const go = id => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   useEffect(() => { setTimeout(() => setVisible(true), 100); }, []);
@@ -180,9 +176,9 @@ const Hero = () => {
           {/* Status badge */}
           <div style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(6,182,212,0.06)", border: "1px solid rgba(6,182,212,0.2)", padding: "7px 18px", borderRadius: 100, marginBottom: 32, animation: "fadeUp 0.5s cubic-bezier(.22,1,.36,1) 0.1s both" }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#06B6D4", boxShadow: "0 0 8px rgba(6,182,212,0.8)", animation: "pulse-dot 2s infinite", flexShrink: 0 }} />
-            <span style={{ fontSize: 11, fontWeight: 600, color: "var(--cyan)", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "1px" }}>Open to Work</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: "var(--cyan)", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "1px" }}>{t.badge}</span>
             <span style={{ width: 1, height: 12, background: "rgba(6,182,212,0.3)" }} />
-            <span style={{ fontSize: 11, color: "#6B84A8", fontFamily: "'Outfit',sans-serif" }}>Junior Backend Developer</span>
+            <span style={{ fontSize: 11, color: "#6B84A8", fontFamily: "'Outfit',sans-serif" }}>{t.role}</span>
           </div>
 
           {/* Name with Clash Display */}
@@ -200,33 +196,33 @@ const Hero = () => {
           <ScanTitle text="Backend Developer" visible={visible} />
 
           <p style={{ fontSize: 15, color: "#8BA4C8", maxWidth: 420, lineHeight: 1.9, marginBottom: 36, fontFamily: "'Outfit',sans-serif", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.35s both" }}>
-            {data.tagline}
+            {t.tagline}
           </p>
 
           {/* CTA */}
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 48, animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.42s both" }} className="hero-btns">
             <a href={data.github} target="_blank" rel="noreferrer" className="btn-primary">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
-              GitHub
+              {t.github}
             </a>
-            <button onClick={() => go("contact")} className="btn-outline">Get in Touch</button>
+            <button onClick={() => go("contact")} className="btn-outline">{t.touch}</button>
             <a href="/cv.pdf" download style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 20px", borderRadius: 8, background: "rgba(6,182,212,0.07)", color: "var(--cyan)", fontSize: 13.5, fontWeight: 600, textDecoration: "none", border: "1px solid rgba(6,182,212,0.25)", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
               onMouseEnter={e => { e.currentTarget.style.background = "rgba(6,182,212,0.14)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "rgba(6,182,212,0.07)"; e.currentTarget.style.transform = "none"; }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-              Download CV
+              {t.cv}
             </a>
           </div>
 
           {/* Neon Metrics */}
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.5s both" }}>
-            {[["3.63", "GPA / 4.00"], ["3+", "Projects"], ["3yr", "Org Exp"]].map(([n, l], i) => <NeonMetric key={l} n={n} l={l} i={i} />)}
+            {[["3.63", t.gpa], ["3+", t.projects], ["3yr", t.org]].map(([n, l], i) => <NeonMetric key={l} n={n} l={l} i={i} />)}
           </div>
         </div>
 
-        {/* RIGHT: floating photo */}
+        {/* RIGHT: hologram photo */}
         <div className="hero-photo" style={{ flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <FloatingPhoto visible={visible} />
+          <HologramPhoto visible={visible} />
         </div>
       </div>
 
