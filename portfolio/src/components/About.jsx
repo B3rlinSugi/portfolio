@@ -173,7 +173,7 @@ const About = () => {
 
   const stats = [
     { n: "3.63", l: "GPA / 4.00", icon: "🎓", color: "#3B82F6" },
-    { n: "3",    l: "Projects",    icon: "⚙️",  color: "#06B6D4" },
+    { n: "4",    l: "Projects",    icon: "⚙️",  color: "#06B6D4" },
     { n: "3",    l: "Org Periods", icon: "🏛️", color: "#8B5CF6" },
     { n: "5",    l: "Tech Stacks", icon: "🛠️", color: "#10B981" },
   ];

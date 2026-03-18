@@ -52,6 +52,7 @@ export const data = {
       items: [
         { name: "REST API", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-plain.svg" },
         { name: "Postman",  icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-plain.svg" },
+        { name: "JWT",      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jsonwebtokens/jsonwebtokens-original.svg" },
         { name: "bcrypt",   icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain.svg" },
       ],
     },
@@ -109,7 +110,24 @@ export const data = {
       ],
     },
     {
-      title: "Sistem Data Akademik",
+      title: "Student Management API",
+      type: "Personal Project",
+      period: "Mar 2026",
+      github: "https://github.com/B3rlinSugi/student-management-api",
+      demo: null,
+      desc: "A production-ready RESTful API built with Laravel 11 — featuring JWT Authentication, Role-Based Access Control, full CRUD with Soft Delete, Search, Filter & Pagination.",
+      points: [
+        "Engineered JWT authentication flow (login, register, refresh, logout) with Role-Based Access Control — Admin gets full access while User is read-only, with zero unauthorized access incidents.",
+        "Built full CRUD for Students & Majors with Soft Delete (trash/restore/force delete), Laravel Form Request validation, and clean JSON responses via API Resources.",
+        "Implemented advanced query features: multi-column search (name, NIM, email), filter by status/major/gender, configurable pagination (max 50/page), and dynamic sorting by any column.",
+      ],
+      tech: [
+        { name: "Laravel 11", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg" },
+        { name: "PHP 8.2",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-plain.svg" },
+        { name: "MySQL 8",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-plain.svg" },
+        { name: "JWT",        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jsonwebtokens/jsonwebtokens-original.svg" },
+      ],
+    },
       type: "Academic Project",
       period: "Mar 2024 – Jul 2024",
       github: "https://github.com/B3rlinSugi/crud-akademik",

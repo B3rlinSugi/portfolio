@@ -267,7 +267,7 @@ const Hero = () => {
 
           {/* Neon Metrics */}
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.5s both" }}>
-            {[["3.63", t.gpa], ["3+", t.projects], ["3yr", t.org]].map(([n, l], i) => <NeonMetric key={n} n={n} l={l} i={i} />)}
+            {[["3.63", t.gpa], ["4+", t.projects], ["3yr", t.org]].map(([n, l], i) => <NeonMetric key={n} n={n} l={l} i={i} />)}
           </div>
         </div>
 
