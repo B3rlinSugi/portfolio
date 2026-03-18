@@ -36,7 +36,7 @@ const HologramPhoto = ({ visible }) => {
       <div style={{ position:"absolute", inset:-24, borderRadius:"50%", background:"conic-gradient(from 0deg,transparent 0deg,rgba(6,182,212,0.4) 20deg,transparent 40deg)", animation:"holoBeam 2.5s linear infinite", pointerEvents:"none", filter:"blur(2px)" }} />
       {/* Photo */}
       <div style={{ width:320, height:320, borderRadius:"50%", overflow:"hidden", border:"2px solid rgba(6,182,212,0.5)", boxShadow:"0 0 30px rgba(6,182,212,0.3),0 0 60px rgba(29,78,216,0.2),inset 0 0 30px rgba(6,182,212,0.05)", position:"relative", zIndex:2 }}>
-        <img src="/foto2.jpg" alt="Berlin Sugiyanto" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", display:"block" }}
+        <img src="/foto.jpg" alt="Berlin Sugiyanto" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", display:"block" }}
           onError={e=>{e.target.style.display="none";e.target.nextSibling.style.display="flex";}} />
         <div style={{ display:"none", width:"100%", height:"100%", alignItems:"center", justifyContent:"center", background:"var(--navy-3)" }}>
           <span style={{ fontFamily:"'Outfit',sans-serif", fontWeight:800, fontSize:52, color:"var(--blue-3)" }}>BS</span>
