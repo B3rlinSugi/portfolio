@@ -25,6 +25,50 @@ const AuroraBackground = () => (
 );
 
 /* ── Floating Photo with Glow Ring ── */
+const HologramPhoto = ({ visible }) => {
+  return (
+    <div style={{ position:"relative", width:320, height:320, flexShrink:0, opacity:visible?1:0, transition:"opacity 0.8s ease 0.5s" }}>
+      {/* Outer rotating rings */}
+      <div style={{ position:"absolute", inset:-24, borderRadius:"50%", border:"1px solid rgba(6,182,212,0.3)", animation:"holoRing1 3s linear infinite", pointerEvents:"none" }} />
+      <div style={{ position:"absolute", inset:-40, borderRadius:"50%", border:"1px dashed rgba(59,130,246,0.2)", animation:"holoRing2 5s linear infinite reverse", pointerEvents:"none" }} />
+      <div style={{ position:"absolute", inset:-56, borderRadius:"50%", border:"1px solid rgba(139,92,246,0.15)", animation:"holoRing1 8s linear infinite", pointerEvents:"none" }} />
+      {/* Rotating beam */}
+      <div style={{ position:"absolute", inset:-24, borderRadius:"50%", background:"conic-gradient(from 0deg,transparent 0deg,rgba(6,182,212,0.4) 20deg,transparent 40deg)", animation:"holoBeam 2.5s linear infinite", pointerEvents:"none", filter:"blur(2px)" }} />
+      {/* Photo */}
+      <div style={{ width:320, height:320, borderRadius:"50%", overflow:"hidden", border:"2px solid rgba(6,182,212,0.5)", boxShadow:"0 0 30px rgba(6,182,212,0.3),0 0 60px rgba(29,78,216,0.2),inset 0 0 30px rgba(6,182,212,0.05)", position:"relative", zIndex:2 }}>
+        <img src="/foto2.jpg" alt="Berlin Sugiyanto" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", display:"block" }}
+          onError={e=>{e.target.style.display="none";e.target.nextSibling.style.display="flex";}} />
+        <div style={{ display:"none", width:"100%", height:"100%", alignItems:"center", justifyContent:"center", background:"var(--navy-3)" }}>
+          <span style={{ fontFamily:"'Outfit',sans-serif", fontWeight:800, fontSize:52, color:"var(--blue-3)" }}>BS</span>
+        </div>
+        {/* Scanlines */}
+        <div style={{ position:"absolute", inset:0, background:"repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(6,182,212,0.025) 3px,rgba(6,182,212,0.025) 4px)", borderRadius:"50%", pointerEvents:"none", zIndex:3 }} />
+        {/* Color shift */}
+        <div style={{ position:"absolute", inset:0, borderRadius:"50%", background:"linear-gradient(135deg,rgba(6,182,212,0.08) 0%,transparent 50%,rgba(59,130,246,0.06) 100%)", animation:"holoShift 4s ease-in-out infinite", pointerEvents:"none", zIndex:4 }} />
+        {/* Flicker */}
+        <div style={{ position:"absolute", inset:0, borderRadius:"50%", background:"rgba(6,182,212,0.04)", animation:"holoFlicker 6s ease-in-out infinite", pointerEvents:"none", zIndex:5 }} />
+      </div>
+      {/* Corner dots */}
+      {[0,90,180,270].map((deg,i)=>{
+        const rad=(deg*Math.PI)/180, r=172;
+        const x=160+r*Math.cos(rad), y=160+r*Math.sin(rad);
+        const colors=["#06B6D4","#3B82F6","#8B5CF6","#06B6D4"];
+        return <div key={i} style={{ position:"absolute", width:10, height:10, borderRadius:"50%", background:colors[i], boxShadow:`0 0 14px ${colors[i]},0 0 28px ${colors[i]}50`, left:x-5, top:y-5, zIndex:6, animation:`dotFloat${i%3} ${2+i*0.4}s ease-in-out infinite` }} />;
+      })}
+      <style>{`
+        @keyframes holoRing1{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes holoRing2{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+        @keyframes holoBeam{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes holoShift{0%,100%{opacity:0.6}50%{opacity:1}}
+        @keyframes holoFlicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:0.6}94%{opacity:1}96%{opacity:0.7}97%{opacity:1}}
+        @keyframes dotFloat0{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+        @keyframes dotFloat1{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+        @keyframes dotFloat2{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+      `}</style>
+    </div>
+  );
+};
+
 const FloatingPhoto = ({ visible }) => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const ref = useRef(null);
