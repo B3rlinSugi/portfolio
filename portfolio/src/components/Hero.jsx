@@ -107,7 +107,7 @@ const FloatingPhoto = ({ visible }) => {
         transform: `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transition: "transform 0.3s ease",
       }}>
-        <img src="/foto2.jpg" alt="Berlin Sugiyanto"
+        <img src="/foto.jpg" alt="Berlin Sugiyanto"
           style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
           onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
         />
