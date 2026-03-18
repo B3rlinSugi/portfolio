@@ -27,33 +27,51 @@ const Cursor = ({ visible }) => (
 );
 
 /* ── Terminal Status Badge ── */
-const TerminalStatus = ({ visible, lines }) => {
-  const [linesDone, setLinesDone] = useState(0);
-  useEffect(() => {
-    if (!visible) { setLinesDone(0); return; }
-    const timers = [
-      setTimeout(() => setLinesDone(1), 500),
-      setTimeout(() => setLinesDone(2), 1300),
-      setTimeout(() => setLinesDone(3), 2100),
-    ];
-    return () => timers.forEach(clearTimeout);
-  }, [visible]);
+/* ── Status Pills ── */
+const StatusPills = ({ visible }) => {
+  const pills = [
+    { label: "Open to Work", color: "#10B981", pulse: "16,185,129", icon: "🟢" },
+    { label: "Bekasi · Remote OK", color: "#06B6D4", pulse: "6,182,212", icon: "📍" },
+    { label: "Full-time / Internship", color: "#3B82F6", pulse: "59,130,246", icon: "💼" },
+  ];
 
-  const colors = ["#6B84A8", "#10B981", "#06B6D4"];
   return (
-    <div style={{ display:"inline-flex", flexDirection:"column", gap:4, background:"rgba(6,14,30,0.9)", border:"1px solid rgba(16,185,129,0.25)", borderRadius:10, padding:"12px 18px", fontFamily:"'JetBrains Mono',monospace", fontSize:11.5, opacity:visible?1:0, transition:"opacity 0.5s ease 0.2s", boxShadow:"0 0 20px rgba(16,185,129,0.1), 0 4px 20px rgba(0,0,0,0.3)", backdropFilter:"blur(12px)", minWidth:300 }}>
-      <div style={{ display:"flex", alignItems:"center", gap:6, paddingBottom:8, borderBottom:"1px solid rgba(255,255,255,0.06)", marginBottom:4 }}>
-        <div style={{ width:8, height:8, borderRadius:"50%", background:"#EF4444" }} />
-        <div style={{ width:8, height:8, borderRadius:"50%", background:"#F59E0B" }} />
-        <div style={{ width:8, height:8, borderRadius:"50%", background:"#10B981" }} />
-        <span style={{ marginLeft:8, fontSize:9.5, color:"var(--muted)" }}>status.sh</span>
-      </div>
-      {lines.map((line, i) => (
-        <div key={i} style={{ color:colors[i], minHeight:18, opacity:linesDone>i?1:0, transform:linesDone>i?"translateY(0)":"translateY(4px)", transition:"opacity 0.4s ease, transform 0.4s ease" }}>
-          {line}
-          {linesDone===i+1 && linesDone<lines.length && <span style={{ animation:"blink 0.7s step-end infinite", color:"#06B6D4", marginLeft:2 }}>▌</span>}
+    <div style={{
+      display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center",
+      opacity: visible ? 1 : 0, transition: "opacity 0.5s ease 0.2s",
+    }}>
+      {pills.map((pill, i) => (
+        <div key={pill.label} style={{
+          display: "inline-flex", alignItems: "center", gap: 8,
+          background: `rgba(${pill.pulse},0.08)`,
+          border: `1px solid rgba(${pill.pulse},0.25)`,
+          borderRadius: 100, padding: "10px 20px",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0) scale(1)" : "translateY(12px) scale(0.9)",
+          transition: `opacity 0.5s ease ${i * 120}ms, transform 0.5s cubic-bezier(.34,1.56,.64,1) ${i * 120}ms`,
+          animation: visible ? `pillPulse${i} 3s ease-in-out infinite ${i * 0.6}s` : "none",
+          backdropFilter: "blur(12px)",
+        }}>
+          {/* Animated dot */}
+          <span style={{
+            width: 8, height: 8, borderRadius: "50%",
+            background: pill.color,
+            boxShadow: `0 0 8px ${pill.color}`,
+            animation: "pillDot 2s ease-in-out infinite",
+            flexShrink: 0,
+          }} />
+          <span style={{
+            fontSize: 12.5, fontWeight: 600, color: pill.color,
+            fontFamily: "'Outfit',sans-serif", whiteSpace: "nowrap",
+          }}>{pill.label}</span>
         </div>
       ))}
+      <style>{`
+        @keyframes pillDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(0.85)}}
+        @keyframes pillPulse0{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.15)}50%{box-shadow:0 0 16px rgba(16,185,129,0.25)}}
+        @keyframes pillPulse1{0%,100%{box-shadow:0 0 0 0 rgba(6,182,212,0.15)}50%{box-shadow:0 0 16px rgba(6,182,212,0.25)}}
+        @keyframes pillPulse2{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,0.15)}50%{box-shadow:0 0 16px rgba(59,130,246,0.25)}}
+      `}</style>
     </div>
   );
 };
@@ -171,7 +189,7 @@ const Contact = () => {
         </div>
 
         <div style={{ display:"flex", justifyContent:"center", marginBottom:36 }}>
-          <TerminalStatus visible={visible} lines={t.terminal} />
+          <StatusPills visible={visible} />
         </div>
 
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:24 }} className="contact-grid">
@@ -181,7 +199,7 @@ const Contact = () => {
         </div>
 
         <div style={{ display:"flex", gap:8, justifyContent:"center", flexWrap:"wrap", marginBottom:28, opacity:visible?1:0, transition:"opacity 0.5s ease 0.6s" }}>
-          {t.chips.map(chip => (
+          {["Full-time", "Hybrid", "Internship", "Contract", "Remote"].map(chip => (
             <span key={chip} style={{ fontSize:11.5, color:"var(--cyan)", background:"rgba(6,182,212,0.07)", border:"1px solid rgba(6,182,212,0.22)", padding:"5px 16px", borderRadius:100, fontWeight:600, fontFamily:"'JetBrains Mono',monospace" }}>{chip}</span>
           ))}
         </div>

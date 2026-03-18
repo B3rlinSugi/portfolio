@@ -147,18 +147,18 @@ const SkillIcon = ({ skill, index, started }) => {
 };
 
 const skillsData = [
-  { name: "PHP",      color: "#6366F1", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-plain.svg" },
-  { name: "Laravel",  color: "#EF4444", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg" },
+  { name: "PHP",      color: "#8892BF", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
+  { name: "Laravel",  color: "#FF2D20", icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
   { name: "Java",     color: "#F59E0B", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
-  { name: "MySQL",    color: "#06B6D4", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
-  { name: "REST API", color: "#10B981", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-  { name: "Git",      color: "#F97316", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
+  { name: "MySQL",    color: "#00758F", icon: "https://cdn.simpleicons.org/mysql/00758F" },
+  { name: "REST API", color: "#10B981", icon: "https://cdn.simpleicons.org/postman/FF6C37" },
+  { name: "Git",      color: "#F05032", icon: "https://cdn.simpleicons.org/git/F05032" },
 ];
 
 const seekingItems = [
   { label: "Full-time", color: "#3B82F6" },
   { label: "Hybrid",    color: "#06B6D4" },
-  { label: "Magang",    color: "#8B5CF6" },
+  { label: "Internship",    color: "#8B5CF6" },
   { label: "Kontrak",   color: "#10B981" },
 ];
 

@@ -116,10 +116,13 @@ const Projects = () => {
 
             {/* Footer */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, paddingTop: 16, borderTop: `1px solid ${a}15` }}>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {p.tech.map(t => (
-                  <div key={t.name} style={{ display: "flex", alignItems: "center", gap: 5, background: "rgba(6,14,30,0.6)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 7, padding: "4px 9px" }}>
-                    <img src={t.icon} alt={t.name} style={{ width: 12, height: 12, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; }} />
+                  <div key={t.name} style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(6,14,30,0.7)", border: "1px solid rgba(59,130,246,0.18)", borderRadius: 8, padding: "5px 11px" }}>
+                    <img src={t.icon} alt={t.name}
+                      style={{ width: 18, height: 18, objectFit: "contain", flexShrink: 0 }}
+                      onError={e => { e.target.style.display = "none"; }}
+                    />
                     <span style={{ fontSize: 10.5, color: "var(--white-2)", fontFamily: "'JetBrains Mono',monospace" }}>{t.name}</span>
                   </div>
                 ))}

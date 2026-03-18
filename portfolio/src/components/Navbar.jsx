@@ -1,6 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
-import { LangContext } from "../LangContext";
-import { i18n } from "../i18n";
+import { useState, useEffect, useRef } from "react";
 
 const navDots = [
   {id:"about",         color:"#3B82F6"},
@@ -45,12 +43,11 @@ const SocialIcon = ({s}) => {
   );
 };
 
-const Navbar = ({lang, setLang}) => {
+const Navbar = () => {
   const [active, setActive] = useState("hero");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovered, setHovered] = useState(null);
-  const t = i18n[lang];
   const {displayed, done} = useTypewriter("Berlin Sugiyanto");
 
   useEffect(() => {
@@ -97,20 +94,21 @@ const Navbar = ({lang, setLang}) => {
                     style={{display:"flex",alignItems:"center",gap:6,padding:"6px 12px",borderRadius:7,color:isActive?"#fff":isHov?"#C8D8F0":"#6B84A8",fontSize:11,fontWeight:isActive?700:500,letterSpacing:"0.6px",textTransform:"uppercase",textDecoration:"none",background:isActive?"rgba(29,78,216,0.18)":isHov?"rgba(59,130,246,0.06)":"transparent",border:`1px solid ${isActive?"rgba(59,130,246,0.25)":"transparent"}`,fontFamily:"'JetBrains Mono',monospace",transition:"all 0.22s ease",transform:isHov?"translateY(-1px)":"none"}}
                   >
                     <span style={{width:isActive?6:5,height:isActive?6:5,borderRadius:"50%",background:isActive||isHov?link.color:"rgba(107,132,168,0.4)",boxShadow:isActive?`0 0 8px ${link.color}`:"none",flexShrink:0,transition:"all 0.2s ease"}}/>
-                    {t.nav[link.id]}
+                    {link.id.charAt(0).toUpperCase() + link.id.slice(1)}
                   </a>
                 </li>
               );
             })}
           </ul>
           <div style={{width:1,height:16,background:"rgba(59,130,246,0.2)",margin:"0 4px"}}/>
-          <button onClick={()=>setLang(l=>l==="en"?"id":"en")}
-            style={{display:"flex",alignItems:"center",gap:5,padding:"5px 10px",borderRadius:7,background:"rgba(59,130,246,0.08)",border:"1px solid rgba(59,130,246,0.2)",color:"#06B6D4",fontSize:10.5,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",cursor:"pointer",transition:"all 0.2s ease"}}
-            onMouseEnter={e=>{e.currentTarget.style.background="rgba(6,182,212,0.15)";e.currentTarget.style.transform="scale(1.05)";}}
-            onMouseLeave={e=>{e.currentTarget.style.background="rgba(59,130,246,0.08)";e.currentTarget.style.transform="scale(1)";}}>
-            <span style={{fontSize:13}}>{lang==="en"?"🇬🇧":"🇮🇩"}</span>
-            {lang==="en"?"EN":"ID"}
-          </button>
+          {/* Download CV button */}
+          <a href="/cv.pdf" download
+            style={{display:"flex",alignItems:"center",gap:6,padding:"6px 14px",borderRadius:7,background:"rgba(6,182,212,0.08)",border:"1px solid rgba(6,182,212,0.25)",color:"#06B6D4",fontSize:11,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",textDecoration:"none",transition:"all 0.2s ease",letterSpacing:"0.5px"}}
+            onMouseEnter={e=>{e.currentTarget.style.background="rgba(6,182,212,0.18)";e.currentTarget.style.transform="translateY(-1px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(6,182,212,0.25)";}}
+            onMouseLeave={e=>{e.currentTarget.style.background="rgba(6,182,212,0.08)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            CV
+          </a>
         </div>
 
         <button className="nav-hamburger" onClick={()=>setMenuOpen(!menuOpen)} style={{display:"none",background:"none",border:"none",cursor:"pointer",flexDirection:"column",gap:5,padding:6}}>
@@ -125,14 +123,14 @@ const Navbar = ({lang, setLang}) => {
             <a key={link.id} href={"#"+link.id} onClick={e=>{e.preventDefault();go(link.id);}}
               style={{display:"flex",alignItems:"center",gap:10,padding:"12px 0",color:active===link.id?"#3B82F6":"#6B84A8",fontSize:13,fontWeight:500,letterSpacing:"1px",textTransform:"uppercase",textDecoration:"none",fontFamily:"'JetBrains Mono',monospace",borderBottom:"1px solid rgba(59,130,246,0.07)"}}>
               <span style={{width:6,height:6,borderRadius:"50%",background:active===link.id?link.color:"rgba(107,132,168,0.4)",boxShadow:active===link.id?`0 0 8px ${link.color}`:"none"}}/>
-              {t.nav[link.id]}
+              {link.id.charAt(0).toUpperCase() + link.id.slice(1)}
             </a>
           ))}
           <div style={{display:"flex",gap:12,paddingTop:16,alignItems:"center"}}>
             {socials.map(s=><a key={s.title} href={s.href} target={s.href.startsWith("mailto")?undefined:"_blank"} rel="noreferrer" style={{color:"rgba(200,216,240,0.5)",textDecoration:"none"}}>{s.icon}</a>)}
-            <button onClick={()=>setLang(l=>l==="en"?"id":"en")} style={{marginLeft:"auto",background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.2)",borderRadius:6,color:"#06B6D4",fontSize:10,padding:"4px 8px",cursor:"pointer",fontFamily:"'JetBrains Mono',monospace"}}>
-              {lang==="en"?"🇬🇧 EN":"🇮🇩 ID"}
-            </button>
+            <a href="/cv.pdf" download style={{marginLeft:"auto",background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.25)",borderRadius:6,color:"#06B6D4",fontSize:10,padding:"4px 10px",textDecoration:"none",fontFamily:"'JetBrains Mono',monospace",fontWeight:700}}>
+              CV
+            </a>
           </div>
         </div>
       </div>

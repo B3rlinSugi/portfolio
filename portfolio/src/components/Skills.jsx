@@ -28,7 +28,7 @@ const SkillPill = ({ item, color, bg, border, index, open }) => {
       }}
     >
       <div style={{ width: 26, height: 26, borderRadius: 8, background: hovered ? bg : "rgba(15,31,56,0.9)", border: `1px solid ${hovered ? border : "rgba(59,130,246,0.1)"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s", transform: hovered ? "rotate(-5deg) scale(1.1)" : "none" }}>
-        <img src={item.icon} alt={item.name} style={{ width: 15, height: 15, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "block"; }} />
+        <img src={item.icon} alt={item.name} style={{ width: 20, height: 20, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "block"; }} />
         <span style={{ display: "none", fontSize: 9, color, fontWeight: 700, fontFamily: "'JetBrains Mono',monospace" }}>{item.name[0]}</span>
       </div>
       <span style={{ fontSize: 13, fontWeight: 600, color: hovered ? "var(--white)" : "var(--white-2)", fontFamily: "'Outfit',sans-serif", whiteSpace: "nowrap", transition: "color 0.2s" }}>{item.name}</span>

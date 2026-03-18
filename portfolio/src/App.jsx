@@ -146,7 +146,7 @@ function App() {
       <GradientMesh />
       <div style={{ background:"transparent", minHeight:"100vh", opacity:loading?0:1, transition:"opacity 0.5s ease 0.1s", position:"relative", zIndex:1 }}>
         <div id="progress-bar" style={{ position:"fixed", top:0, left:0, height:3, background:"linear-gradient(to right,#1D4ED8,#06B6D4)", zIndex:201, width:"0%", transition:"width 0.08s linear", pointerEvents:"none" }} />
-        <Navbar lang={lang} setLang={setLang} />
+        <Navbar />
         <Hero />
         <About />
         <Skills />
