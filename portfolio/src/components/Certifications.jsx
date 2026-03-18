@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useContext } from "react";
-import { LangContext, i18n } from "./Navbar";
+import { LangContext } from "../LangContext";
+import { i18n } from "../i18n";
 import { data } from "../data/portfolioData";
 
 const accentColors = ["#3B82F6", "#06B6D4", "#8B5CF6", "#10B981", "#F59E0B", "#EF4444"];
@@ -71,25 +72,24 @@ const Certifications = () => {
 
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => {
+      setVisible(e.isIntersecting);
       if (e.isIntersecting) {
-        setVisible(true);
-        obs.disconnect();
-        // Animate line growing
+        setLineHeight(0);
         setTimeout(() => {
           let h = 0;
           const interval = setInterval(() => {
-            h += 3;
-            setLineHeight(h);
+            h += 3; setLineHeight(h);
             if (h >= 100) clearInterval(interval);
           }, 16);
         }, 300);
+      } else {
+        setLineHeight(0);
       }
     }, { threshold: 0.05 });
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
 
-  // Group certs by year
   const years = [...new Set(data.certifications.map(c => c.year))].sort();
   const grouped = years.reduce((acc, year) => {
     acc[year] = data.certifications.filter(c => c.year === year);
@@ -99,20 +99,17 @@ const Certifications = () => {
   let globalIndex = 0;
 
   return (
-    <section id="certifications" ref={ref} style={{ background: "var(--navy)", borderTop: "1px solid rgba(59,130,246,0.07)" }}>
-      {/* JSX tag label */}
-      <p className="s-label" style={{ opacity: visible ? 1 : 0, transition: "opacity .5s", fontFamily: "'JetBrains Mono',monospace" }}>
-        <span style={{ color: "rgba(6,182,212,0.5)" }}>&lt;</span>
+    <section id="certifications" ref={ref} style={{ background:"var(--navy)", borderTop:"1px solid rgba(59,130,246,0.07)" }}>
+      <p className="s-label" style={{ opacity:visible?1:0, transition:"opacity .5s", fontFamily:"'JetBrains Mono',monospace" }}>
+        <span style={{ color:"rgba(6,182,212,0.5)" }}>&lt;</span>
         {t.label}
-        <span style={{ color: "rgba(6,182,212,0.5)" }}> /&gt;</span>
+        <span style={{ color:"rgba(6,182,212,0.5)" }}> /&gt;</span>
       </p>
-      <h2 className="s-title" style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>{t.title}</h2>
+      <h2 className="s-title" style={{ opacity:visible?1:0, transform:visible?"none":"translateY(16px)", transition:"opacity .6s ease .1s,transform .6s ease .1s" }}>{t.title}</h2>
 
-      {/* Timeline */}
-      <div style={{ position: "relative", maxWidth: 800, margin: "0 auto" }}>
-        {/* Center line */}
-        <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 2, background: "rgba(59,130,246,0.08)", transform: "translateX(-50%)", zIndex: 0 }}>
-          <div style={{ width: "100%", background: "linear-gradient(to bottom,#1D4ED8,#06B6D4,#8B5CF6)", height: lineHeight + "%", transition: "height 0.05s linear", borderRadius: 2, boxShadow: "0 0 10px rgba(29,78,216,0.5)" }} />
+      <div style={{ position:"relative", maxWidth:800, margin:"0 auto" }}>
+        <div style={{ position:"absolute", left:"50%", top:0, bottom:0, width:2, background:"rgba(59,130,246,0.08)", transform:"translateX(-50%)", zIndex:0 }}>
+          <div style={{ width:"100%", background:"linear-gradient(to bottom,#1D4ED8,#06B6D4,#8B5CF6)", height:lineHeight+"%", transition:"height 0.05s linear", borderRadius:2, boxShadow:"0 0 10px rgba(29,78,216,0.5)" }} />
         </div>
 
         {years.map((year, yi) => {

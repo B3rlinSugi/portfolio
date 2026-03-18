@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useContext } from "react";
-import { LangContext, i18n } from "./Navbar";
+import { LangContext } from "../LangContext";
+import { i18n } from "../i18n";
 import { data } from "../data/portfolioData";
 
 const accents = [
@@ -17,31 +18,30 @@ const Projects = () => {
   const t = i18n[lang].projects;
 
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.05 });
+    const obs = new IntersectionObserver(([e]) => { setVisible(e.isIntersecting); }, { threshold: 0.05 });
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
 
-  // Scale + blur reveal on active change
   useEffect(() => {
     setRevealed(false);
-    const t = setTimeout(() => setRevealed(true), 60);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setRevealed(true), 60);
+    return () => clearTimeout(timer);
   }, [active]);
 
   useEffect(() => { if (visible) { setTimeout(() => setRevealed(true), 400); } }, [visible]);
 
-  const p   = data.projects[active];
+  const p = data.projects[active];
   const { a, b } = accents[active % accents.length];
 
   return (
-    <section id="projects" ref={ref} style={{ background: "var(--navy-2)", borderTop: "1px solid rgba(59,130,246,0.07)" }}>
-      <p className="s-label" style={{ opacity: visible ? 1 : 0, transition: "opacity .5s", fontFamily: "'JetBrains Mono',monospace" }}>
-        <span style={{ color: "rgba(6,182,212,0.5)" }}>&lt;</span>
+    <section id="projects" ref={ref} style={{ background:"var(--navy-2)", borderTop:"1px solid rgba(59,130,246,0.07)" }}>
+      <p className="s-label" style={{ opacity:visible?1:0, transition:"opacity .5s", fontFamily:"'JetBrains Mono',monospace" }}>
+        <span style={{ color:"rgba(6,182,212,0.5)" }}>&lt;</span>
         {t.label}
-        <span style={{ color: "rgba(6,182,212,0.5)" }}> /&gt;</span>
+        <span style={{ color:"rgba(6,182,212,0.5)" }}> /&gt;</span>
       </p>
-      <h2 className="s-title" style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>{t.title}</h2>
+      <h2 className="s-title" style={{ opacity:visible?1:0, transform:visible?"none":"translateY(16px)", transition:"opacity .6s ease .1s,transform .6s ease .1s" }}>{t.title}</h2>
 
       <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: 24, alignItems: "start" }} className="split-panel">
 

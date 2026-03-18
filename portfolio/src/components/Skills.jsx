@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { data } from "../data/portfolioData";
-import { LangContext, i18n } from "./Navbar";
+import { LangContext } from "../LangContext";
+import { i18n } from "../i18n";
 
 const categoryColors = {
   "Languages":              { color: "#3B82F6", bg: "rgba(59,130,246,0.08)",  border: "rgba(59,130,246,0.25)"  },
@@ -107,7 +108,7 @@ const Skills = () => {
   const lang = useContext(LangContext);
   const t = i18n[lang].skills;
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setStarted(true); obs.disconnect(); } }, { threshold: 0.06 });
+    const obs = new IntersectionObserver(([e]) => { setStarted(e.isIntersecting); }, { threshold: 0.06 });
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);

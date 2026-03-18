@@ -1,6 +1,7 @@
 import { data } from "../data/portfolioData";
 import { useEffect, useRef, useState, useContext } from "react";
-import { LangContext, i18n } from "./Navbar";
+import { LangContext } from "../LangContext";
+import { i18n } from "../i18n";
 
 /* ── Aurora Background ── */
 const AuroraBackground = () => (
@@ -23,64 +24,71 @@ const AuroraBackground = () => (
   </div>
 );
 
-/* ── Hologram Photo Frame ── */
-const HologramPhoto = ({ visible }) => {
+/* ── Floating Photo with Glow Ring ── */
+const FloatingPhoto = ({ visible }) => {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const ref = useRef(null);
+
+  const handleMouseMove = e => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    setTilt({ x: ((e.clientY - cy) / (rect.height / 2)) * 6, y: -((e.clientX - cx) / (rect.width / 2)) * 6 });
+  };
+  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
+
   return (
-    <div style={{
-      position: "relative", width: 320, height: 320, flexShrink: 0,
-      opacity: visible ? 1 : 0, transition: "opacity 0.8s ease 0.5s",
-    }}>
-      {/* Outer hologram rings */}
-      <div style={{ position: "absolute", inset: -24, borderRadius: "50%", border: "1px solid rgba(6,182,212,0.3)", animation: "holoRing1 3s linear infinite", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", inset: -40, borderRadius: "50%", border: "1px dashed rgba(59,130,246,0.2)", animation: "holoRing2 5s linear infinite reverse", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", inset: -56, borderRadius: "50%", border: "1px solid rgba(139,92,246,0.15)", animation: "holoRing1 8s linear infinite", pointerEvents: "none" }} />
+    <div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
+      style={{
+        position: "relative", width: 300, height: 300, flexShrink: 0,
+        opacity: visible ? 1 : 0,
+        animation: visible ? "photoFloat 5s ease-in-out infinite" : "none",
+        transition: "opacity 0.8s ease 0.5s",
+      }}
+    >
+      {/* Outer rotating ring 1 */}
+      <div style={{ position: "absolute", inset: -20, borderRadius: "50%", border: "1.5px solid transparent", background: "linear-gradient(rgba(6,14,30,0),rgba(6,14,30,0)) padding-box, linear-gradient(135deg,#3B82F6,transparent 50%,#06B6D4) border-box", animation: "ringRotate1 7s linear infinite", pointerEvents: "none" }} />
+      {/* Outer rotating ring 2 */}
+      <div style={{ position: "absolute", inset: -30, borderRadius: "50%", border: "1px solid transparent", background: "linear-gradient(rgba(6,14,30,0),rgba(6,14,30,0)) padding-box, linear-gradient(225deg,#8B5CF6,transparent 55%,#06B6D4) border-box", animation: "ringRotate2 11s linear infinite", pointerEvents: "none" }} />
+      {/* Glow pulse */}
+      <div style={{ position: "absolute", inset: -12, borderRadius: "50%", background: "radial-gradient(circle,rgba(59,130,246,0.22),rgba(6,182,212,0.1) 55%,transparent 75%)", animation: "glowPulse 3.5s ease-in-out infinite", filter: "blur(8px)", pointerEvents: "none" }} />
 
-      {/* Rotating beam */}
-      <div style={{ position: "absolute", inset: -24, borderRadius: "50%", background: "conic-gradient(from 0deg, transparent 0deg, rgba(6,182,212,0.4) 20deg, transparent 40deg)", animation: "holoBeam 2.5s linear infinite", pointerEvents: "none", filter: "blur(2px)" }} />
-
-      {/* Photo circle */}
+      {/* Photo container */}
       <div style={{
-        width: 320, height: 320, borderRadius: "50%", overflow: "hidden",
-        border: "2px solid rgba(6,182,212,0.5)",
-        boxShadow: "0 0 30px rgba(6,182,212,0.3), 0 0 60px rgba(29,78,216,0.2), inset 0 0 30px rgba(6,182,212,0.05)",
+        width: 300, height: 300, borderRadius: "50%", overflow: "hidden",
+        border: "3px solid rgba(59,130,246,0.4)",
+        boxShadow: "0 0 0 1px rgba(6,182,212,0.15), 0 30px 70px rgba(0,0,0,0.6)",
         position: "relative", zIndex: 2,
+        transform: `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transition: "transform 0.3s ease",
       }}>
         <img src="/foto2.jpg" alt="Berlin Sugiyanto"
           style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
           onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
         />
-        <div style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", background: "var(--navy-3)" }}>
+        <div style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", background: "var(--navy-3)", flexDirection: "column" }}>
           <span style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 800, fontSize: 52, color: "var(--blue-3)" }}>BS</span>
         </div>
-
-        {/* Scanlines overlay */}
-        <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(6,182,212,0.025) 3px, rgba(6,182,212,0.025) 4px)", borderRadius: "50%", pointerEvents: "none", zIndex: 3 }} />
-
-        {/* Hologram color shift overlay */}
-        <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "linear-gradient(135deg, rgba(6,182,212,0.08) 0%, transparent 50%, rgba(59,130,246,0.06) 100%)", animation: "holoShift 4s ease-in-out infinite", pointerEvents: "none", zIndex: 4 }} />
-
-        {/* Flicker */}
-        <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "rgba(6,182,212,0.04)", animation: "holoFlicker 6s ease-in-out infinite", pointerEvents: "none", zIndex: 5 }} />
+        {/* Shine overlay */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%, rgba(6,182,212,0.04) 100%)", borderRadius: "50%", pointerEvents: "none" }} />
       </div>
 
-      {/* Corner accents */}
-      {[0, 90, 180, 270].map((deg, i) => {
+      {/* Floating dots on ring */}
+      {[0, 120, 240].map((deg, i) => {
         const rad = (deg * Math.PI) / 180;
-        const r = 172;
-        const x = 160 + r * Math.cos(rad);
-        const y = 160 + r * Math.sin(rad);
-        const colors = ["#06B6D4", "#3B82F6", "#8B5CF6", "#06B6D4"];
-        return (
-          <div key={i} style={{ position: "absolute", width: 10, height: 10, borderRadius: "50%", background: colors[i], boxShadow: `0 0 14px ${colors[i]}, 0 0 28px ${colors[i]}50`, left: x - 5, top: y - 5, zIndex: 6, animation: `dotFloat${i % 3} ${2 + i * 0.4}s ease-in-out infinite` }} />
-        );
+        const r = 160;
+        const x = 150 + r * Math.cos(rad);
+        const y = 150 + r * Math.sin(rad);
+        const colors = ["#3B82F6", "#06B6D4", "#8B5CF6"];
+        return <div key={i} style={{ position: "absolute", width: 9, height: 9, borderRadius: "50%", background: colors[i], boxShadow: `0 0 12px ${colors[i]}`, left: x - 4.5, top: y - 4.5, zIndex: 5, animation: `dotFloat${i} ${2.5 + i * 0.6}s ease-in-out infinite` }} />;
       })}
 
       <style>{`
-        @keyframes holoRing1{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-        @keyframes holoRing2{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-        @keyframes holoBeam{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-        @keyframes holoShift{0%,100%{opacity:0.6;background:linear-gradient(135deg,rgba(6,182,212,0.08) 0%,transparent 50%,rgba(59,130,246,0.06) 100%)}50%{opacity:1;background:linear-gradient(135deg,rgba(59,130,246,0.1) 0%,transparent 50%,rgba(6,182,212,0.08) 100%)}}
-        @keyframes holoFlicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:0.6}94%{opacity:1}96%{opacity:0.7}97%{opacity:1}}
+        @keyframes photoFloat{0%,100%{transform:translateY(0px)}50%{transform:translateY(-14px)}}
+        @keyframes ringRotate1{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes ringRotate2{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+        @keyframes glowPulse{0%,100%{opacity:0.55;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
         @keyframes dotFloat0{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
         @keyframes dotFloat1{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
         @keyframes dotFloat2{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
@@ -192,8 +200,7 @@ const Hero = () => {
             }}>Sugiyanto</span>
           </h1>
 
-          {/* Backend Developer with scan highlight */}
-          <ScanTitle text="Backend Developer" visible={visible} />
+          <ScanTitle text={t.dev_role} visible={visible} />
 
           <p style={{ fontSize: 15, color: "#8BA4C8", maxWidth: 420, lineHeight: 1.9, marginBottom: 36, fontFamily: "'Outfit',sans-serif", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.35s both" }}>
             {t.tagline}
@@ -216,7 +223,7 @@ const Hero = () => {
 
           {/* Neon Metrics */}
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.5s both" }}>
-            {[["3.63", t.gpa], ["3+", t.projects], ["3yr", t.org]].map(([n, l], i) => <NeonMetric key={l} n={n} l={l} i={i} />)}
+            {[["3.63", t.gpa], ["3+", t.projects], ["3yr", t.org]].map(([n, l], i) => <NeonMetric key={n} n={n} l={l} i={i} />)}
           </div>
         </div>
 
@@ -228,7 +235,7 @@ const Hero = () => {
 
       {/* Scroll hint */}
       <div style={{ position: "absolute", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", gap: 6, animation: "fadeUp 0.6s ease 1.2s both", opacity: 0.45 }}>
-        <span style={{ fontSize: 9, color: "rgba(255,255,255,0.35)", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "2px", textTransform: "uppercase" }}>scroll</span>
+        <span style={{ fontSize: 9, color: "rgba(255,255,255,0.35)", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "2px", textTransform: "uppercase" }}>{t.scroll}</span>
         <div style={{ width: 1, height: 28, background: "linear-gradient(to bottom,rgba(6,182,212,0.7),transparent)", animation: "scrollPulse 2s ease-in-out infinite" }} />
       </div>
 
