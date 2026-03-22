@@ -9,7 +9,6 @@ import Projects from "./components/Projects";
 import Certifications from "./components/Certifications";
 import Organizations from "./components/Organizations";
 import Contact from "./components/Contact";
-// NEW FEATURES
 import GitHubActivity from "./components/GitHubActivity";
 import TerminalEgg from "./components/TerminalEgg";
 import ProjectDetailModal from "./components/ProjectDetailModal";
@@ -132,11 +131,24 @@ const BackToTop = () => {
 
 function App() {
   const [loading, setLoading] = useState(true);
-  // ── FIX: lang state lives in App and is passed down ──
+
+  // ── Lang state ──
   const [lang, setLang] = useState(() => {
-    // Persist language preference in localStorage
     return localStorage.getItem("portfolio-lang") || "en";
   });
+
+  // ── Theme state — auto detect OS preference ──
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem("portfolio-theme");
+    if (saved) return saved;
+    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  });
+
+  // Apply theme to <html> element
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("portfolio-theme", theme);
+  }, [theme]);
 
   const handleSetLang = (newLang) => {
     setLang(newLang);
@@ -157,7 +169,6 @@ function App() {
       <GradientMesh />
       <div style={{ background:"transparent", minHeight:"100vh", opacity:loading?0:1, transition:"opacity 0.5s ease 0.1s", position:"relative", zIndex:1 }}>
         <div id="progress-bar" style={{ position:"fixed", top:0, left:0, height:3, background:"linear-gradient(to right,#1D4ED8,#06B6D4)", zIndex:201, width:"0%", transition:"width 0.08s linear", pointerEvents:"none" }} />
-        {/* ── FIX: Pass lang + setLang to Navbar ── */}
         <Navbar lang={lang} setLang={handleSetLang} theme={theme} setTheme={setTheme} />
         <Hero />
         <About />
@@ -165,14 +176,11 @@ function App() {
         <Projects />
         <Certifications />
         <Organizations />
-        {/* ── NEW: GitHub Activity section ── */}
         <GitHubActivity />
         <Contact />
         <SectionDots />
         <BackToTop />
-        {/* ── NEW: Terminal Easter Egg (global, triggered by Konami or typing) ── */}
         <TerminalEgg />
-        {/* ── NEW: Project Detail Modal ── */}
         <ProjectDetailModal />
       </div>
     </LangContext.Provider>
