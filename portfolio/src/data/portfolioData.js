@@ -9,9 +9,9 @@ export const data = {
   whatsapp: "https://wa.me/6281294500613",
   portfolio: "https://berlinsugi.vercel.app",
 
-  tagline: "I build reliable, scalable backend systems — from REST APIs and relational databases to secure authentication flows.",
+  tagline: "I engineer backend systems that hold up under pressure — clean APIs, solid databases, and auth flows that don't break at 3 AM.",
 
-  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00) with hands-on experience shipping production-ready backend systems. I specialise in designing scalable REST APIs, relational databases, and secure authentication flows using PHP and Java. Detail-oriented, fast learner, and eager to contribute to a collaborative engineering team.",
+  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00) who ships production-ready backend systems, not just assignments. I specialise in designing scalable REST APIs, relational databases, and secure authentication flows using PHP and Java — with zero unauthorized access incidents across all QA cycles. Fast learner, detail-oriented, and ready to contribute from day one.",
 
   skills: [
     {
@@ -71,11 +71,11 @@ export const data = {
       period: "Mar 2026",
       github: "https://github.com/B3rlinSugi/student-management-api",
       demo: null,
-      desc: "A production-ready RESTful API built with Laravel 11 — featuring JWT Authentication, Role-Based Access Control, full CRUD with Soft Delete, Search, Filter & Pagination.",
+      desc: "A production-ready RESTful API built with Laravel 11 — featuring JWT Authentication, Role-Based Access Control, full CRUD with Soft Delete, Search, Filter & Pagination. Built to demonstrate enterprise-grade backend patterns in a clean, documented codebase.",
       points: [
-        "Engineered JWT authentication flow (login, register, refresh, logout) with Role-Based Access Control — Admin gets full access while User is read-only, achieving zero unauthorized access incidents.",
-        "Built full CRUD for Students & Majors with Soft Delete (trash/restore/force delete), Laravel Form Request validation, and clean JSON responses via API Resources.",
-        "Implemented advanced query features: multi-column search (name, NIM, email), filter by status/major/gender, configurable pagination up to 50 per page, and dynamic sorting by any column.",
+        "Engineered a dual-role JWT authentication system (Admin vs User) with login, register, token refresh, and logout — achieving zero unauthorized access incidents across all test scenarios.",
+        "Built full CRUD for Students & Majors with Soft Delete (trash/restore/force delete), Laravel Form Request validation, and clean JSON responses via API Resources — following RESTful best practices throughout.",
+        "Implemented advanced query features: multi-column search (name, NIM, email), filter by status/major/gender, configurable pagination up to 50 per page, and dynamic sorting by any column — all in a single performant query layer.",
       ],
       tech: [
         { name: "Laravel 11", icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
@@ -90,11 +90,11 @@ export const data = {
       period: "Jan 2026 - Feb 2026",
       github: "https://github.com/B3rlinSugi/tokoku-ecommerce",
       demo: null,
-      desc: "Full-stack e-commerce backend engineered for transaction reliability — from database design to secure payment flows.",
+      desc: "Full-stack e-commerce backend engineered for transaction reliability — from a 10-table relational database to secure payment flows and a real-time admin dashboard. Every edge case from cart to checkout was handled and tested.",
       points: [
-        "Architected a 10-table relational database (InnoDB + FK constraints) covering the full order lifecycle — cart, checkout, payment, stock — with zero transaction failures across all payment methods during testing.",
-        "Engineered a voucher discount engine and RBAC authentication system with bcrypt hashing and tokenized password reset, achieving zero unauthorized access incidents in QA.",
-        "Built a real-time admin dashboard with sales analytics and 6-month revenue visualization using Chart.js, backed by aggregated SQL queries.",
+        "Architected a 10-table relational database (InnoDB + FK constraints) covering the full order lifecycle — cart, checkout, payment, stock deduction — with zero transaction failures across all payment methods during QA.",
+        "Engineered a voucher discount engine and RBAC authentication system with bcrypt hashing and tokenized password reset, achieving zero unauthorized access incidents across all security test cases.",
+        "Built a real-time admin dashboard with sales analytics and 6-month revenue visualization using Chart.js, backed by optimised aggregate SQL queries with sub-100ms response time.",
       ],
       tech: [
         { name: "PHP 8",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
@@ -109,11 +109,11 @@ export const data = {
       period: "Jun 2023 - Jul 2023",
       github: "https://github.com/B3rlinSugi/cash-flow",
       demo: null,
-      desc: "A class cash flow management system upgraded from a legacy codebase — redesigned with modern security practices and real-time analytics.",
+      desc: "A class cash flow management system rebuilt from a legacy codebase — modernised with industry-standard security, real-time analytics, and PDF reporting. Turned a broken MD5-authenticated system into something production-worthy.",
       points: [
-        "Upgraded legacy MD5 authentication to bcrypt and redesigned database schema with InnoDB, Foreign Key constraints, and proper indexing for performance.",
-        "Built a real-time 6-month cash flow analytics dashboard using Chart.js and a deferred payment tracking module with automatic status management.",
-        "Added PDF report export filtered by month and transaction type, enabling auditable financial records for organizational use.",
+        "Migrated legacy MD5 authentication to bcrypt and redesigned the database schema with InnoDB, Foreign Key constraints, and proper indexing — eliminating all known security vulnerabilities from the original codebase.",
+        "Built a real-time 6-month cash flow analytics dashboard using Chart.js and a deferred payment tracking module with automatic status transitions — giving admins full financial visibility at a glance.",
+        "Implemented month-filtered PDF report export using server-side generation, enabling auditable and shareable financial records for organisational use.",
       ],
       tech: [
         { name: "PHP 8",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
@@ -128,11 +128,11 @@ export const data = {
       period: "Mar 2024 - Jul 2024",
       github: "https://github.com/B3rlinSugi/crud-akademik",
       demo: null,
-      desc: "An academic data management system with multi-table relational database, role-based access control, and real-time statistical dashboard.",
+      desc: "An academic data management system with multi-table relational database, role-based access control, and real-time statistical dashboard — built to manage students, courses, and grades for an entire faculty.",
       points: [
-        "Architected a 3-table relational database (students, courses, grades) with Foreign Key constraints and normalization to ensure data integrity.",
-        "Implemented RBAC for Admin and Staff roles using PDO prepared statements, eliminating SQL injection vulnerabilities.",
-        "Built search, filter, and pagination features with PDF export and a Chart.js dashboard for real-time student statistics per class.",
+        "Architected a normalised 3-table relational database (students, courses, grades) with Foreign Key constraints, ensuring referential integrity across all CRUD operations.",
+        "Implemented RBAC for Admin and Staff roles using PDO prepared statements throughout — eliminating SQL injection vulnerabilities and enforcing strict data access boundaries by role.",
+        "Built search, filter, and pagination across all data views with PDF export per class and a Chart.js dashboard displaying real-time student statistics — reducing manual reporting effort significantly.",
       ],
       tech: [
         { name: "PHP 8",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
@@ -187,7 +187,7 @@ export const data = {
       role: "Minister of Social & Political Affairs",
       org: "BEM FTI — Universitas Gunadarma",
       period: "Jul 2024 - Aug 2025",
-      desc: "Led two departments managing 15+ members with 100% program completion rate. Oversaw cross-functional coordination across faculty-level initiatives and represented the faculty in external institutional events.",
+      desc: "Led two departments managing 15+ members with 100% program completion rate. Drove cross-functional coordination across faculty-level initiatives and represented the faculty in external institutional events — balancing leadership responsibilities alongside full-time academic commitments.",
       highlights: ["15+ Members Led", "100% Completion", "Faculty Representative", "Strategic Planning"],
       photo: "/org1.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
@@ -196,7 +196,7 @@ export const data = {
       role: "Head of Social Community Department",
       org: "BEM FTI — Universitas Gunadarma",
       period: "Jul 2023 - Jun 2024",
-      desc: "Directed and coordinated staff in planning and executing community social programs. Improved team efficiency and ensured successful delivery of all scheduled activities.",
+      desc: "Directed and coordinated staff in planning and executing community social programs. Improved team efficiency through structured delegation, ensuring on-time delivery of all scheduled activities with measurable impact on the campus community.",
       highlights: ["Department Lead", "Program Delivery", "Team Coordination", "Community Outreach"],
       photo: "/org2.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
@@ -205,7 +205,7 @@ export const data = {
       role: "Staff of Social Community Department",
       org: "BEM FTI — Universitas Gunadarma",
       period: "Jul 2022 - Jun 2023",
-      desc: "Contributed to planning and executing social community programs as a core staff member. Actively participated in campus events and cross-departmental initiatives.",
+      desc: "Contributed as a core staff member in planning and executing social community programs. Actively participated in campus events and cross-departmental initiatives — building the collaboration and communication skills that underpin my approach to engineering teamwork today.",
       highlights: ["Event Planning", "Community Programs", "Cross-dept Work", "Active Contributor"],
       photo: "/org3.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",

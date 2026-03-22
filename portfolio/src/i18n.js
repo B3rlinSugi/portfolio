@@ -3,7 +3,7 @@ export const i18n = {
     nav: { about:"About", skills:"Skills", projects:"Projects", certifications:"Certifications", organizations:"Organizations", contact:"Contact" },
     hero: {
       badge:"Open to Work", role:"Junior Backend Developer",
-      tagline:"I build reliable, scalable backend systems — from REST APIs and relational databases to secure authentication flows.",
+      tagline:"I engineer backend systems that hold up under pressure — clean APIs, solid databases, and auth flows that don't break at 3 AM.",
       github:"GitHub", touch:"Get in Touch", cv:"Download CV",
       gpa:"GPA / 4.00", projects:"Projects", org:"Org Exp", scroll:"scroll", dev_role:"Backend Developer",
     },
@@ -22,13 +22,13 @@ export const i18n = {
     organizations: { label:"organizations", title:"Organisational Journey", see_ig:"See on Instagram" },
     contact: {
       label:"contact", headline:"Let's work together.",
-      sub:"Actively seeking Junior Backend Developer roles.",
+      sub:"Actively seeking Junior Backend Developer roles — full-time, hybrid, or remote.",
       location_badge:"Bekasi, West Java · Remote OK",
       send:"Send Email ✉", connect:"Connect on LinkedIn",
       built:"built with", by:"by Berlin Sugiyanto Hutajulu",
       wa_desc:"Ping me directly", email_desc:"Fastest way to reach me",
       li_desc:"Let's connect professionally", gh_desc:"Browse my repositories",
-      chips:["Full-time","Hybrid","Magang","Kontrak","Remote"],
+      chips:["Full-time","Hybrid","Internship","Contract","Remote"],
       terminal:["> checking_availability...","> status: available_for_work ✓","> location: Bekasi, West Java · Remote OK"],
     },
   },
@@ -36,7 +36,7 @@ export const i18n = {
     nav: { about:"Tentang", skills:"Keahlian", projects:"Proyek", certifications:"Sertifikasi", organizations:"Organisasi", contact:"Kontak" },
     hero: {
       badge:"Terbuka untuk Kerja", role:"Junior Backend Developer",
-      tagline:"Saya membangun sistem backend yang andal dan skalabel — dari REST API dan basis data relasional hingga alur autentikasi yang aman.",
+      tagline:"Saya membangun sistem backend yang tahan banting — REST API yang bersih, database yang solid, dan autentikasi yang tidak jebol jam 3 pagi.",
       github:"GitHub", touch:"Hubungi Saya", cv:"Unduh CV",
       gpa:"IPK / 4.00", projects:"Proyek", org:"Pengalaman Org", scroll:"gulir", dev_role:"Backend Developer",
     },
@@ -55,7 +55,7 @@ export const i18n = {
     organizations: { label:"organisasi", title:"Perjalanan Organisasi", see_ig:"Lihat di Instagram" },
     contact: {
       label:"kontak", headline:"Ayo bekerja sama.",
-      sub:"Aktif mencari posisi Junior Backend Developer.",
+      sub:"Aktif mencari posisi Junior Backend Developer — full-time, hybrid, atau remote.",
       location_badge:"Bekasi, Jawa Barat · Remote OK",
       send:"Kirim Email ✉", connect:"Terhubung di LinkedIn",
       built:"dibangun dengan", by:"oleh Berlin Sugiyanto Hutajulu",
