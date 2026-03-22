@@ -9,9 +9,7 @@ import Projects from "./components/Projects";
 import Certifications from "./components/Certifications";
 import Organizations from "./components/Organizations";
 import Contact from "./components/Contact";
-// NEW FEATURES
 import GitHubActivity from "./components/GitHubActivity";
-import SpotifyWidget from "./components/SpotifyWidget";
 import TerminalEgg from "./components/TerminalEgg";
 import ProjectDetailModal from "./components/ProjectDetailModal";
 
@@ -133,6 +131,8 @@ const BackToTop = () => {
 
 function App() {
   const [loading, setLoading] = useState(true);
+
+  // ── Lang state ──
   const [lang, setLang] = useState(() => {
     return localStorage.getItem("portfolio-lang") || "en";
   });
@@ -176,16 +176,11 @@ function App() {
         <Projects />
         <Certifications />
         <Organizations />
-        {/* ── NEW: GitHub Activity section ── */}
         <GitHubActivity />
         <Contact />
         <SectionDots />
         <BackToTop />
-        {/* ── NEW: Terminal Easter Egg (global, triggered by Konami or typing) ── */}
         <TerminalEgg />
-        {/* ── NEW: Spotify Now Playing widget (floating bottom-left) ── */}
-        <SpotifyWidget />
-        {/* ── NEW: Project Detail Modal ── */}
         <ProjectDetailModal />
       </div>
     </LangContext.Provider>
