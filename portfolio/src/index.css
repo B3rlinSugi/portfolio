@@ -265,3 +265,59 @@ body::before {
     margin-bottom: 36px;
   }
 }
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE — tambahkan di BAGIAN PALING BAWAH index.css
+   ═══════════════════════════════════════════ */
+
+[data-theme="light"] {
+  --navy:   #F0F4FF;
+  --navy-2: #E8EEFF;
+  --navy-3: #DDE5FF;
+  --white:  #0F1D3A;
+  --white-2:#1E3A6E;
+  --cyan:   #0369A1;
+  --blue-3: #1D4ED8;
+  --muted:  #4B6CB7;
+  --muted-2:#6B84A8;
+}
+
+[data-theme="light"] body {
+  background: #F0F4FF;
+  color: #0F1D3A;
+}
+
+/* Navbar background in light mode */
+[data-theme="light"] nav {
+  background: rgba(240,244,255,0.92) !important;
+  border-bottom: 1px solid rgba(29,78,216,0.12) !important;
+}
+
+/* Section backgrounds */
+[data-theme="light"] #about,
+[data-theme="light"] #projects,
+[data-theme="light"] #certifications,
+[data-theme="light"] #organizations,
+[data-theme="light"] #github-activity {
+  background: #E8EEFF !important;
+}
+
+[data-theme="light"] #hero,
+[data-theme="light"] #skills,
+[data-theme="light"] #contact {
+  background: #F0F4FF !important;
+}
+
+/* Cards & borders */
+[data-theme="light"] .s-label {
+  color: #1D4ED8 !important;
+}
+
+[data-theme="light"] .s-title {
+  color: #0F1D3A !important;
+}
+
+/* Smooth transition on theme change */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+}
