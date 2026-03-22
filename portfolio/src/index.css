@@ -274,26 +274,37 @@ body::before {
   --navy:   #F0F4FF;
   --navy-2: #E8EEFF;
   --navy-3: #DDE5FF;
-  --white:  #0F1D3A;
+  --white:  #0A1628;
   --white-2:#1E3A6E;
   --cyan:   #0369A1;
   --blue-3: #1D4ED8;
   --muted:  #4B6CB7;
   --muted-2:#6B84A8;
 }
-
+ 
 [data-theme="light"] body {
   background: #F0F4FF;
-  color: #0F1D3A;
+  color: #0A1628;
 }
-
-/* Navbar background in light mode */
+ 
+/* Smooth transition */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease !important;
+}
+ 
+/* ── Navbar ── */
 [data-theme="light"] nav {
-  background: rgba(240,244,255,0.92) !important;
-  border-bottom: 1px solid rgba(29,78,216,0.12) !important;
+  background: rgba(240,244,255,0.95) !important;
+  border-bottom: 1px solid rgba(29,78,216,0.15) !important;
 }
-
-/* Section backgrounds */
+ 
+/* ── Section backgrounds ── */
+[data-theme="light"] #hero,
+[data-theme="light"] #skills,
+[data-theme="light"] #contact {
+  background: #F0F4FF !important;
+}
+ 
 [data-theme="light"] #about,
 [data-theme="light"] #projects,
 [data-theme="light"] #certifications,
@@ -301,23 +312,104 @@ body::before {
 [data-theme="light"] #github-activity {
   background: #E8EEFF !important;
 }
-
-[data-theme="light"] #hero,
-[data-theme="light"] #skills,
-[data-theme="light"] #contact {
-  background: #F0F4FF !important;
+ 
+/* ── About — stat cards & location card ── */
+[data-theme="light"] #about [style*="rgba(15,31,56"],
+[data-theme="light"] #about [style*="rgba(10,22,40"] {
+  background: rgba(255,255,255,0.85) !important;
+  color: #0A1628 !important;
 }
-
-/* Cards & borders */
-[data-theme="light"] .s-label {
+ 
+/* ── Skills — accordion cards & skill pills ── */
+[data-theme="light"] #skills [style*="rgba(15,31,56"],
+[data-theme="light"] #skills [style*="rgba(15,31,56,0.6)"],
+[data-theme="light"] #skills [style*="rgba(15,31,56,0.4)"] {
+  background: rgba(255,255,255,0.85) !important;
+  color: #0A1628 !important;
+}
+ 
+/* ── Projects — list cards & detail panel ── */
+[data-theme="light"] #projects [style*="rgba(15,31,56"],
+[data-theme="light"] #projects [style*="rgba(15,31,56,0.5)"],
+[data-theme="light"] #projects [style*="rgba(15,31,56,0.4)"],
+[data-theme="light"] #projects [style*="rgba(6,14,30"] {
+  background: rgba(255,255,255,0.9) !important;
+  color: #0A1628 !important;
+}
+ 
+[data-theme="light"] #projects p {
+  color: #2D4A8A !important;
+}
+ 
+/* ── Certifications — timeline cards ── */
+[data-theme="light"] #certifications [style*="rgba(15,31,56"],
+[data-theme="light"] #certifications [style*="rgba(15,31,56,0.65)"] {
+  background: rgba(255,255,255,0.9) !important;
+  color: #0A1628 !important;
+}
+ 
+/* ── GitHub Activity — stat badges & repo cards ── */
+[data-theme="light"] #github-activity [style*="rgba(15,31,56"],
+[data-theme="light"] #github-activity [style*="rgba(6,14,30"] {
+  background: rgba(255,255,255,0.9) !important;
+  color: #0A1628 !important;
+}
+ 
+[data-theme="light"] #github-activity p,
+[data-theme="light"] #github-activity span[style*="#6B84A8"],
+[data-theme="light"] #github-activity div[style*="#6B84A8"] {
+  color: #2D4A8A !important;
+}
+ 
+/* ── Contact — contact cards ── */
+[data-theme="light"] #contact [style*="rgba(15,31,56"],
+[data-theme="light"] #contact [style*="rgba(6,14,30"],
+[data-theme="light"] #contact [style*="rgba(10,20,38"] {
+  background: rgba(255,255,255,0.9) !important;
+  color: #0A1628 !important;
+}
+ 
+/* ── Terminal Easter Egg — keep dark ── */
+[data-theme="light"] [style*="rgba(4,10,22,0.97)"],
+[data-theme="light"] [style*="rgba(6,14,30,0.95)"] {
+  background: rgba(8,18,40,0.97) !important;
+}
+ 
+/* ── Project Detail Modal ── */
+[data-theme="light"] [style*="rgba(8,18,36,0.98)"] {
+  background: rgba(255,255,255,0.99) !important;
+}
+ 
+[data-theme="light"] [style*="rgba(8,18,36,0.98)"] h2,
+[data-theme="light"] [style*="rgba(8,18,36,0.98)"] h3,
+[data-theme="light"] [style*="rgba(8,18,36,0.98)"] span {
+  color: #0A1628 !important;
+}
+ 
+[data-theme="light"] [style*="rgba(8,18,36,0.98)"] p,
+[data-theme="light"] [style*="rgba(8,18,36,0.98)"] [style*="#6B84A8"],
+[data-theme="light"] [style*="rgba(8,18,36,0.98)"] [style*="#8BA4C8"] {
+  color: #2D4A8A !important;
+}
+ 
+[data-theme="light"] [style*="rgba(8,18,36,0.98)"] [style*="rgba(6,14,30"],
+[data-theme="light"] [style*="rgba(8,18,36,0.98)"] [style*="rgba(15,31,56"] {
+  background: rgba(240,244,255,0.9) !important;
+}
+ 
+/* ── General CSS variable text fixes ── */
+[data-theme="light"] .s-title { color: #0A1628 !important; }
+[data-theme="light"] .s-label { color: #1D4ED8 !important; }
+ 
+/* ── Back to top ── */
+[data-theme="light"] [title="Back to top"] {
+  background: rgba(255,255,255,0.95) !important;
+  border-color: rgba(29,78,216,0.2) !important;
   color: #1D4ED8 !important;
+  box-shadow: 0 4px 16px rgba(29,78,216,0.15) !important;
 }
-
-[data-theme="light"] .s-title {
-  color: #0F1D3A !important;
-}
-
-/* Smooth transition on theme change */
-*, *::before, *::after {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+ 
+/* ── Overlay backgrounds for modals ── */
+[data-theme="light"] [style*="rgba(4,10,22,0.85)"] {
+  background: rgba(10,22,50,0.7) !important;
 }
