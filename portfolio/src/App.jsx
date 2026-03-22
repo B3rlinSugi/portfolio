@@ -9,6 +9,11 @@ import Projects from "./components/Projects";
 import Certifications from "./components/Certifications";
 import Organizations from "./components/Organizations";
 import Contact from "./components/Contact";
+// NEW FEATURES
+import GitHubActivity from "./components/GitHubActivity";
+import SpotifyWidget from "./components/SpotifyWidget";
+import TerminalEgg from "./components/TerminalEgg";
+import ProjectDetailModal from "./components/ProjectDetailModal";
 
 const GradientMesh = () => (
   <div style={{ position:"fixed", inset:0, zIndex:0, pointerEvents:"none", overflow:"hidden" }}>
@@ -27,7 +32,6 @@ const GradientMesh = () => (
   </div>
 );
 
-/* ── Blur-to-Sharp Loader — cinematic, slow ── */
 const Loader = ({ onDone }) => {
   const [fadeOut, setFadeOut] = useState(false);
   const [line1, setLine1] = useState(false);
@@ -69,7 +73,6 @@ const Loader = ({ onDone }) => {
       <div style={{ position:"absolute", inset:0, background:"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.02) 2px,rgba(0,0,0,0.02) 4px)", pointerEvents:"none", zIndex:1 }} />
       <div style={{ position:"absolute", top:"15%", left:"10%", width:"45vw", height:"45vw", background:"radial-gradient(circle,rgba(29,78,216,0.15),transparent 65%)", filter:"blur(70px)", pointerEvents:"none" }} />
       <div style={{ position:"absolute", bottom:"15%", right:"10%", width:"40vw", height:"40vw", background:"radial-gradient(circle,rgba(6,182,212,0.1),transparent 65%)", filter:"blur(70px)", pointerEvents:"none" }} />
-
       <div style={{ position:"relative", zIndex:2, display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
         <h1 style={{ fontFamily:"'Clash Display','Syne',sans-serif", fontSize:"clamp(56px,11vw,118px)", fontWeight:700, color:"#FFFFFF", letterSpacing:"-3px", margin:0, lineHeight:1, ...blurStyle(line1), textShadow: line1?"0 0 60px rgba(255,255,255,0.08)":"none" }}>Berlin</h1>
         <h1 style={{ fontFamily:"'Clash Display','Syne',sans-serif", fontSize:"clamp(56px,11vw,118px)", fontWeight:700, background:"linear-gradient(135deg,#3B82F6,#06B6D4 55%,#38BDF8)", WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent", backgroundSize:"200%", letterSpacing:"-3px", margin:0, lineHeight:1, ...blurStyle(line2), animation:line2?"gradShiftLoader 4s ease infinite":"none" }}>Sugiyanto</h1>
@@ -130,7 +133,16 @@ const BackToTop = () => {
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [lang, setLang] = useState("en");
+  // ── FIX: lang state lives in App and is passed down ──
+  const [lang, setLang] = useState(() => {
+    // Persist language preference in localStorage
+    return localStorage.getItem("portfolio-lang") || "en";
+  });
+
+  const handleSetLang = (newLang) => {
+    setLang(newLang);
+    localStorage.setItem("portfolio-lang", newLang);
+  };
 
   useEffect(() => {
     if (loading) return;
@@ -146,16 +158,25 @@ function App() {
       <GradientMesh />
       <div style={{ background:"transparent", minHeight:"100vh", opacity:loading?0:1, transition:"opacity 0.5s ease 0.1s", position:"relative", zIndex:1 }}>
         <div id="progress-bar" style={{ position:"fixed", top:0, left:0, height:3, background:"linear-gradient(to right,#1D4ED8,#06B6D4)", zIndex:201, width:"0%", transition:"width 0.08s linear", pointerEvents:"none" }} />
-        <Navbar />
+        {/* ── FIX: Pass lang + setLang to Navbar ── */}
+        <Navbar lang={lang} setLang={handleSetLang} />
         <Hero />
         <About />
         <Skills />
         <Projects />
         <Certifications />
         <Organizations />
+        {/* ── NEW: GitHub Activity section ── */}
+        <GitHubActivity />
         <Contact />
         <SectionDots />
         <BackToTop />
+        {/* ── NEW: Terminal Easter Egg (global, triggered by Konami or typing) ── */}
+        <TerminalEgg />
+        {/* ── NEW: Spotify Now Playing widget (floating bottom-left) ── */}
+        <SpotifyWidget />
+        {/* ── NEW: Project Detail Modal ── */}
+        <ProjectDetailModal />
       </div>
     </LangContext.Provider>
   );

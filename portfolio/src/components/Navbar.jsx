@@ -43,7 +43,41 @@ const SocialIcon = ({s}) => {
   );
 };
 
-const Navbar = () => {
+/* ── Language Toggle — NEW FIX ── */
+const LangToggle = ({ lang, setLang }) => {
+  const [hovered, setHovered] = useState(false);
+  const isEN = lang === "en";
+  return (
+    <button
+      onClick={() => setLang(isEN ? "id" : "en")}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      title={isEN ? "Switch to Bahasa Indonesia" : "Switch to English"}
+      style={{
+        display:"flex", alignItems:"center", gap:5,
+        padding:"5px 10px", borderRadius:7,
+        background: hovered ? "rgba(6,182,212,0.12)" : "rgba(6,182,212,0.06)",
+        border:`1px solid ${hovered ? "rgba(6,182,212,0.4)" : "rgba(6,182,212,0.2)"}`,
+        color:"#06B6D4", fontSize:11, fontWeight:700,
+        fontFamily:"'JetBrains Mono',monospace",
+        cursor:"pointer", letterSpacing:"0.5px",
+        transform: hovered ? "translateY(-1px)" : "none",
+        transition:"all 0.22s cubic-bezier(.22,1,.36,1)",
+        boxShadow: hovered ? "0 4px 14px rgba(6,182,212,0.2)" : "none",
+      }}
+    >
+      <span style={{fontSize:13,lineHeight:1}}>{isEN ? "🇮🇩" : "🇬🇧"}</span>
+      <span>{isEN ? "ID" : "EN"}</span>
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+        style={{opacity:0.7, transform: hovered ? "rotate(180deg)" : "none", transition:"transform 0.3s ease"}}>
+        <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+      </svg>
+    </button>
+  );
+};
+
+/* ── Navbar receives lang + setLang as props from App.jsx ── */
+const Navbar = ({ lang, setLang }) => {
   const [active, setActive] = useState("hero");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -101,7 +135,10 @@ const Navbar = () => {
             })}
           </ul>
           <div style={{width:1,height:16,background:"rgba(59,130,246,0.2)",margin:"0 4px"}}/>
-          {/* Download CV button */}
+          {/* ── Language Toggle ── */}
+          <LangToggle lang={lang} setLang={setLang} />
+          <div style={{width:1,height:16,background:"rgba(59,130,246,0.2)",margin:"0 4px"}}/>
+          {/* Download CV */}
           <a href="/cv.pdf" download
             style={{display:"flex",alignItems:"center",gap:6,padding:"6px 14px",borderRadius:7,background:"rgba(6,182,212,0.08)",border:"1px solid rgba(6,182,212,0.25)",color:"#06B6D4",fontSize:11,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",textDecoration:"none",transition:"all 0.2s ease",letterSpacing:"0.5px"}}
             onMouseEnter={e=>{e.currentTarget.style.background="rgba(6,182,212,0.18)";e.currentTarget.style.transform="translateY(-1px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(6,182,212,0.25)";}}
@@ -117,7 +154,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile menu */}
-      <div style={{position:"fixed",top:60,left:0,right:0,zIndex:199,background:"rgba(6,14,30,0.98)",backdropFilter:"blur(20px)",borderBottom:"1px solid rgba(59,130,246,0.12)",maxHeight:menuOpen?"420px":"0",overflow:"hidden",transition:"max-height 0.35s ease"}}>
+      <div style={{position:"fixed",top:60,left:0,right:0,zIndex:199,background:"rgba(6,14,30,0.98)",backdropFilter:"blur(20px)",borderBottom:"1px solid rgba(59,130,246,0.12)",maxHeight:menuOpen?"480px":"0",overflow:"hidden",transition:"max-height 0.35s ease"}}>
         <div style={{padding:"12px 28px 20px"}}>
           {navDots.map(link=>(
             <a key={link.id} href={"#"+link.id} onClick={e=>{e.preventDefault();go(link.id);}}
@@ -126,11 +163,10 @@ const Navbar = () => {
               {link.id.charAt(0).toUpperCase() + link.id.slice(1)}
             </a>
           ))}
-          <div style={{display:"flex",gap:12,paddingTop:16,alignItems:"center"}}>
+          <div style={{display:"flex",gap:10,paddingTop:16,alignItems:"center",flexWrap:"wrap"}}>
             {socials.map(s=><a key={s.title} href={s.href} target={s.href.startsWith("mailto")?undefined:"_blank"} rel="noreferrer" style={{color:"rgba(200,216,240,0.5)",textDecoration:"none"}}>{s.icon}</a>)}
-            <a href="/cv.pdf" download style={{marginLeft:"auto",background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.25)",borderRadius:6,color:"#06B6D4",fontSize:10,padding:"4px 10px",textDecoration:"none",fontFamily:"'JetBrains Mono',monospace",fontWeight:700}}>
-              CV
-            </a>
+            <LangToggle lang={lang} setLang={setLang} />
+            <a href="/cv.pdf" download style={{marginLeft:"auto",background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.25)",borderRadius:6,color:"#06B6D4",fontSize:10,padding:"4px 10px",textDecoration:"none",fontFamily:"'JetBrains Mono',monospace",fontWeight:700}}>CV</a>
           </div>
         </div>
       </div>
