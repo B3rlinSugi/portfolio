@@ -11,7 +11,6 @@ import Organizations from "./components/Organizations";
 import Contact from "./components/Contact";
 // NEW FEATURES
 import GitHubActivity from "./components/GitHubActivity";
-import SpotifyWidget from "./components/SpotifyWidget";
 import TerminalEgg from "./components/TerminalEgg";
 import ProjectDetailModal from "./components/ProjectDetailModal";
 
@@ -173,8 +172,6 @@ function App() {
         <BackToTop />
         {/* ── NEW: Terminal Easter Egg (global, triggered by Konami or typing) ── */}
         <TerminalEgg />
-        {/* ── NEW: Spotify Now Playing widget (floating bottom-left) ── */}
-        <SpotifyWidget />
         {/* ── NEW: Project Detail Modal ── */}
         <ProjectDetailModal />
       </div>
