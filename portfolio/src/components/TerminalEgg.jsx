@@ -98,9 +98,10 @@ const TerminalEgg = () => {
       if (!open && e.key.length === 1) {
         keyBuffer.current += e.key.toLowerCase();
         if (keyBuffer.current.includes("berlin")) {
-          keyBuffer.current = "";
-          setOpen(true);
-        }
+            keyBuffer.current = "";
+            setOpen(true);
+            setInput(""); // clear input saat terbuka
+          }
         clearTimeout(keyTimer.current);
         keyTimer.current = setTimeout(() => { keyBuffer.current = ""; }, 2000);
       }
