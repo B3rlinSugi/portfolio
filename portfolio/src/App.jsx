@@ -146,9 +146,37 @@ function App() {
 
   // Apply theme to <html> element
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("portfolio-theme", theme);
-  }, [theme]);
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("portfolio-theme", theme);
+
+  const styleId = "light-mode-overrides";
+  let el = document.getElementById(styleId);
+  if (!el) {
+    el = document.createElement("style");
+    el.id = styleId;
+    document.head.appendChild(el);
+  }
+
+  if (theme === "light") {
+    el.textContent = `
+      section { background: #F0F4FF !important; }
+      #about, #projects, #certifications, #organizations, #github-activity { background: #E8EEFF !important; }
+      [style*="rgba(15,31,56"], [style*="rgba(6,14,30"], [style*="rgba(10,22,40"], [style*="rgba(4,10,22"] {
+        background: rgba(255,255,255,0.88) !important;
+        color: #0A1628 !important;
+        border-color: rgba(29,78,216,0.15) !important;
+      }
+      [style*="color: #6B84A8"], [style*="color:#6B84A8"],
+      [style*="color: #8BA4C8"], [style*="color:#8BA4C8"],
+      [style*="color: var(--muted)"] { color: #2D4A8A !important; }
+      [style*="color: var(--white)"], [style*="color:var(--white)"] { color: #0A1628 !important; }
+      [style*="color: var(--white-2)"], [style*="color:var(--white-2)"] { color: #1E3A6E !important; }
+      .s-title { color: #0A1628 !important; }
+    `;
+  } else {
+    el.textContent = "";
+  }
+}, [theme]);
 
   const handleSetLang = (newLang) => {
     setLang(newLang);
