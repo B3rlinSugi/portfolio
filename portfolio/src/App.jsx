@@ -10,6 +10,7 @@ import Certifications from "./components/Certifications";
 import Organizations from "./components/Organizations";
 import Contact from "./components/Contact";
 import GitHubActivity from "./components/GitHubActivity";
+import GitHubStats from "./components/GitHubStats";
 import TerminalEgg from "./components/TerminalEgg";
 import ProjectDetailModal from "./components/ProjectDetailModal";
 
@@ -205,6 +206,7 @@ function App() {
         <Certifications />
         <Organizations />
         <GitHubActivity />
+        <GitHubStats />
         <Contact />
         <SectionDots />
         <BackToTop />

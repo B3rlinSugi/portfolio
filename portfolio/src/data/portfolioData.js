@@ -66,10 +66,11 @@ export const data = {
   projects: [
     {
       title: "Student Management API",
-      type: "Personal Project",
+      type: "RESTful API",
       period: "Mar 2026",
       github: "https://github.com/B3rlinSugi/student-management-api",
-      demo: null,
+      demo: "https://student-api-demo.vercel.app",
+      postman: "https://www.postman.com/berlinsugi/workspace/student-management-api",
       desc: "A production-ready RESTful API built with Laravel 11 — featuring JWT Authentication, Role-Based Access Control, full CRUD with Soft Delete, Search, Filter & Pagination. Designed to demonstrate enterprise-grade backend patterns: stateless auth, thin controllers, and a single performant query layer handling search, filter, sort, and pagination simultaneously.",
       points: [
         {
@@ -93,14 +94,42 @@ export const data = {
         { name: "PHP 8.2",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
         { name: "MySQL 8",    icon: "https://cdn.simpleicons.org/mysql/00758F" },
         { name: "JWT",        icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
+        { name: "Postman",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
       ],
     },
     {
+      title: "Spring Boot Student API",
+      type: "RESTful API",
+      period: "Mar 2026",
+      github: "https://github.com/B3rlinSugi/springboot-student-api",
+      demo: null,
+      postman: null,
+      desc: "A Java-based RESTful API built with Spring Boot 3 — featuring JWT Authentication, JPA/Hibernate ORM, and MySQL database. Demonstrates enterprise Java backend development with proper layered architecture (Controller → Service → Repository).",
+      points: [
+        {
+          challenge: "Needed to learn Java backend development to broaden tech stack beyond PHP/Laravel.",
+          solution: "Built a complete Student Management API using Spring Boot 3 with Spring Security and JWT token authentication. Implemented proper layered architecture with clear separation of concerns.",
+          result: "Successfully delivered a production-ready REST API with proper error handling, input validation, and documentation.",
+        },
+        {
+          challenge: "Database operations needed to be efficient and maintainable.",
+          solution: "Used Spring Data JPA with Hibernate ORM, implementing custom queries and relationships between entities (Student, Course, Grade).",
+          result: "Clean, maintainable data access layer with proper entity relationships and lazy/eager loading strategies.",
+        },
+      ],
+      tech: [
+        { name: "Spring Boot", icon: "https://cdn.simpleicons.org/springboot/6DB33F" },
+        { name: "Java 17",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
+        { name: "MySQL",      icon: "https://cdn.simpleicons.org/mysql/00758F" },
+        { name: "JWT",        icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
+        { name: "Postman",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
+      ],
       title: "TokoKu — E-Commerce Platform",
-      type: "Personal Project",
+      type: "Full-Stack Web App",
       period: "Jan 2026 - Feb 2026",
       github: "https://github.com/B3rlinSugi/tokoku-ecommerce",
-      demo: null,
+      demo: "https://tokoku-ecommerce.vercel.app",
+      postman: null,
       desc: "Full-stack e-commerce backend engineered for transaction reliability — from a 10-table relational database to secure payment flows and a real-time admin dashboard. The core challenge was ensuring data consistency across the entire order lifecycle: cart → checkout → payment → stock deduction, with zero room for partial failures.",
       points: [
         {

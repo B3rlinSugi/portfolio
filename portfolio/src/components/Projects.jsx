@@ -158,6 +158,22 @@ const Projects = () => {
                 ))}
               </div>
               <div style={{ display: "flex", gap: 8 }}>
+                {p.demo && (
+                  <a href={p.demo} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
+                    onMouseEnter={e => { e.currentTarget.style.background = `${a}22`; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = `${a}10`; e.currentTarget.style.transform = "none"; }}>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Live Demo
+                  </a>
+                )}
+                {p.postman && (
+                  <a href={p.postman} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
+                    onMouseEnter={e => { e.currentTarget.style.background = `${a}22`; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = `${a}10`; e.currentTarget.style.transform = "none"; }}>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    API Docs
+                  </a>
+                )}
                 <button
                   onClick={() => window.__openProject?.(p.title)}
                   style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12.5, fontWeight: 600, fontFamily: "'Outfit',sans-serif", cursor: "pointer", transition: "all 0.2s" }}
