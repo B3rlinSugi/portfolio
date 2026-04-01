@@ -31,7 +31,6 @@ export const data = {
         { name: "Laravel",     icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
         { name: "CodeIgniter", icon: "https://cdn.simpleicons.org/codeigniter/EF4223" },
         { name: "Bootstrap 5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
-        { name: "Vue.js",      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg" },
       ],
     },
     {
@@ -60,6 +59,25 @@ export const data = {
         { name: "XAMPP",   icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg" },
         { name: "Figma",   icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
       ],
+    },
+  ],
+
+  // Currently learning — shown separately with "learning" badge, honest about WIP status
+  learning: [
+    {
+      name: "Vue.js",
+      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg",
+      desc: "Building lightweight frontends to complement backend APIs",
+    },
+    {
+      name: "Docker",
+      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg",
+      desc: "Containerising Laravel apps for consistent deployment",
+    },
+    {
+      name: "TypeScript",
+      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg",
+      desc: "Exploring typed JavaScript for safer API consumers",
     },
   ],
 

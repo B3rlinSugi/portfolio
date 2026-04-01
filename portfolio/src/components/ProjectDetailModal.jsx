@@ -1,22 +1,44 @@
 import { useEffect, useState } from "react";
 import { data } from "../data/portfolioData";
 
-/* ─────────────────────────────────────────────
-   Project Detail Modal
-   No React Router needed — uses a modal overlay.
-   
-   HOW TO USE:
-   Import and add <ProjectDetailModal /> once in App.jsx (already done).
-   Then in Projects.jsx, replace the GitHub button with:
-     onClick={() => window.__openProject(project.title)}
-───────────────────────────────────────────── */
-
 const accents = [
   { a: "#3B82F6", b: "#06B6D4" },
   { a: "#8B5CF6", b: "#3B82F6" },
   { a: "#06B6D4", b: "#10B981" },
   { a: "#F59E0B", b: "#EF4444" },
 ];
+
+const CSRBlock = ({ point, index, a }) => {
+  const rows = [
+    { label: "Challenge", icon: "⚠", color: "#F59E0B", bg: "rgba(245,158,11,0.06)", border: "rgba(245,158,11,0.15)", text: point.challenge },
+    { label: "Solution",  icon: "⚙", color: a,         bg: `${a}06`,               border: `${a}18`,                text: point.solution  },
+    { label: "Result",    icon: "✓", color: "#10B981",  bg: "rgba(16,185,129,0.06)", border: "rgba(16,185,129,0.15)", text: point.result    },
+  ];
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      {/* Point number header */}
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+        <div style={{ width: 22, height: 22, borderRadius: 7, flexShrink: 0, background: `${a}18`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9.5, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace" }}>{index + 1}</div>
+        <div style={{ height: 1, flex: 1, background: `${a}15` }} />
+      </div>
+
+      {/* Challenge → Solution → Result rows */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, paddingLeft: 4 }}>
+        {rows.map(row => (
+          <div key={row.label} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 14px", borderRadius: 9, background: row.bg, border: `1px solid ${row.border}` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, paddingTop: 1 }}>
+              <span style={{ fontSize: 11, color: row.color }}>{row.icon}</span>
+              <span style={{ fontSize: 9.5, fontWeight: 700, color: row.color, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "1px", textTransform: "uppercase", minWidth: 56 }}>{row.label}</span>
+            </div>
+            <div style={{ width: 1, background: `${row.color}25`, alignSelf: "stretch", flexShrink: 0 }} />
+            <p style={{ fontSize: 13, color: "#8BA4C8", lineHeight: 1.7, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{row.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const ProjectDetailModal = () => {
   const [project, setProject] = useState(null);
@@ -41,13 +63,11 @@ const ProjectDetailModal = () => {
     }, 280);
   };
 
-  // Expose globally so Projects.jsx can trigger it
   useEffect(() => {
     window.__openProject = open;
     return () => { delete window.__openProject; };
   }, []);
 
-  // Keyboard close
   useEffect(() => {
     if (!visible) return;
     const onKey = (e) => { if (e.key === "Escape") close(); };
@@ -59,6 +79,9 @@ const ProjectDetailModal = () => {
 
   const idx = data.projects.findIndex(p => p.title === project.title);
   const { a, b } = accents[idx % accents.length];
+
+  // Detect if points use new CSR format or legacy string format
+  const isCSR = project.points.length > 0 && typeof project.points[0] === "object";
 
   return (
     <div
@@ -73,16 +96,16 @@ const ProjectDetailModal = () => {
       }}
     >
       <div style={{
-        width: "100%", maxWidth: 680,
+        width: "100%", maxWidth: 720,
         maxHeight: "90vh", overflowY: "auto",
-        borderRadius: 20, overflow: "hidden",
+        borderRadius: 20,
         background: "rgba(8,18,36,0.98)",
         border: `1px solid ${a}40`,
         boxShadow: `0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px ${a}20`,
         animation: closing ? "modalSlideOut 0.28s cubic-bezier(.22,1,.36,1) forwards" : "modalSlideIn 0.35s cubic-bezier(.22,1,.36,1)",
       }}>
         {/* Gradient top bar */}
-        <div style={{ height: 3, background: `linear-gradient(to right,${a},${b})`, flexShrink: 0 }} />
+        <div style={{ height: 3, background: `linear-gradient(to right,${a},${b})`, flexShrink: 0, borderRadius: "20px 20px 0 0" }} />
 
         {/* Header */}
         <div style={{ padding: "24px 28px 0", position: "relative" }}>
@@ -102,17 +125,44 @@ const ProjectDetailModal = () => {
           <p style={{ fontSize: 14, color: "#6B84A8", lineHeight: 1.8, fontFamily: "'Outfit',sans-serif", margin: "0 0 24px" }}>{project.desc}</p>
         </div>
 
-        {/* Achievements */}
-        <div style={{ padding: "0 28px 20px" }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "2px", textTransform: "uppercase", marginBottom: 12 }}>KEY ACHIEVEMENTS</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {project.points.map((pt, i) => (
-              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 16px", borderRadius: 10, background: `${a}06`, border: `1px solid ${a}12` }}>
-                <div style={{ width: 22, height: 22, borderRadius: 7, flexShrink: 0, background: `${a}18`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9.5, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace", marginTop: 1 }}>{i + 1}</div>
-                <p style={{ fontSize: 13.5, color: "#8BA4C8", lineHeight: 1.75, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt}</p>
-              </div>
-            ))}
+        {/* Legend (only for CSR format) */}
+        {isCSR && (
+          <div style={{ padding: "0 28px 16px" }}>
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+              {[
+                { icon: "⚠", label: "Challenge", color: "#F59E0B" },
+                { icon: "⚙", label: "Solution",  color: a },
+                { icon: "✓", label: "Result",    color: "#10B981" },
+              ].map(item => (
+                <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10.5, color: item.color, fontFamily: "'JetBrains Mono',monospace", fontWeight: 600 }}>
+                  <span>{item.icon}</span>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
+        )}
+
+        {/* Points — CSR or legacy */}
+        <div style={{ padding: "0 28px 20px" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "2px", textTransform: "uppercase", marginBottom: 14 }}>
+            {isCSR ? "CHALLENGE → SOLUTION → RESULT" : "KEY ACHIEVEMENTS"}
+          </div>
+
+          {isCSR ? (
+            project.points.map((pt, i) => (
+              <CSRBlock key={i} point={pt} index={i} a={a} />
+            ))
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {project.points.map((pt, i) => (
+                <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 16px", borderRadius: 10, background: `${a}06`, border: `1px solid ${a}12` }}>
+                  <div style={{ width: 22, height: 22, borderRadius: 7, flexShrink: 0, background: `${a}18`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9.5, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace", marginTop: 1 }}>{i + 1}</div>
+                  <p style={{ fontSize: 13.5, color: "#8BA4C8", lineHeight: 1.75, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Tech Stack */}

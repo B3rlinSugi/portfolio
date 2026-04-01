@@ -9,6 +9,27 @@ const accents = [
   { a: "#06B6D4", b: "#10B981" },
 ];
 
+// Compact CSR row for the project card preview
+const CSRPreviewRow = ({ point, index, a }) => (
+  <div style={{ display: "flex", flexDirection: "column", gap: 4, padding: "10px 14px", borderRadius: 9, background: `${a}06`, border: `1px solid ${a}12` }}>
+    {/* Point number + Challenge label */}
+    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      <span style={{ width: 18, height: 18, borderRadius: 5, flexShrink: 0, background: `${a}18`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace" }}>{index + 1}</span>
+      <span style={{ fontSize: 9, fontWeight: 700, color: "#F59E0B", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.8px" }}>⚠ CHALLENGE</span>
+    </div>
+    <p style={{ fontSize: 12.5, color: "#8BA4C8", lineHeight: 1.6, fontFamily: "'Outfit',sans-serif", margin: "0 0 0 24px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+      {point.challenge}
+    </p>
+    {/* Solution teaser */}
+    <div style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 24 }}>
+      <span style={{ fontSize: 9, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.8px" }}>⚙ SOLUTION →</span>
+      <span style={{ fontSize: 11.5, color: "rgba(139,164,200,0.6)", fontFamily: "'Outfit',sans-serif", display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+        {point.solution}
+      </span>
+    </div>
+  </div>
+);
+
 const Projects = () => {
   const ref = useRef(null);
   const [visible, setVisible]   = useState(false);
@@ -33,6 +54,9 @@ const Projects = () => {
 
   const p = data.projects[active];
   const { a, b } = accents[active % accents.length];
+
+  // Detect CSR format
+  const isCSR = p.points.length > 0 && typeof p.points[0] === "object";
 
   return (
     <section id="projects" ref={ref} style={{ background:"var(--navy-2)", borderTop:"1px solid rgba(59,130,246,0.07)" }}>
@@ -77,7 +101,7 @@ const Projects = () => {
           })}
         </div>
 
-        {/* ── RIGHT: active detail — scale+blur reveal ── */}
+        {/* ── RIGHT: active detail ── */}
         <div style={{
           borderRadius: 16, overflow: "hidden",
           background: "rgba(15,31,56,0.5)",
@@ -104,14 +128,20 @@ const Projects = () => {
 
             <p style={{ fontSize: 14, color: "#6B84A8", marginBottom: 20, lineHeight: 1.8, fontFamily: "'Outfit',sans-serif" }}>{p.desc}</p>
 
-            {/* Achievement points */}
+            {/* Points — CSR compact preview or legacy */}
             <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 22 }}>
-              {p.points.map((pt, i) => (
-                <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 14px", borderRadius: 9, background: `${a}06`, border: `1px solid ${a}12` }}>
-                  <span style={{ width: 20, height: 20, borderRadius: 6, flexShrink: 0, background: `${a}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9.5, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace", marginTop: 1 }}>{i + 1}</span>
-                  <p style={{ fontSize: 13, color: "#8BA4C8", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt}</p>
-                </div>
-              ))}
+              {isCSR ? (
+                p.points.map((pt, i) => (
+                  <CSRPreviewRow key={i} point={pt} index={i} a={a} />
+                ))
+              ) : (
+                p.points.map((pt, i) => (
+                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 14px", borderRadius: 9, background: `${a}06`, border: `1px solid ${a}12` }}>
+                    <span style={{ width: 20, height: 20, borderRadius: 6, flexShrink: 0, background: `${a}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9.5, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace", marginTop: 1 }}>{i + 1}</span>
+                    <p style={{ fontSize: 13, color: "#8BA4C8", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt}</p>
+                  </div>
+                ))
+              )}
             </div>
 
             {/* Footer */}
@@ -128,14 +158,13 @@ const Projects = () => {
                 ))}
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                {/* ── NEW: View Details button → opens ProjectDetailModal ── */}
                 <button
                   onClick={() => window.__openProject?.(p.title)}
                   style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12.5, fontWeight: 600, fontFamily: "'Outfit',sans-serif", cursor: "pointer", transition: "all 0.2s" }}
                   onMouseEnter={e => { e.currentTarget.style.background = `${a}22`; e.currentTarget.style.transform = "translateY(-1px)"; }}
                   onMouseLeave={e => { e.currentTarget.style.background = `${a}10`; e.currentTarget.style.transform = "none"; }}>
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                  Details
+                  Full Details
                 </button>
                 <a href={p.github} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}18`, border: `1px solid ${a}40`, color: "var(--white)", fontSize: 12.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
                   onMouseEnter={e => { e.currentTarget.style.background = `${a}28`; }}
