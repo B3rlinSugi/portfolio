@@ -45,6 +45,7 @@ const Projects = () => {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRevealed(false);
     const timer = setTimeout(() => setRevealed(true), 60);
     return () => clearTimeout(timer);

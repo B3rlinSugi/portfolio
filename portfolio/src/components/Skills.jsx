@@ -91,7 +91,10 @@ const AccordionItem = ({ category, visible, defaultOpen = false, delay = 0 }) =>
   const [headerHovered, setHeaderHovered] = useState(false);
   const { color, bg, border } = categoryColors[category.category] || { color: "#3B82F6", bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.2)" };
 
-  useEffect(() => { if (visible && defaultOpen) setOpen(true); }, [visible]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (visible && defaultOpen) setOpen(true);
+  }, [visible, defaultOpen]);
 
   return (
     <div style={{
@@ -99,6 +102,7 @@ const AccordionItem = ({ category, visible, defaultOpen = false, delay = 0 }) =>
       borderRadius: 16, overflow: "hidden",
       background: open ? bg : headerHovered ? `${bg}60` : "rgba(15,31,56,0.4)",
       transition: "border-color 0.3s, background 0.3s, box-shadow 0.3s",
+      transitionDelay: `${delay}ms`,
       boxShadow: open
         ? `0 8px 32px rgba(0,0,0,0.2), 0 0 0 1px ${color}15, 0 0 40px ${color}08`
         : headerHovered ? `0 4px 20px rgba(0,0,0,0.15), 0 0 0 1px ${color}10` : "none",

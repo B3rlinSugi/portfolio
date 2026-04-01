@@ -11,6 +11,7 @@ import Organizations from "./components/Organizations";
 import Contact from "./components/Contact";
 import GitHubActivity from "./components/GitHubActivity";
 import GitHubStats from "./components/GitHubStats";
+import OperationalReadiness from "./components/OperationalReadiness";
 import TerminalEgg from "./components/TerminalEgg";
 import ProjectDetailModal from "./components/ProjectDetailModal";
 
@@ -93,7 +94,7 @@ const Loader = ({ onDone }) => {
 
 const sections = [
   {id:"hero",label:"Home"},{id:"about",label:"About"},{id:"skills",label:"Skills"},
-  {id:"projects",label:"Projects"},{id:"certifications",label:"Certifications"},
+  {id:"projects",label:"Projects"},{id:"github-activity",label:"GitHub"},{id:"operational-readiness",label:"Ops"},{id:"certifications",label:"Certifications"},
   {id:"organizations",label:"Organizations"},{id:"contact",label:"Contact"},
 ];
 
@@ -203,10 +204,11 @@ function App() {
         <About />
         <Skills />
         <Projects />
-        <Certifications />
-        <Organizations />
         <GitHubActivity />
         <GitHubStats />
+        <OperationalReadiness />
+        <Certifications />
+        <Organizations />
         <Contact />
         <SectionDots />
         <BackToTop />

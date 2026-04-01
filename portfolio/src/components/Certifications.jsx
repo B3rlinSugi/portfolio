@@ -3,8 +3,6 @@ import { LangContext } from "../LangContext";
 import { i18n } from "../i18n";
 import { data } from "../data/portfolioData";
 
-const accentColors = ["#3B82F6", "#06B6D4", "#8B5CF6", "#10B981", "#F59E0B", "#EF4444"];
-
 const yearAccents = { "2022": "#3B82F6", "2023": "#06B6D4", "2024": "#8B5CF6", "2025": "#10B981" };
 
 const TimelineCard = ({ cert, index, side, visible, color }) => {
@@ -140,7 +138,7 @@ const Certifications = () => {
               </div>
 
               {/* Cards alternating left/right */}
-              {certs.map((cert, ci) => {
+              {certs.map((cert) => {
                 const idx = globalIndex++;
                 const side = idx % 2 === 0 ? "left" : "right";
                 return (

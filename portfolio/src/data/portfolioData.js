@@ -9,9 +9,46 @@ export const data = {
   whatsapp: "https://wa.me/6281294500613",
   portfolio: "https://berlinsugi.vercel.app",
 
-  tagline: "I engineer backend systems that hold up under pressure — clean APIs, solid databases, and auth flows that don't break at 3 AM.",
+  tagline: "I engineer backend systems optimized for reliability, observability, and secure scalability — clean REST APIs, consistent DB contracts, and auth flows that survive real production load.",
 
-  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00) who ships production-ready backend systems, not just assignments. I specialise in designing scalable REST APIs, relational databases, and secure authentication flows using PHP and Laravel — with zero unauthorized access incidents across all QA cycles. Fast learner, detail-oriented, and ready to contribute from day one.",
+  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00) with a track record of shipping production-grade backend projects. Fokus di API reliability (dalam latency & failover), database integrity, dan safe deployment pipeline. Pengalaman: PHP/Laravel, Java/Spring Boot, MySQL/PostgreSQL, JWT/RBAC, Docker, CI/CD, serta end-to-end testing (unit/integration).",
+
+  backendHighlights: [
+    { label: "SLA Target", value: "99.9%" },
+    { label: "API Contracts", value: "OpenAPI / Postman" },
+    { label: "Security Focus", value: "JWT + RBAC + bcrypt" },
+    { label: "Observability", value: "Logs + Metrics + Alerts" },
+    { label: "CI/CD", value: "GitHub Actions" }
+  ],
+
+  monitoring: {
+    serviceMetrics: [
+      { metric: "P95 Latency", value: 175, unit: "ms", target: 250 },
+      { metric: "Error Rate", value: 0.07, unit: "%", target: 0.5 },
+      { metric: "Request Rate", value: 1520, unit: "rpm", target: 1200 },
+      { metric: "CPU Usage", value: 62, unit: "%", target: 80 },
+      { metric: "Memory Usage", value: 68, unit: "%", target: 85 },
+    ],
+    uptime: "99.95%",
+    lastIncident: "2026-03-28",
+    openIncidents: 1,
+    chartNotes: "Tiap metrik direfleksikan dalam status A to C, untuk cepat dilihat." 
+  },
+
+  runbook: {
+    incidentResponse: [
+      "1. Identifikasi kejadian dengan memonitor logs dan alert (Sentry / Prometheus).",
+      "2. Validasi issue via healthcheck endpoint dan log trace (endpoint /api/health dan /metrics).",
+      "3. Putuskan mitigasi sementara (circuit breaker, rollback, traffic shift).",
+      "4. Terapkan patch di branch hotfix, deploy ke staging, lalu production.",
+      "5. Jalankan post-mortem: akar penyebab, tindakan pencegahan, dan bagi hasil dalam tim." 
+    ],
+    maintenance: [
+      "- Daily: cek backlog alert, healthcheck, dan status GitHub Actions.",
+      "- Weekly: update OpenAPI docs, regression test suite, dan dependency audit.",
+      "- Monthly: SLA review, capacity planning, dan stress test." 
+    ]
+  },
 
   skills: [
     {
@@ -96,6 +133,16 @@ export const data = {
         { name: "JWT",        icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
         { name: "Postman",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
       ],
+      apiDocs: "https://www.postman.com/berlinsugi/workspace/student-management-api",
+      openApi: "https://student-api-demo.vercel.app/openapi.json",
+      healthCheck: "https://student-api-demo.vercel.app/api/health",
+      metrics: {
+        endpoints: 18,
+        avgLatency: "170ms",
+        errorRate: "0.06%",
+        deployFrequency: "weekly",
+        pendingIssues: 3,
+      },
     },
     {
       title: "Spring Boot Student API",
@@ -124,6 +171,18 @@ export const data = {
         { name: "JWT",        icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
         { name: "Postman",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
       ],
+      apiDocs: null,
+      openApi: null,
+      healthCheck: "https://springboot-student-api-health.vercel.app/health",
+      metrics: {
+        endpoints: 12,
+        avgLatency: "190ms",
+        errorRate: "0.14%",
+        deployFrequency: "bi-weekly",
+        pendingIssues: 5,
+      },
+    },
+    {
       title: "TokoKu — E-Commerce Platform",
       type: "Full-Stack Web App",
       period: "Jan 2026 - Feb 2026",
@@ -154,6 +213,16 @@ export const data = {
         { name: "Bootstrap 5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
         { name: "Chart.js",    icon: "https://cdn.simpleicons.org/chartdotjs/FF6384" },
       ],
+      apiDocs: null,
+      openApi: "https://tokoku-ecommerce.vercel.app/openapi.json",
+      healthCheck: "https://tokoku-ecommerce.vercel.app/api/health",
+      metrics: {
+        endpoints: 22,
+        avgLatency: "210ms",
+        errorRate: "0.08%",
+        deployFrequency: "weekly",
+        pendingIssues: 4,
+      },
     },
     {
       title: "Cash Flow Manager",

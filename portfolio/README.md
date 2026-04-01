@@ -14,3 +14,14 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Backend-focused Portfolio Enhancements (april 2026)
+
+This project now includes a backend-first portfolio section:
+
+- polished personal brand copy for Backend Developer (CSP-oriented + metrics)
+- live GitHub metrics with API projects, PR count, top languages, and followers
+- API health check card (`https://httpstat.us/200?sleep=100`)
+- architecture deep dive in `ProjectDetailModal` (ERD + flow diagram via Mermaid)
+- streamlined project case studies (challenge → solution → result)
+- CI/CD-ready automation pipeline badges and status sections

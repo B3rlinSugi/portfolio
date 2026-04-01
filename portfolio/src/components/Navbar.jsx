@@ -31,6 +31,7 @@ function useVisitorCount() {
       localStorage.setItem(key, current.toString());
       sessionStorage.setItem(sessionKey, "1");
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCount(current);
   }, []);
   return count;
