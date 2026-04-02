@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
 import "./index.css";
 import { LangContext } from "./LangContext";
 import Navbar from "./components/Navbar";
@@ -6,6 +8,7 @@ import Hero from "./components/Hero";
 import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
+import OpenApiViewer from "./components/OpenApiViewer";
 import Certifications from "./components/Certifications";
 import Organizations from "./components/Organizations";
 import Contact from "./components/Contact";
@@ -14,6 +17,15 @@ import GitHubStats from "./components/GitHubStats";
 import OperationalReadiness from "./components/OperationalReadiness";
 import TerminalEgg from "./components/TerminalEgg";
 import ProjectDetailModal from "./components/ProjectDetailModal";
+
+if (import.meta.env.VITE_SENTRY_DSN) {
+  Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN,
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 0.1,
+    normalizeDepth: 2,
+  });
+}
 
 const GradientMesh = () => (
   <div style={{ position:"fixed", inset:0, zIndex:0, pointerEvents:"none", overflow:"hidden" }}>
@@ -94,7 +106,7 @@ const Loader = ({ onDone }) => {
 
 const sections = [
   {id:"hero",label:"Home"},{id:"about",label:"About"},{id:"skills",label:"Skills"},
-  {id:"projects",label:"Projects"},{id:"github-activity",label:"GitHub"},{id:"operational-readiness",label:"Ops"},{id:"certifications",label:"Certifications"},
+  {id:"projects",label:"Projects"},{id:"github-activity",label:"GitHub"},{id:"operational-readiness",label:"Ops"},{id:"openapi-viewer",label:"API Docs"},{id:"certifications",label:"Certifications"},
   {id:"organizations",label:"Organizations"},{id:"contact",label:"Contact"},
 ];
 
@@ -207,6 +219,7 @@ function App() {
         <GitHubActivity />
         <GitHubStats />
         <OperationalReadiness />
+        <OpenApiViewer />
         <Certifications />
         <Organizations />
         <Contact />

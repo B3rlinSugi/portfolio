@@ -38,8 +38,8 @@ const buildRunbookMarkdown = (runbook) => {
 };
 
 const OperationalReadiness = () => {
-  const monitoring = data.monitoring || {};
-  const runbook = data.runbook || {};
+  const monitoring = useMemo(() => data.monitoring || {}, []);
+  const runbook = useMemo(() => data.runbook || { incidentResponse: [], maintenance: [] }, []);
 
   const [selectedMetric, setSelectedMetric] = useState(monitoring.serviceMetrics?.[0]?.metric || "");
   const [trendData, setTrendData] = useState(() => {
@@ -130,6 +130,16 @@ const OperationalReadiness = () => {
           </p>
           <p style={{ margin: 0, fontSize: 12, color: "var(--muted-2)", lineHeight: 1.4 }}>
             Last incident: {monitoring.lastIncident || "-"}. Fokus pada observability + triage cepat.
+          </p>
+        </div>
+
+        <div style={{ background: "rgba(15,31,56,0.6)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 16, padding: 24 }}>
+          <h3 style={{ margin: "0 0 14px", fontSize: 15, fontWeight: 700, color: "var(--white)" }}>Sentry Integration</h3>
+          <p style={{ margin: "0 0 8px", fontSize: 13, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace" }}>
+            DSN: {import.meta.env.VITE_SENTRY_DSN ? "configured" : "not set"}
+          </p>
+          <p style={{ margin: 0, fontSize: 12, color: "var(--muted-2)", lineHeight: 1.4 }}>
+            `VITE_SENTRY_DSN` environment variable can activate real error tracing in production.
           </p>
         </div>
 
