@@ -250,6 +250,12 @@ const Hero = () => {
             {t.tagline}
           </p>
 
+          {/* Available for roles badge */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)", padding: "10px 16px", borderRadius: 8, marginBottom: 32, animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.38s both" }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", boxShadow: "0 0 6px rgba(16,185,129,0.8)", flexShrink: 0 }} />
+            <span style={{ fontSize: 12, fontWeight: 600, color: "#34D399", fontFamily: "'Outfit',sans-serif" }}>Available for full-time backend roles</span>
+          </div>
+
           {/* CTA */}
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 48, animation: "fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.42s both" }} className="hero-btns">
             <a href={data.github} target="_blank" rel="noreferrer" className="btn-primary">
