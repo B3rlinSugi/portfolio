@@ -159,7 +159,7 @@ const Projects = () => {
                 ))}
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                {p.demo && (
+                {p.demo != null && p.demo !== "" && (
                   <a href={p.demo} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
                     onMouseEnter={e => { e.currentTarget.style.background = `${a}22`; e.currentTarget.style.transform = "translateY(-1px)"; }}
                     onMouseLeave={e => { e.currentTarget.style.background = `${a}10`; e.currentTarget.style.transform = "none"; }}>
@@ -167,7 +167,7 @@ const Projects = () => {
                     Live Demo
                   </a>
                 )}
-                {p.postman && (
+                {p.postman != null && p.postman !== "" && (
                   <a href={p.postman} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
                     onMouseEnter={e => { e.currentTarget.style.background = `${a}22`; e.currentTarget.style.transform = "translateY(-1px)"; }}
                     onMouseLeave={e => { e.currentTarget.style.background = `${a}10`; e.currentTarget.style.transform = "none"; }}>

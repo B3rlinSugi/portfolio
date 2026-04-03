@@ -9,16 +9,14 @@ export const data = {
   whatsapp: "https://wa.me/6281294500613",
   portfolio: "https://berlinsugi.vercel.app",
 
-  tagline: "I engineer backend systems optimized for reliability, observability, and secure scalability — clean REST APIs, consistent DB contracts, and auth flows that survive real production load.",
+  tagline: "I write clean, reliable backend code. Experienced with APIs, databases, and learning how systems scale. Excited to grow in a real team environment.",
 
-  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00) with a track record of shipping production-grade backend projects. Fokus di API reliability (dalam latency & failover), database integrity, dan safe deployment pipeline. Pengalaman: PHP/Laravel, Java/Spring Boot, MySQL/PostgreSQL, JWT/RBAC, Docker, CI/CD, serta end-to-end testing (unit/integration).",
+  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00). I build RESTful APIs and databases with focus on clean code, reliability, and user-centric design. Experienced with PHP/Laravel, Java, MySQL, Git, and excited to learn and grow in a real team environment.",
 
   backendHighlights: [
-    { label: "SLA Target", value: "99.9%" },
-    { label: "API Contracts", value: "OpenAPI / Postman" },
-    { label: "Security Focus", value: "JWT + RBAC + bcrypt" },
-    { label: "Observability", value: "Logs + Metrics + Alerts" },
-    { label: "CI/CD", value: "GitHub Actions" }
+    { label: "Focus Areas", value: "APIs • Databases • Clean Code" },
+    { label: "Learning Journey", value: "Auth • Transactions • Performance" },
+    { label: "Growth Mindset", value: "Security • Testing • Reliability" },
   ],
 
   monitoring: {
@@ -110,23 +108,11 @@ export const data = {
       github: "https://github.com/B3rlinSugi/student-management-api",
       demo: "https://student-api-demo.vercel.app",
       postman: "https://www.postman.com/berlinsugi/workspace/student-management-api",
-      desc: "A production-ready RESTful API built with Laravel 11 — featuring JWT Authentication, Role-Based Access Control, full CRUD with Soft Delete, Search, Filter & Pagination. Designed to demonstrate enterprise-grade backend patterns: stateless auth, thin controllers, and a single performant query layer handling search, filter, sort, and pagination simultaneously.",
+      desc: "Student Management API built with Laravel 11. Features JWT authentication, role-based access control, CRUD operations with soft delete, and advanced filtering/search. This project taught me how to build scalable APIs and secure user data properly.",
       points: [
-        {
-          challenge: "Needed a secure, stateless authentication system that works across any client (mobile, SPA) without coupling to server-side sessions.",
-          solution: "Engineered a dual-role JWT authentication system (Admin vs User) using HS256 signing with token blacklisting on logout — login, register, token refresh, and invalidation all handled via dedicated Auth controller with bcrypt password hashing.",
-          result: "Zero unauthorized access incidents across all test scenarios, with clean role separation enforced at the middleware layer rather than scattered across controller logic.",
-        },
-        {
-          challenge: "CRUD endpoints needed to handle data deletion safely — permanent deletes in academic systems risk irreversible data loss.",
-          solution: "Implemented Soft Delete lifecycle (delete → trash → restore / force delete) using Laravel's SoftDeletes trait, with separate trashed endpoints accessible only to Admin role. Form Request classes handle all validation, keeping controllers single-responsibility.",
-          result: "Full CRUD for Students & Majors with recoverable deletion — zero data loss risk during normal operations, with clean JSON responses via API Resources decoupling DB schema from API response shape.",
-        },
-        {
-          challenge: "List endpoints needed to support flexible data retrieval without writing N separate query methods for each filter combination.",
-          solution: "Built a unified query layer with chained Eloquent scopes — multi-column search (name, NIM, email), filter by status/major/gender, dynamic sorting by any column, and configurable pagination up to 50 per page — all resolved in a single database query.",
-          result: "One performant endpoint handles all retrieval scenarios, with consistent paginated response structure including meta (total, pages) and links (prev, next) for easy client-side navigation.",
-        },
+        { label: "JWT Auth & RBAC", detail: "Implemented stateless authentication with Admin/User roles, bcrypt password hashing, token refresh, and logout blacklisting." },
+        { label: "Soft Delete Safety", detail: "Used Laravel SoftDeletes to prevent accidental data loss—users can restore deleted records. Learned importance of careful deletion workflows." },
+        { label: "Advanced Filtering", detail: "Single query endpoint handles search (name, email, ID), filtering by major/status/gender, sorting, and pagination. Discovered query optimization early on." },
       ],
       tech: [
         { name: "Laravel 11", icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
@@ -153,18 +139,10 @@ export const data = {
       github: "https://github.com/B3rlinSugi/springboot-student-api",
       demo: null,
       postman: null,
-      desc: "A Java-based RESTful API built with Spring Boot 3 — featuring JWT Authentication, JPA/Hibernate ORM, and MySQL database. Demonstrates enterprise Java backend development with proper layered architecture (Controller → Service → Repository).",
+      desc: "Student API in Java/Spring Boot 3 with JWT auth and JPA/Hibernate. Built to explore Java backend development and understand layered architecture (Service → Repository pattern). Clean separation of concerns and testable code design.",
       points: [
-        {
-          challenge: "Needed to learn Java backend development to broaden tech stack beyond PHP/Laravel.",
-          solution: "Built a complete Student Management API using Spring Boot 3 with Spring Security and JWT token authentication. Implemented proper layered architecture with clear separation of concerns.",
-          result: "Successfully delivered a production-ready REST API with proper error handling, input validation, and documentation.",
-        },
-        {
-          challenge: "Database operations needed to be efficient and maintainable.",
-          solution: "Used Spring Data JPA with Hibernate ORM, implementing custom queries and relationships between entities (Student, Course, Grade).",
-          result: "Clean, maintainable data access layer with proper entity relationships and lazy/eager loading strategies.",
-        },
+        { label: "Java & Spring Boot", detail: "First Java project using Spring Boot 3 with Spring Security and JWT. Implemented MVC architecture (Controller → Service → Repository)." },
+        { label: "ORM & Database", detail: "Used Spring Data JPA and Hibernate for database operations. Learned about entity relationships, lazy/eager loading, and clean data access patterns." },
       ],
       tech: [
         { name: "Spring Boot", icon: "https://cdn.simpleicons.org/springboot/6DB33F" },
@@ -191,23 +169,11 @@ export const data = {
       github: "https://github.com/B3rlinSugi/tokoku-ecommerce",
       demo: "https://tokoku-ecommerce.vercel.app",
       postman: null,
-      desc: "Full-stack e-commerce backend engineered for transaction reliability — from a 10-table relational database to secure payment flows and a real-time admin dashboard. The core challenge was ensuring data consistency across the entire order lifecycle: cart → checkout → payment → stock deduction, with zero room for partial failures.",
+      desc: "Full-stack e-commerce platform (TokoKu) built with PHP. Learned critical lessons on data consistency (transactions), secure password hashing (bcrypt), payment integration, and real-time reporting. Main takeaway: small design decisions have huge reliability impact.",
       points: [
-        {
-          challenge: "E-commerce transactions span multiple tables (orders, payments, stock) — a partial failure mid-checkout could leave data in an inconsistent state, such as payment recorded but stock not deducted.",
-          solution: "Architected a 10-table InnoDB relational database with FK constraints enforcing referential integrity across the full order lifecycle. Payment processing and stock deduction are handled atomically, preventing partial-write inconsistencies.",
-          result: "Zero transaction failures across all payment methods (bank transfer, e-wallet) during end-to-end QA testing — cart, checkout, and stock deduction always resolved as a complete unit.",
-        },
-        {
-          challenge: "The legacy auth approach used MD5 hashing — cryptographically broken and vulnerable to rainbow table attacks. The discount system also had no access boundaries between user roles.",
-          solution: "Replaced MD5 with bcrypt hashing for all passwords and implemented RBAC to separate admin and customer permissions. Tokenized password reset flow prevents account takeover via predictable reset links. Voucher engine validates discount eligibility server-side before applying to order total.",
-          result: "Zero unauthorized access incidents across all security test cases — no privilege escalation between roles, and no successful brute-force attempts against bcrypt-hashed credentials in QA.",
-        },
-        {
-          challenge: "Admin needed real-time visibility into sales performance without running expensive ad-hoc queries each time the dashboard loaded.",
-          solution: "Built an admin dashboard with optimised aggregate SQL queries using GROUP BY and date-range filtering — feeding a Chart.js 6-month revenue visualization. Query results are shaped server-side before being passed to the frontend, minimising client-side processing.",
-          result: "Sub-100ms dashboard response time on the aggregate queries, giving admin users real-time sales analytics and revenue trends without noticeable latency.",
-        },
+        { label: "Database Transactions", detail: "Used InnoDB transactions to ensure atomic cart-to-payment-to-inventory updates. No partial failures—either entire order succeeds or rolls back." },
+        { label: "Security Basics", detail: "Replaced MD5 with bcrypt for password hashing. Implemented admin/customer roles, validated discounts server-side, and added tokenized password reset." },
+        { label: "Real-time Reporting", detail: "Optimized SQL aggregate queries for 6-month sales dashboard. Chart.js visualization helps admin see revenue trends instantly without manual calculations." },
       ],
       tech: [
         { name: "PHP 8",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
@@ -234,21 +200,9 @@ export const data = {
       demo: null,
       desc: "A class cash flow management system rebuilt from a legacy codebase — modernised with industry-standard security, real-time analytics, and PDF reporting. The project started as a broken MD5-authenticated system and was refactored into something production-worthy: secure auth, proper database constraints, and an analytics dashboard that gives admins full financial visibility.",
       points: [
-        {
-          challenge: "The original codebase used MD5 for password hashing — a completely broken algorithm susceptible to rainbow table attacks. The database also lacked InnoDB constraints, meaning related records could be deleted without cascading updates, leaving orphaned data.",
-          solution: "Migrated authentication to bcrypt hashing and redesigned the database schema with InnoDB engine, Foreign Key constraints, and proper indexing on frequently-queried columns (date, transaction type). Also eliminated all raw SQL string concatenation in favour of prepared statements.",
-          result: "All known security vulnerabilities from the original codebase were eliminated — no SQL injection surface, no weak password hashing, and referential integrity enforced at the database level.",
-        },
-        {
-          challenge: "Admins had no visibility into cash flow trends — every financial review required manually scrolling through transaction logs with no summary or pattern recognition.",
-          solution: "Built a real-time 6-month cash flow analytics dashboard using Chart.js with server-side aggregate queries grouped by month. Added a deferred payment tracking module with automatic status transitions (pending → paid → overdue) triggered by date comparison logic on page load.",
-          result: "Admins now see full financial trends at a glance — income vs expense over 6 months, deferred payment status, and outstanding balances — without any manual data aggregation.",
-        },
-        {
-          challenge: "Financial records needed to be shareable and auditable outside the system — a web view alone is insufficient for formal reporting.",
-          solution: "Implemented server-side PDF report generation with month and transaction-type filtering, producing formatted financial statements that can be saved, printed, or shared as standalone documents.",
-          result: "Admins can export clean, filtered PDF reports per period — enabling auditable financial records for organisational use without depending on third-party reporting tools.",
-        },
+        { label: "Secure Password Storage", detail: "Replaced MD5 (broken) with bcrypt hashing. Added Foreign Key constraints and proper indexing. Prevented SQL injection by using prepared statements everywhere." },
+        { label: "Financial Analytics", detail: "Built 6-month Chart.js dashboard showing income/expense trends, payment status tracking, and automatic overdue detection. Aggregated queries optimized for performance." },
+        { label: "PDF Reporting", detail: "Server-side PDF export with filtering by month and transaction type. Admins can generate auditable financial reports without manual data entry." },
       ],
       tech: [
         { name: "PHP 8",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
@@ -265,21 +219,9 @@ export const data = {
       demo: null,
       desc: "An academic data management system built to handle students, courses, and grades for an entire faculty — with multi-table relational database, role-based access control, and a real-time statistical dashboard. The design priority was data integrity and strict access boundaries between Admin and Staff roles.",
       points: [
-        {
-          challenge: "Academic data spans multiple entities (students, courses, grades) with strict relationships — a student record deletion should cascade correctly, and grade entries must always reference valid students and courses.",
-          solution: "Architected a normalised 3-table relational database (students, courses, grades) with Foreign Key constraints enforcing referential integrity. Schema follows 3NF to eliminate data redundancy and ensure consistent updates across all related records.",
-          result: "Referential integrity maintained across all CRUD operations — no orphaned records, no inconsistent data states, with all relationships enforced at the database level rather than relying solely on application logic.",
-        },
-        {
-          challenge: "Staff should be able to view and input data, but not delete or modify system-critical records — without proper access control, any logged-in user could perform destructive operations.",
-          solution: "Implemented RBAC for Admin and Staff roles using PDO prepared statements throughout — eliminating SQL injection vulnerabilities while enforcing strict data access boundaries. Admin-only routes are protected server-side, not just hidden in the UI.",
-          result: "Clean role separation with zero privilege escalation — Staff users cannot access Admin functions regardless of URL manipulation, as access control is enforced at the query/controller layer.",
-        },
-        {
-          challenge: "Faculty staff needed to extract class-specific reports and view student distribution statistics without relying on a database admin to run manual queries.",
-          solution: "Built search, filter, and pagination across all data views using a unified query layer. Added PDF export per class using server-side generation and a Chart.js dashboard displaying real-time student statistics (total enrolled, gender distribution, grade spread) via optimised aggregate queries.",
-          result: "Manual reporting effort significantly reduced — staff can self-serve filtered reports and export PDFs per class without any database access, while the dashboard provides instant statistical overview on page load.",
-        },
+        { label: "Database Integrity", detail: "Designed 3-table normalised database (students, courses, grades) with Foreign Key constraints. Prevents orphaned records and ensures consistency across related entities." },
+        { label: "RBAC Security", detail: "Implemented Admin/Staff roles with server-side access control using PDO prepared statements. Eliminates SQL injection and prevents privilege escalation via URL manipulation." },
+        { label: "Data Analytics", detail: "Built self-serve reporting dashboard with class-specific PDF export, student statistics (enrollment, gender distribution, grade spread), and optimized aggregate queries." },
       ],
       tech: [
         { name: "PHP 8",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },

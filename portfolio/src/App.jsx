@@ -14,7 +14,7 @@ import Organizations from "./components/Organizations";
 import Contact from "./components/Contact";
 import GitHubActivity from "./components/GitHubActivity";
 import GitHubStats from "./components/GitHubStats";
-import OperationalReadiness from "./components/OperationalReadiness";
+
 import TerminalEgg from "./components/TerminalEgg";
 import ProjectDetailModal from "./components/ProjectDetailModal";
 
@@ -218,7 +218,6 @@ function App() {
         <Projects />
         <GitHubActivity />
         <GitHubStats />
-        <OperationalReadiness />
         <OpenApiViewer />
         <Certifications />
         <Organizations />
