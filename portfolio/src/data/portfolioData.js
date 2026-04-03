@@ -9,9 +9,9 @@ export const data = {
   whatsapp: "https://wa.me/6281294500613",
   portfolio: "https://berlinsugi.vercel.app",
 
-  tagline: "I write clean, reliable backend code. Experienced with APIs, databases, and learning how systems scale. Excited to grow in a real team environment.",
+  tagline: "Passionate backend developer who loves crafting clean, efficient code. Excited to build APIs that solve real problems and scale beautifully. Always learning, always coding!",
 
-  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00). I build RESTful APIs and databases with focus on clean code, reliability, and user-centric design. Experienced with PHP/Laravel, Java, MySQL, Git, and excited to learn and grow in a real team environment.",
+  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00). I'm a coding enthusiast who thrives on building robust backend systems. From RESTful APIs to database optimization, I enjoy the challenge of writing code that performs and delights users. Proficient in PHP/Laravel, Java, MySQL, and Git—eager to bring my coding passion to a collaborative team.",
 
   backendHighlights: [
     { label: "Focus Areas", value: "APIs • Databases • Clean Code" },
@@ -108,7 +108,7 @@ export const data = {
       github: "https://github.com/B3rlinSugi/student-management-api",
       demo: "https://student-api-demo.vercel.app",
       postman: "https://www.postman.com/berlinsugi/workspace/student-management-api",
-      desc: "Student Management API built with Laravel 11. Features JWT authentication, role-based access control, CRUD operations with soft delete, and advanced filtering/search. This project taught me how to build scalable APIs and secure user data properly.",
+      desc: "My passion project: a comprehensive Student Management API built with Laravel 11. I absolutely love implementing JWT authentication and role-based access control—it's like building digital fortresses for data! CRUD operations with soft delete, advanced filtering/search—all coded with care for scalability and security. This project ignited my love for backend development.",
       points: [
         { label: "JWT Auth & RBAC", detail: "Implemented stateless authentication with Admin/User roles, bcrypt password hashing, token refresh, and logout blacklisting." },
         { label: "Soft Delete Safety", detail: "Used Laravel SoftDeletes to prevent accidental data loss—users can restore deleted records. Learned importance of careful deletion workflows." },
@@ -139,7 +139,7 @@ export const data = {
       github: "https://github.com/B3rlinSugi/springboot-student-api",
       demo: null,
       postman: null,
-      desc: "Student API in Java/Spring Boot 3 with JWT auth and JPA/Hibernate. Built to explore Java backend development and understand layered architecture (Service → Repository pattern). Clean separation of concerns and testable code design.",
+      desc: "Diving into Java backend with Spring Boot 3—such a thrilling experience! JWT auth, JPA/Hibernate for ORM, and clean layered architecture. I geek out over the Service → Repository pattern and testable code design. This project expanded my coding horizons and deepened my appreciation for Java's elegance.",
       points: [
         { label: "Java & Spring Boot", detail: "First Java project using Spring Boot 3 with Spring Security and JWT. Implemented MVC architecture (Controller → Service → Repository)." },
         { label: "ORM & Database", detail: "Used Spring Data JPA and Hibernate for database operations. Learned about entity relationships, lazy/eager loading, and clean data access patterns." },

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { LangContext } from "../LangContext";
 import { i18n } from "../i18n";
 import { data } from "../data/portfolioData";
+import { useScrollAnimation } from "../useScrollAnimation";
 
 const accents = [
   { a: "#3B82F6", b: "#06B6D4" },
@@ -31,18 +32,18 @@ const CSRPreviewRow = ({ point, index, a }) => (
 );
 
 const Projects = () => {
-  const ref = useRef(null);
   const [visible, setVisible]   = useState(false);
   const [active, setActive]     = useState(0);
   const [revealed, setRevealed] = useState(false);
+  const [scrollRef, isScrollVisible] = useScrollAnimation();
   const lang = useContext(LangContext);
   const t = i18n[lang].projects;
 
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { setVisible(e.isIntersecting); }, { threshold: 0.05 });
-    if (ref.current) obs.observe(ref.current);
+    if (scrollRef.current) obs.observe(scrollRef.current);
     return () => obs.disconnect();
-  }, []);
+  }, [scrollRef]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -60,7 +61,7 @@ const Projects = () => {
   const isCSR = p.points.length > 0 && typeof p.points[0] === "object";
 
   return (
-    <section id="projects" ref={ref} style={{ background:"var(--navy-2)", borderTop:"1px solid rgba(59,130,246,0.07)" }}>
+    <section id="projects" ref={scrollRef} className={`reveal ${isScrollVisible ? 'visible' : ''}`} style={{ background:"var(--navy-2)", borderTop:"1px solid rgba(59,130,246,0.07)" }}>
       <p className="s-label" style={{ opacity:visible?1:0, transition:"opacity .5s", fontFamily:"'JetBrains Mono',monospace" }}>
         <span style={{ color:"rgba(6,182,212,0.5)" }}>&lt;</span>
         {t.label}

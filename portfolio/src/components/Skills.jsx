@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { data } from "../data/portfolioData";
 import { LangContext } from "../LangContext";
 import { i18n } from "../i18n";
+import { useScrollAnimation } from "../useScrollAnimation";
 
 const categoryColors = {
   "Languages":              { color: "#3B82F6", bg: "rgba(59,130,246,0.08)",  border: "rgba(59,130,246,0.25)"  },
@@ -210,19 +211,19 @@ const LearningSection = ({ visible }) => {
 };
 
 const Skills = () => {
-  const ref = useRef(null);
   const [started, setStarted] = useState(false);
+  const [scrollRef, isScrollVisible] = useScrollAnimation();
   const lang = useContext(LangContext);
   const t = i18n[lang].skills;
 
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { setStarted(e.isIntersecting); }, { threshold: 0.06 });
-    if (ref.current) obs.observe(ref.current);
+    if (scrollRef.current) obs.observe(scrollRef.current);
     return () => obs.disconnect();
-  }, []);
+  }, [scrollRef]);
 
   return (
-    <section id="skills" ref={ref} style={{ background: "var(--navy)", borderTop: "1px solid rgba(59,130,246,0.07)" }}>
+    <section id="skills" ref={scrollRef} className={`reveal ${isScrollVisible ? 'visible' : ''}`} style={{ background: "var(--navy)", borderTop: "1px solid rgba(59,130,246,0.07)" }}>
       <p className="s-label" style={{ opacity: started ? 1 : 0, transition: "opacity .5s", fontFamily: "'JetBrains Mono',monospace" }}>
         <span style={{ color: "rgba(6,182,212,0.5)" }}>&lt;</span>
         {t.label}

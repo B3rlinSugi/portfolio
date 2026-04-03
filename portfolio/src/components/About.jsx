@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { data } from "../data/portfolioData";
+import { useScrollAnimation } from "../useScrollAnimation";
 
 function useCounter(target, duration = 1600, started = false) {
   const [v, setV] = useState(0);
@@ -163,13 +164,13 @@ const seekingItems = [
 ];
 
 const About = () => {
-  const ref = useRef(null);
   const [started, setStarted] = useState(false);
+  const [scrollRef, isScrollVisible] = useScrollAnimation();
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { setStarted(e.isIntersecting); }, { threshold: 0.06 });
-    if (ref.current) obs.observe(ref.current);
+    if (scrollRef.current) obs.observe(scrollRef.current);
     return () => obs.disconnect();
-  }, []);
+  }, [scrollRef]);
 
   const stats = [
     { n: "3.63", l: "GPA / 4.00", icon: "🎓", color: "#3B82F6" },
@@ -180,7 +181,7 @@ const About = () => {
   ];
 
   return (
-    <section id="about" ref={ref} style={{ background: "var(--navy-2)", borderTop: "1px solid rgba(59,130,246,0.07)" }}>
+    <section id="about" ref={scrollRef} className={`reveal ${isScrollVisible ? 'visible' : ''}`} style={{ background: "var(--navy-2)", borderTop: "1px solid rgba(59,130,246,0.07)" }}>
 
       {/* JSX tag label */}
       <p className="s-label" style={{ opacity: started ? 1 : 0, transition: "opacity .5s", fontFamily: "'JetBrains Mono',monospace" }}>

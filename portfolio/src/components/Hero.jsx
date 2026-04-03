@@ -2,6 +2,7 @@ import { data } from "../data/portfolioData";
 import { useEffect, useRef, useState, useContext } from "react";
 import { LangContext } from "../LangContext";
 import { i18n } from "../i18n";
+import { useScrollAnimation } from "../useScrollAnimation";
 
 /* ── Aurora Background ── */
 const AuroraBackground = () => (
@@ -210,6 +211,7 @@ const ScanTitle = ({ text, visible }) => (
 
 const Hero = () => {
   const [visible, setVisible] = useState(false);
+  const [scrollRef, isScrollVisible] = useScrollAnimation();
   const lang = useContext(LangContext);
   const t = i18n[lang].hero;
   const go = id => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -221,7 +223,7 @@ const Hero = () => {
       <AuroraBackground />
 
       {/* ── Content ── */}
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 1100, margin: "0 auto", padding: "100px 48px 80px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 60, width: "100%" }} className="hero-layout">
+      <div ref={scrollRef} className={`reveal ${isScrollVisible ? 'visible' : ''} hero-layout`} style={{ position: "relative", zIndex: 1, maxWidth: 1100, margin: "0 auto", padding: "100px 48px 80px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 60, width: "100%" }}>
 
         {/* LEFT: text */}
         <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
