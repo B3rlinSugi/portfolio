@@ -54,7 +54,7 @@ export const data = {
       items: [
         { name: "Git",     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
         { name: "GitHub",  icon: "https://cdn.simpleicons.org/github/C8D8F0" },
-        { name: "VS Code", icon: "https://cdn.simpleicons.org/visualstudiocode/007ACC" },
+        { name: "VS Code", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg" },
         { name: "Linux",   icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" },
         { name: "XAMPP",   icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg" },
         { name: "Figma",   icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import "./index.css";
@@ -8,7 +8,7 @@ import Hero from "./components/Hero";
 import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
-import OpenApiViewer from "./components/OpenApiViewer";
+
 import Certifications from "./components/Certifications";
 import Organizations from "./components/Organizations";
 import Contact from "./components/Contact";
@@ -45,61 +45,312 @@ const GradientMesh = () => (
 );
 
 const Loader = ({ onDone }) => {
-  const [fadeOut, setFadeOut] = useState(false);
-  const [line1, setLine1] = useState(false);
-  const [line2, setLine2] = useState(false);
-  const [sub, setSub] = useState(false);
-  const [progressVisible, setProgressVisible] = useState(false);
+  const [phase, setPhase] = useState(0); // 0:boot, 1:animating, 2:unlock, 3:exit
   const [progress, setProgress] = useState(0);
+  const [activeLine, setActiveLine] = useState(0);
+
+  const lines = [
+    { id: "name", text: "Berlin Sugiyanto", size: "clamp(38px, 6.8vw, 84px)", color: "#F8E6CF" },
+    { id: "portfolio", text: "Web Portfolio", size: "clamp(26px, 4.2vw, 48px)", color: "#F97316" },
+    { id: "backend", text: "Backend Developer", size: "clamp(22px, 3.5vw, 38px)", color: "#FB923C" },
+  ];
 
   useEffect(() => {
-    const t1 = setTimeout(() => setLine1(true), 500);
-    const t2 = setTimeout(() => setLine2(true), 1200);
-    const t3 = setTimeout(() => setSub(true), 2000);
-    const t4 = setTimeout(() => setProgressVisible(true), 2400);
-    const t5 = setTimeout(() => {
-      let p = 0;
-      const steps = [6,9,8,11,7,10,9,12,8,10,11];
-      let si = 0;
-      const pi = setInterval(() => {
-        p += steps[si % steps.length]; si++;
-        if (p >= 100) {
-          p = 100; clearInterval(pi);
-          setTimeout(() => { setFadeOut(true); setTimeout(onDone, 700); }, 700);
-        }
-        setProgress(Math.min(p, 100));
-      }, 230);
-    }, 2400);
-    return () => [t1,t2,t3,t4,t5].forEach(clearTimeout);
+    const start = setTimeout(() => setPhase(1), 150);
+    return () => clearTimeout(start);
   }, []);
 
-  const blurStyle = (visible) => ({
-    opacity: visible ? 1 : 0,
-    filter: visible ? "blur(0px)" : "blur(32px)",
-    transform: visible ? "scale(1) translateY(0)" : "scale(1.05) translateY(10px)",
-    transition: "opacity 1.4s cubic-bezier(.22,1,.36,1), filter 1.4s cubic-bezier(.22,1,.36,1), transform 1.4s cubic-bezier(.22,1,.36,1)",
-  });
+  useEffect(() => {
+    if (phase !== 1) return;
+
+    if (progress >= 100) {
+      const unlockDelay = setTimeout(() => setPhase(2), 420);
+      return () => clearTimeout(unlockDelay);
+    }
+
+    const step = progress < 45 ? 3.1 : progress < 84 ? 1.55 : 0.8;
+    const tick = setTimeout(() => {
+      setProgress((p) => Math.min(100, Number((p + step).toFixed(1))));
+    }, progress < 82 ? 108 : 126);
+
+    return () => clearTimeout(tick);
+  }, [phase, progress]);
+
+  useEffect(() => {
+    if (phase !== 1) return;
+    const rotate = setInterval(() => {
+      setActiveLine((prev) => (prev + 1) % lines.length);
+    }, 1450);
+    return () => clearInterval(rotate);
+  }, [phase, lines.length]);
+
+  useEffect(() => {
+    if (phase !== 2) return;
+    const exitDelay = setTimeout(() => setPhase(3), 420);
+    const done = setTimeout(onDone, 980);
+    return () => {
+      clearTimeout(exitDelay);
+      clearTimeout(done);
+    };
+  }, [phase, onDone]);
+
+  // Failsafe: prevent blank screen if animation timing gets interrupted.
+  useEffect(() => {
+    const safety = setTimeout(onDone, 12000);
+    return () => clearTimeout(safety);
+  }, [onDone]);
+
+  const statusText =
+    phase === 0
+      ? "Preparing typography sequence..."
+      : phase === 1
+        ? progress < 34
+          ? "Rendering identity line..."
+          : progress < 68
+            ? "Constructing portfolio headline..."
+            : "Activating backend signature..."
+        : phase === 2
+          ? "Sequence complete. Entering website..."
+          : "Transfer complete.";
 
   return (
-    <div style={{ position:"fixed", inset:0, zIndex:9999, background:"var(--navy)", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", opacity:fadeOut?0:1, transition:"opacity 0.8s cubic-bezier(.22,1,.36,1)", pointerEvents:fadeOut?"none":"all", overflow:"hidden" }}>
-      <div style={{ position:"absolute", inset:0, background:"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.02) 2px,rgba(0,0,0,0.02) 4px)", pointerEvents:"none", zIndex:1 }} />
-      <div style={{ position:"absolute", top:"15%", left:"10%", width:"45vw", height:"45vw", background:"radial-gradient(circle,rgba(29,78,216,0.15),transparent 65%)", filter:"blur(70px)", pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:"15%", right:"10%", width:"40vw", height:"40vw", background:"radial-gradient(circle,rgba(6,182,212,0.1),transparent 65%)", filter:"blur(70px)", pointerEvents:"none" }} />
-      <div style={{ position:"relative", zIndex:2, display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
-        <h1 style={{ fontFamily:"'Clash Display','Syne',sans-serif", fontSize:"clamp(56px,11vw,118px)", fontWeight:700, color:"#FFFFFF", letterSpacing:"-3px", margin:0, lineHeight:1, ...blurStyle(line1), textShadow: line1?"0 0 60px rgba(255,255,255,0.08)":"none" }}>Berlin</h1>
-        <h1 style={{ fontFamily:"'Clash Display','Syne',sans-serif", fontSize:"clamp(56px,11vw,118px)", fontWeight:700, background:"linear-gradient(135deg,#3B82F6,#06B6D4 55%,#38BDF8)", WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent", backgroundSize:"200%", letterSpacing:"-3px", margin:0, lineHeight:1, ...blurStyle(line2), animation:line2?"gradShiftLoader 4s ease infinite":"none" }}>Sugiyanto</h1>
-        <div style={{ fontSize:11, letterSpacing:"6px", textTransform:"uppercase", fontFamily:"'JetBrains Mono',monospace", color:"#06B6D4", marginTop:20, ...blurStyle(sub), transition:"opacity 1s ease, filter 1s ease, transform 1s ease" }}>Backend Developer</div>
-        <div style={{ width:280, marginTop:28, opacity:progressVisible?1:0, transition:"opacity 0.6s ease" }}>
-          <div style={{ height:1.5, background:"rgba(59,130,246,0.12)", borderRadius:4, overflow:"hidden", marginBottom:8 }}>
-            <div style={{ height:"100%", borderRadius:4, background:"linear-gradient(to right,#1D4ED8,#06B6D4)", width:progress+"%", transition:"width 0.25s cubic-bezier(.22,1,.36,1)", boxShadow:"0 0 14px rgba(6,182,212,0.7)" }} />
-          </div>
-          <div style={{ display:"flex", justifyContent:"space-between" }}>
-            <span style={{ fontSize:9.5, color:"var(--muted)", fontFamily:"'JetBrains Mono',monospace" }}>{progress<100?"> loading_portfolio...":"> ready."}</span>
-            <span style={{ fontSize:9.5, color:"var(--muted-2)", fontFamily:"'JetBrains Mono',monospace" }}>{Math.floor(progress)}%</span>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        background:
+          "radial-gradient(circle at 20% 18%, #3b1f0f 0%, #1e120b 42%, #080707 100%)",
+        overflow: "hidden",
+        display: "grid",
+        placeItems: "center",
+        opacity: phase === 3 ? 0 : 1,
+        transition: "opacity 0.72s ease",
+        willChange: "opacity",
+        pointerEvents: phase === 3 ? "none" : "all",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "linear-gradient(to right, rgba(251,146,60,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(251,146,60,0.08) 1px, transparent 1px)",
+          backgroundSize: "38px 38px",
+          opacity: 0.16,
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          width: "66vw",
+          height: "66vw",
+          minWidth: 360,
+          minHeight: 360,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(249,115,22,0.3) 0%, rgba(245,158,11,0.1) 44%, transparent 72%)",
+          filter: "blur(22px)",
+          animation: "mlWarmAura 10s ease-in-out infinite",
+        }}
+      />
+
+      <div
+        style={{
+          width: "min(940px, calc(100% - 28px))",
+          position: "relative",
+          zIndex: 3,
+          textAlign: "left",
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 12,
+            letterSpacing: "2.6px",
+            color: "#FDBA74",
+            textTransform: "uppercase",
+            textAlign: "left",
+          }}
+        >
+          Moving Letters Rebuild
+        </p>
+
+        <div
+          style={{
+            margin: "18px 0 22px",
+            width: "100%",
+            padding: "30px 24px 28px",
+            borderRadius: 20,
+            border: "1px solid rgba(251,146,60,0.35)",
+            background:
+              "linear-gradient(180deg, rgba(36,22,12,0.86) 0%, rgba(12,8,6,0.96) 100%)",
+            boxShadow:
+              "0 24px 58px rgba(0,0,0,0.45), inset 0 0 20px rgba(249,115,22,0.18)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+            }}
+          >
+            {lines.map((line, rowIdx) => {
+              const isActive = rowIdx === activeLine;
+              const baseDelay = 180 + rowIdx * 180;
+              return (
+                <div
+                  key={line.id}
+                  style={{
+                    position: "relative",
+                    paddingLeft: 22,
+                    borderLeft: `3px solid ${isActive ? "#F97316" : "rgba(251,146,60,0.35)"}`,
+                    transition: "border-color 0.25s ease",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: -3,
+                      top: 0,
+                      bottom: 0,
+                      width: 3,
+                      background: "linear-gradient(180deg, #F97316 0%, #FB923C 100%)",
+                      transformOrigin: "0 50%",
+                      opacity: isActive ? 1 : 0.35,
+                      animation: isActive
+                        ? "mlLinePulse 0.9s ease-in-out infinite"
+                        : "none",
+                    }}
+                  />
+                  <div
+                    style={{
+                      fontFamily: "'Outfit', sans-serif",
+                      fontWeight: 800,
+                      fontSize: line.size,
+                      letterSpacing: "-0.8px",
+                      lineHeight: 1.02,
+                      color: line.color,
+                      textShadow: isActive
+                        ? "0 0 14px rgba(249,115,22,0.4)"
+                        : "0 0 8px rgba(30,20,10,0.4)",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {line.text.split("").map((char, i) => (
+                      <span
+                        key={`${line.id}-${i}-${char === " " ? "space" : char}`}
+                        style={{
+                          display: "inline-block",
+                          opacity: 0,
+                          transform: "translateX(36px)",
+                          animation: "mlLetterInWarm 0.52s ease forwards",
+                          animationDelay: `${baseDelay + i * 24}ms`,
+                        }}
+                      >
+                        {char === " " ? "\u00A0" : char}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
+
+        <p
+          style={{
+            margin: "0 0 8px",
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 12,
+            letterSpacing: "1.8px",
+            color: "#FDBA74",
+            textTransform: "uppercase",
+          }}
+        >
+          berlin sugiyanto / web portfolio / backend developer
+        </p>
+        <p
+          style={{
+            margin: "0 0 18px",
+            fontFamily: "'Inter', sans-serif",
+            fontSize: 15,
+            color: "rgba(254,215,170,0.9)",
+            letterSpacing: "0.15px",
+          }}
+        >
+          {statusText}
+        </p>
+
+        <div
+          style={{
+            width: "min(620px, 96%)",
+            height: 10,
+            borderRadius: 999,
+            border: "1px solid rgba(251,146,60,0.35)",
+            background: "rgba(28,18,11,0.72)",
+            overflow: "hidden",
+            boxShadow: "inset 0 0 12px rgba(0,0,0,0.46)",
+          }}
+        >
+          <div
+            style={{
+              width: `${progress}%`,
+              height: "100%",
+              background:
+                "linear-gradient(90deg, #F97316 0%, #FB923C 48%, #FCD34D 100%)",
+              boxShadow: "0 0 16px rgba(249,115,22,0.52)",
+              transition: "width 0.15s linear",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <span
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.38) 52%, transparent 100%)",
+                animation: "mlBarShineWarm 1.5s linear infinite",
+              }}
+            />
+          </div>
+        </div>
+        <div
+          style={{
+            marginTop: 8,
+            width: "min(620px, 96%)",
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 12,
+            color: "#FED7AA",
+            letterSpacing: "1.2px",
+            textAlign: "center",
+          }}
+        >
+          {Math.round(progress)}%
+        </div>
       </div>
-      <style>{`@keyframes gradShiftLoader{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}`}</style>
+
+      <style>{`
+        @keyframes mlWarmAura {
+          0%,100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+          50% { transform: scale(1.08) rotate(5deg); opacity: 1; }
+        }
+        @keyframes mlLinePulse {
+          0%,100% { opacity: 1; transform: scaleY(1); }
+          50% { opacity: 0.56; transform: scaleY(0.75); }
+        }
+        @keyframes mlLetterInWarm {
+          from { opacity: 0; transform: translateX(36px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes mlBarShineWarm {
+          from { transform: translateX(-110%); }
+          to { transform: translateX(160%); }
+        }
+      `}</style>
     </div>
   );
 };
@@ -145,6 +396,10 @@ const BackToTop = () => {
 
 function App() {
   const [loading, setLoading] = useState(true);
+
+  const revealApp = useCallback(() => {
+    setLoading(false);
+  }, []);
 
   // ── Lang state ──
   const [lang, setLang] = useState(() => {
@@ -192,6 +447,13 @@ function App() {
   }
 }, [theme]);
 
+  useEffect(() => {
+    if (!loading) return;
+    // Failsafe release to avoid persistent blank screen on interrupted loader lifecycle.
+    const safety = setTimeout(revealApp, 13000);
+    return () => clearTimeout(safety);
+  }, [loading, revealApp]);
+
   const handleSetLang = (newLang) => {
     setLang(newLang);
     localStorage.setItem("portfolio-lang", newLang);
@@ -207,9 +469,16 @@ function App() {
 
   return (
     <LangContext.Provider value={lang}>
-      {loading && <Loader onDone={() => setLoading(false)} />}
+      {loading && <Loader onDone={revealApp} />}
       <GradientMesh />
-      <div style={{ background:"transparent", minHeight:"100vh", opacity:loading?0:1, transition:"opacity 0.5s ease 0.1s", position:"relative", zIndex:1 }}>
+      <div style={{
+        background:"transparent", minHeight:"100vh",
+        opacity: 1,
+        transform: "none",
+        transition: "opacity 0.2s ease",
+        pointerEvents: loading ? "none" : "auto",
+        position:"relative", zIndex:1,
+      }}>
         <div id="progress-bar" style={{ position:"fixed", top:0, left:0, height:3, background:"linear-gradient(to right,#1D4ED8,#06B6D4)", zIndex:201, width:"0%", transition:"width 0.08s linear", pointerEvents:"none" }} />
         <Navbar lang={lang} setLang={handleSetLang} theme={theme} setTheme={setTheme} />
         <Hero />
@@ -218,7 +487,7 @@ function App() {
         <Projects />
         <GitHubActivity />
         <GitHubStats />
-        <OpenApiViewer />
+
         <Certifications />
         <Organizations />
         <Contact />

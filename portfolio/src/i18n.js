@@ -2,8 +2,8 @@ export const i18n = {
   en: {
     nav: { about:"About", skills:"Skills", projects:"Projects", certifications:"Certifications", organizations:"Organizations", contact:"Contact" },
     hero: {
-      badge:"Open to Work", role:"Junior Backend Developer",
-      tagline:"I engineer backend systems that hold up under pressure — clean APIs, solid databases, and auth flows that don't break at 3 AM.",
+      badge:"Let's Build Something", role:"Junior Backend Developer",
+      tagline:"Building the future of web infrastructure with modern backend standards. I combine robust database management with streamlined API development to create scalable backbones for the next generation of web applications.",
       github:"GitHub", touch:"Get in Touch", cv:"Download CV",
       gpa:"GPA / 4.00", projects:"Projects", org:"Org Exp", scroll:"scroll", dev_role:"Backend Developer",
     },
@@ -35,8 +35,8 @@ export const i18n = {
   id: {
     nav: { about:"Tentang", skills:"Keahlian", projects:"Proyek", certifications:"Sertifikasi", organizations:"Organisasi", contact:"Kontak" },
     hero: {
-      badge:"Terbuka untuk Kerja", role:"Junior Backend Developer",
-      tagline:"Saya membangun sistem backend yang tahan banting — REST API yang bersih, database yang solid, dan autentikasi yang tidak jebol jam 3 pagi.",
+      badge:"Mari Bangun Sesuatu", role:"Junior Backend Developer",
+      tagline:"Membangun masa depan infrastruktur web dengan standar backend modern. Saya menggabungkan manajemen database yang tangguh dengan pengembangan API yang efisien untuk menciptakan tulang punggung yang dapat diskalakan bagi aplikasi web generasi berikutnya.",
       github:"GitHub", touch:"Hubungi Saya", cv:"Unduh CV",
       gpa:"IPK / 4.00", projects:"Proyek", org:"Pengalaman Org", scroll:"gulir", dev_role:"Backend Developer",
     },

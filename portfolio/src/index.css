@@ -70,6 +70,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* offset for sticky navbar */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -97,9 +98,8 @@ body {
 /* ── Section base ── */
 section {
   padding: 96px 64px;
-  max-width: 1200px;
-  margin: 0 auto;
   width: 100%;
+  /* max-width handled by inner container of each component */
 }
 
 /* ── Section label — JSX tag style ── */

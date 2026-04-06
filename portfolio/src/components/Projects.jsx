@@ -1,204 +1,378 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useState, useContext, useEffect, useCallback, useRef } from "react";
 import { LangContext } from "../LangContext";
 import { i18n } from "../i18n";
 import { data } from "../data/portfolioData";
-import { useScrollAnimation } from "../useScrollAnimation";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 
-const accents = [
+const ACCENTS = [
   { a: "#3B82F6", b: "#06B6D4" },
   { a: "#8B5CF6", b: "#3B82F6" },
   { a: "#06B6D4", b: "#10B981" },
+  { a: "#10B981", b: "#06B6D4" },
+  { a: "#F59E0B", b: "#EF4444" },
 ];
 
-// Compact CSR row for the project card preview
-const CSRPreviewRow = ({ point, index, a }) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 4, padding: "10px 14px", borderRadius: 9, background: `${a}06`, border: `1px solid ${a}12` }}>
-    {/* Point number + Challenge label */}
-    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-      <span style={{ width: 18, height: 18, borderRadius: 5, flexShrink: 0, background: `${a}18`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace" }}>{index + 1}</span>
-      <span style={{ fontSize: 9, fontWeight: 700, color: "#F59E0B", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.8px" }}>⚠ CHALLENGE</span>
-    </div>
-    <p style={{ fontSize: 12.5, color: "#8BA4C8", lineHeight: 1.6, fontFamily: "'Outfit',sans-serif", margin: "0 0 0 24px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-      {point.challenge}
-    </p>
-    {/* Solution teaser */}
-    <div style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 24 }}>
-      <span style={{ fontSize: 9, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.8px" }}>⚙ SOLUTION →</span>
-      <span style={{ fontSize: 11.5, color: "rgba(139,164,200,0.6)", fontFamily: "'Outfit',sans-serif", display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-        {point.solution}
-      </span>
-    </div>
-  </div>
-);
-
-const Projects = () => {
-  const [visible, setVisible]   = useState(false);
-  const [active, setActive]     = useState(0);
-  const [revealed, setRevealed] = useState(false);
-  const [scrollRef, isScrollVisible] = useScrollAnimation();
-  const lang = useContext(LangContext);
-  const t = i18n[lang].projects;
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { setVisible(e.isIntersecting); }, { threshold: 0.05 });
-    if (scrollRef.current) obs.observe(scrollRef.current);
-    return () => obs.disconnect();
-  }, [scrollRef]);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setRevealed(false);
-    const timer = setTimeout(() => setRevealed(true), 60);
-    return () => clearTimeout(timer);
-  }, [active]);
-
-  useEffect(() => { if (visible) { setTimeout(() => setRevealed(true), 400); } }, [visible]);
-
-  const p = data.projects[active];
-  const { a, b } = accents[active % accents.length];
-
-  // Detect CSR format
-  const isCSR = p.points.length > 0 && typeof p.points[0] === "object";
+// ─── HIGHLIGHT BLOCK with spotlight ──────────────────────────────────────────
+const HighlightBlock = ({ point, index, accent }) => {
+  const [hovered, setHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   return (
-    <section id="projects" ref={scrollRef} className={`reveal ${isScrollVisible ? 'visible' : ''}`} style={{ background:"var(--navy-2)", borderTop:"1px solid rgba(59,130,246,0.07)" }}>
-      <p className="s-label" style={{ opacity:visible?1:0, transition:"opacity .5s", fontFamily:"'JetBrains Mono',monospace" }}>
-        <span style={{ color:"rgba(6,182,212,0.5)" }}>&lt;</span>
-        {t.label}
-        <span style={{ color:"rgba(6,182,212,0.5)" }}> /&gt;</span>
-      </p>
-      <h2 className="s-title" style={{ opacity:visible?1:0, transform:visible?"none":"translateY(16px)", transition:"opacity .6s ease .1s,transform .6s ease .1s" }}>{t.title}</h2>
-
-      <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: 24, alignItems: "start" }} className="split-panel">
-
-        {/* ── LEFT: project list ── */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, opacity: visible ? 1 : 0, transform: visible ? "translateX(0)" : "translateX(-24px)", transition: "opacity 0.6s ease 0.2s, transform 0.6s cubic-bezier(.22,1,.36,1) 0.2s" }}>
-          {data.projects.map((proj, i) => {
-            const { a: ac } = accents[i % accents.length];
-            const isActive = active === i;
-            return (
-              <button key={proj.title} onClick={() => setActive(i)}
-                style={{
-                  display: "flex", flexDirection: "column", gap: 4, textAlign: "left",
-                  padding: "16px 18px", borderRadius: 12, border: "none", cursor: "pointer",
-                  background: isActive ? `${ac}12` : "rgba(15,31,56,0.4)",
-                  borderLeft: `3px solid ${isActive ? ac : "transparent"}`,
-                  outline: `1px solid ${isActive ? ac + "30" : "rgba(59,130,246,0.08)"}`,
-                  transition: "all 0.25s cubic-bezier(.22,1,.36,1)",
-                  transform: isActive ? "translateX(4px)" : "translateX(0)",
-                }}
-                onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = "rgba(59,130,246,0.06)"; }}
-                onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = "rgba(15,31,56,0.4)"; }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 22, height: 22, borderRadius: "50%", background: `linear-gradient(135deg,${ac},${accents[i % accents.length].b})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, color: "#fff", fontFamily: "'JetBrains Mono',monospace", flexShrink: 0 }}>{i + 1}</div>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: isActive ? "var(--white)" : "var(--white-2)", fontFamily: "'Outfit',sans-serif", transition: "color 0.2s" }}>{proj.title}</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: 10, color: isActive ? ac : "var(--muted)", fontFamily: "'JetBrains Mono',monospace", fontWeight: 600, transition: "color 0.2s" }}>{proj.type}</span>
-                  <span style={{ fontSize: 10, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace" }}>{proj.period}</span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* ── RIGHT: active detail ── */}
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        setMousePos({ x: e.clientX - r.left, y: e.clientY - r.top });
+      }}
+      style={{
+        position: "relative", overflow: "hidden", padding: "14px 18px", borderRadius: 10,
+        background: hovered ? `${accent}08` : "rgba(255,255,255,0.02)",
+        border: `1px solid ${hovered ? accent + "30" : "rgba(255,255,255,0.05)"}`,
+        transition: "border 0.3s, background 0.3s", cursor: "default"
+      }}
+    >
+      {hovered && (
         <div style={{
-          borderRadius: 16, overflow: "hidden",
-          background: "rgba(15,31,56,0.5)",
-          border: `1px solid ${a}30`,
-          opacity: revealed ? 1 : 0,
-          transform: revealed ? "scale(1) translateY(0)" : "scale(0.96) translateY(12px)",
-          filter: revealed ? "blur(0px)" : "blur(6px)",
-          transition: "opacity 0.45s cubic-bezier(.22,1,.36,1), transform 0.45s cubic-bezier(.22,1,.36,1), filter 0.45s ease",
-          boxShadow: `0 24px 56px rgba(0,0,0,0.35), 0 0 0 1px ${a}15`,
-        }}>
-          <div style={{ height: 3, background: `linear-gradient(to right,${a},${b})` }} />
-
-          <div style={{ padding: "24px 28px" }}>
-            {/* Header */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: a, background: `${a}10`, border: `1px solid ${a}25`, padding: "3px 10px", borderRadius: 6, fontFamily: "'JetBrains Mono',monospace" }}>{p.type}</span>
-                </div>
-                <h3 style={{ fontFamily: "'Outfit',sans-serif", fontSize: 22, fontWeight: 800, color: "var(--white)", margin: 0, letterSpacing: "-0.5px" }}>{p.title}</h3>
-              </div>
-              <span style={{ fontSize: 11, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", background: "rgba(15,31,56,0.8)", border: "1px solid rgba(59,130,246,0.1)", padding: "4px 12px", borderRadius: 8, whiteSpace: "nowrap" }}>{p.period}</span>
-            </div>
-
-            <p style={{ fontSize: 14, color: "#6B84A8", marginBottom: 20, lineHeight: 1.8, fontFamily: "'Outfit',sans-serif" }}>{p.desc}</p>
-
-            {/* Points — CSR compact preview or legacy */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 22 }}>
-              {isCSR ? (
-                p.points.map((pt, i) => (
-                  <CSRPreviewRow key={i} point={pt} index={i} a={a} />
-                ))
-              ) : (
-                p.points.map((pt, i) => (
-                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 14px", borderRadius: 9, background: `${a}06`, border: `1px solid ${a}12` }}>
-                    <span style={{ width: 20, height: 20, borderRadius: 6, flexShrink: 0, background: `${a}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9.5, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace", marginTop: 1 }}>{i + 1}</span>
-                    <p style={{ fontSize: 13, color: "#8BA4C8", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt}</p>
-                  </div>
-                ))
-              )}
-            </div>
-
-            {/* Footer */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, paddingTop: 16, borderTop: `1px solid ${a}15` }}>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {p.tech.map(t => (
-                  <div key={t.name} style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(6,14,30,0.7)", border: "1px solid rgba(59,130,246,0.18)", borderRadius: 8, padding: "5px 11px" }}>
-                    <img src={t.icon} alt={t.name}
-                      style={{ width: 18, height: 18, objectFit: "contain", flexShrink: 0 }}
-                      onError={e => { e.target.style.display = "none"; }}
-                    />
-                    <span style={{ fontSize: 10.5, color: "var(--white-2)", fontFamily: "'JetBrains Mono',monospace" }}>{t.name}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{ display: "flex", gap: 8 }}>
-                {p.demo != null && p.demo !== "" && (
-                  <a href={p.demo} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
-                    onMouseEnter={e => { e.currentTarget.style.background = `${a}22`; e.currentTarget.style.transform = "translateY(-1px)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = `${a}10`; e.currentTarget.style.transform = "none"; }}>
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                    Live Demo
-                  </a>
-                )}
-                {p.postman != null && p.postman !== "" && (
-                  <a href={p.postman} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
-                    onMouseEnter={e => { e.currentTarget.style.background = `${a}22`; e.currentTarget.style.transform = "translateY(-1px)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = `${a}10`; e.currentTarget.style.transform = "none"; }}>
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                    API Docs
-                  </a>
-                )}
-                <button
-                  onClick={() => window.__openProject?.(p.title)}
-                  style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12.5, fontWeight: 600, fontFamily: "'Outfit',sans-serif", cursor: "pointer", transition: "all 0.2s" }}
-                  onMouseEnter={e => { e.currentTarget.style.background = `${a}22`; e.currentTarget.style.transform = "translateY(-1px)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = `${a}10`; e.currentTarget.style.transform = "none"; }}>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                  Full Details
-                </button>
-                <a href={p.github} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 8, background: `${a}18`, border: `1px solid ${a}40`, color: "var(--white)", fontSize: 12.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
-                  onMouseEnter={e => { e.currentTarget.style.background = `${a}28`; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = `${a}18`; }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
-                  GitHub
-                </a>
-              </div>
-            </div>
-          </div>
+          position: "absolute", pointerEvents: "none", borderRadius: "50%",
+          width: 260, height: 260,
+          top: mousePos.y - 130, left: mousePos.x - 130,
+          background: `radial-gradient(circle, ${accent}18 0%, transparent 70%)`,
+        }} />
+      )}
+      <div style={{ position: "relative", zIndex: 1, display: "flex", gap: 10 }}>
+        <div style={{ width: 20, height: 20, borderRadius: 6, background: `${accent}18`, border: `1px solid ${accent}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, color: accent, fontFamily: "'JetBrains Mono',monospace", flexShrink: 0, marginTop: 2 }}>{index + 1}</div>
+        <div>
+          {point.label && <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, fontWeight: 700, color: accent, marginBottom: 4 }}>{point.label}</div>}
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#94A3B8", lineHeight: 1.75, margin: 0 }}>
+            {point.detail || (typeof point === "string" ? point : "")}
+          </p>
         </div>
       </div>
+    </div>
+  );
+};
 
-      <style>{`@media(max-width:700px){.split-panel{grid-template-columns:1fr !important;}}`}</style>
+// ─── NAV BUTTON ───────────────────────────────────────────────────────────────
+const NavBtn = ({ onClick, disabled, children }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        width: 44, height: 44, borderRadius: "50%", border: "none",
+        cursor: disabled ? "not-allowed" : "pointer",
+        background: hovered && !disabled ? "rgba(59,130,246,0.15)" : "rgba(255,255,255,0.04)",
+        outline: `1px solid ${hovered && !disabled ? "rgba(59,130,246,0.35)" : "rgba(255,255,255,0.06)"}`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        color: disabled ? "#1E293B" : "#94A3B8",
+        transition: "all 0.2s", flexShrink: 0
+      }}
+    >
+      {children}
+    </button>
+  );
+};
+
+// ─── MAIN COMPONENT ────────────────────────────────────────────────────────────
+const Projects = () => {
+  const projectsRef = useRef(null);
+  const [page, setPage] = useState(0);
+  const lang = useContext(LangContext);
+  const t = i18n[lang].projects;
+  const projects = data.projects || [];
+  const { scrollYProgress: morphProgress } = useScroll({
+    target: projectsRef,
+    offset: ["start end", "start 0.32"],
+  });
+
+  const goTo = useCallback((next) => {
+    setPage(next);
+  }, []);
+
+  const prev = useCallback(() => { if (page > 0) goTo(page - 1); }, [page, goTo]);
+  const next = useCallback(() => { if (page < projects.length - 1) goTo(page + 1); }, [page, projects.length, goTo]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [prev, next]);
+
+  const proj = projects[page];
+  const { a, b } = ACCENTS[page % ACCENTS.length];
+  const points = Array.isArray(proj?.points) ? proj.points : [];
+
+  if (!proj) return null;
+
+  // Fade+blur transition — no position shift at all
+  const variants = {
+    enter: { opacity: 0, filter: "blur(8px)", scale: 0.98 },
+    center: { opacity: 1, filter: "blur(0px)", scale: 1 },
+    exit: { opacity: 0, filter: "blur(8px)", scale: 0.98 },
+  };
+  const tagVariants = {
+    enter: { opacity: 0, y: 10, filter: "blur(4px)" },
+    center: (i) => ({
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        duration: 0.32,
+        delay: 0.18 + i * 0.05,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    }),
+  };
+
+  const morphSpring = { stiffness: 92, damping: 24, mass: 0.55 };
+  const rawSectionY = useTransform(morphProgress, [0, 1], [40, 0]);
+  const rawSectionOpacity = useTransform(morphProgress, [0, 0.4, 1], [0, 0.88, 1]);
+  const rawSectionScale = useTransform(morphProgress, [0, 1], [0.992, 1]);
+  const rawBlueprintOpacity = useTransform(morphProgress, [0, 0.65, 1], [0.55, 0.22, 0.04]);
+  const rawBlueprintMarksOpacity = useTransform(morphProgress, [0, 0.72, 1], [0.55, 0.2, 0]);
+  const rawBlueprintY = useTransform(morphProgress, [0, 1], [8, 0]);
+  const blueprintGridSize = useTransform(morphProgress, [0, 1], ["32px 32px", "40px 40px"]);
+  const rawHeaderY = useTransform(morphProgress, [0, 1], [24, 0]);
+  const rawHeaderOpacity = useTransform(morphProgress, [0, 0.45, 1], [0, 0.9, 1]);
+  const rawHeaderScale = useTransform(morphProgress, [0, 0.5, 1], [0.98, 1.01, 1]);
+  const rawCardY = useTransform(morphProgress, [0, 1], [30, 0]);
+  const rawCardOpacity = useTransform(morphProgress, [0, 0.46, 1], [0, 0.9, 1]);
+  const rawCardRotateX = useTransform(morphProgress, [0, 1], [3.5, 0]);
+  const rawCardScale = useTransform(morphProgress, [0, 0.58, 1], [0.98, 1.01, 1]);
+  const cardShadow = useTransform(morphProgress, [0, 1], [
+    "0 8px 18px rgba(0,0,0,0.2)",
+    "0 24px 52px rgba(0,0,0,0.42)",
+  ]);
+
+  const sectionY = useSpring(rawSectionY, morphSpring);
+  const sectionOpacity = useSpring(rawSectionOpacity, morphSpring);
+  const sectionScale = useSpring(rawSectionScale, morphSpring);
+  const blueprintOpacity = useSpring(rawBlueprintOpacity, morphSpring);
+  const blueprintMarksOpacity = useSpring(rawBlueprintMarksOpacity, morphSpring);
+  const blueprintY = useSpring(rawBlueprintY, morphSpring);
+  const headerY = useSpring(rawHeaderY, morphSpring);
+  const headerOpacity = useSpring(rawHeaderOpacity, morphSpring);
+  const headerScale = useSpring(rawHeaderScale, morphSpring);
+  const cardY = useSpring(rawCardY, morphSpring);
+  const cardOpacity = useSpring(rawCardOpacity, morphSpring);
+  const cardRotateX = useSpring(rawCardRotateX, morphSpring);
+  const cardScale = useSpring(rawCardScale, morphSpring);
+
+  return (
+    <section id="projects" ref={projectsRef} style={{ background: "#020617", padding: "100px 0", borderTop: "1px solid rgba(59,130,246,0.07)", position: "relative", overflow: "hidden" }}>
+      {/* Bg ambient glow — shifts color per slide */}
+      <div style={{ position: "absolute", top: "15%", left: "50%", transform: "translateX(-50%)", width: 700, height: 500, background: `radial-gradient(ellipse, ${a}07 0%, transparent 65%)`, pointerEvents: "none", transition: "background 0.8s ease" }} />
+      {/* Bg grid */}
+      <div style={{ position: "absolute", inset: 0, backgroundSize: "40px 40px", backgroundImage: "linear-gradient(to right,rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,0.015) 1px,transparent 1px)", pointerEvents: "none" }} />
+      {/* Blueprint morph overlay (Skills -> Projects transition) */}
+      <motion.div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 2, opacity: blueprintOpacity, y: blueprintY }}>
+        <motion.div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundSize: blueprintGridSize,
+          backgroundImage: "linear-gradient(to right, rgba(56,189,248,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(56,189,248,0.12) 1px, transparent 1px)",
+        }} />
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 50% 24%, rgba(56,189,248,0.12) 0%, transparent 58%)" }} />
+        <motion.div style={{ position: "absolute", left: "50%", top: 78, width: "min(860px, calc(100% - 48px))", height: 220, transform: "translateX(-50%)", opacity: blueprintMarksOpacity }}>
+          <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 1, background: "linear-gradient(to right, transparent, rgba(56,189,248,0.36) 14%, rgba(6,182,212,0.36) 50%, rgba(56,189,248,0.36) 86%, transparent)" }} />
+          <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 1, background: "linear-gradient(to right, transparent, rgba(56,189,248,0.24) 18%, rgba(56,189,248,0.24) 82%, transparent)" }} />
+          <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 1, background: "linear-gradient(to bottom, transparent, rgba(56,189,248,0.22) 12%, rgba(56,189,248,0.22) 88%, transparent)" }} />
+          <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 1, background: "linear-gradient(to bottom, transparent, rgba(56,189,248,0.22) 12%, rgba(56,189,248,0.22) 88%, transparent)" }} />
+          <div style={{ position: "absolute", top: -14, left: 0, fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: "1.8px", color: "rgba(56,189,248,0.54)", textTransform: "uppercase" }}>Blueprint Morph</div>
+          <div style={{ position: "absolute", top: -14, right: 0, fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: "1.4px", color: "rgba(56,189,248,0.46)" }}>03 / PROJECTS</div>
+        </motion.div>
+      </motion.div>
+
+      <motion.div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 3, y: sectionY, opacity: sectionOpacity, scale: sectionScale, transformOrigin: "center top", willChange: "transform, opacity" }}>
+
+        {/* Header — centered, matching About/Skills style */}
+        <motion.div style={{ textAlign: "center", marginBottom: 40, y: headerY, opacity: headerOpacity, scale: headerScale, transformOrigin: "center top", willChange: "transform, opacity" }}>
+          <p style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: "#3B82F6", letterSpacing: "2px", textTransform: "uppercase", fontWeight: 600, margin: "0 0 8px" }}>03. {t.label.toUpperCase()}</p>
+          <h2 style={{ fontFamily: "'Outfit',sans-serif", fontSize: 32, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.5px", margin: "8px 0 8px" }}>{t.title}.</h2>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#64748B", margin: 0 }}>← → keyboard · {String(page + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</p>
+        </motion.div>
+
+        {/* ── CARD SHELL — fixed height, no shift ── */}
+        <div style={{ perspective: 1200 }}>
+        <motion.div style={{
+          background: "rgba(5,10,22,0.75)",
+          border: `1px solid ${a}20`,
+          borderRadius: 20, overflow: "hidden",
+          transition: "border-color 0.6s ease",
+          y: cardY,
+          opacity: cardOpacity,
+          rotateX: cardRotateX,
+          scale: cardScale,
+          boxShadow: cardShadow,
+          transformOrigin: "center top",
+          willChange: "transform, opacity, box-shadow",
+        }}>
+          {/* Top accent stripe */}
+          <div style={{ height: 3, background: `linear-gradient(to right,${a},${b})`, transition: "background 0.6s ease" }} />
+
+          {/* Content area — FIXED height, position:relative, overflow:hidden */}
+          <motion.div style={{ position: "relative", overflow: "hidden", minHeight: 520 }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={proj.title}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                /* ─── THIS IS THE KEY: absolute fill so layout never shifts ─── */
+                style={{ position: "absolute", inset: 0, padding: "28px 36px", overflowY: "auto" }}
+              >
+                {/* FIXED 2-col grid inside the absolutely positioned container */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "start", height: "100%" }} className="slide-cols">
+
+                  {/* ── LEFT COLUMN ── */}
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
+                      <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, fontWeight: 700, color: a, background: `${a}10`, border: `1px solid ${a}25`, padding: "3px 10px", borderRadius: 6 }}>{proj.type}</span>
+                      <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: "#475569" }}>{proj.period}</span>
+                    </div>
+
+                    {/* Gradient title */}
+                    <h2 style={{
+                      fontFamily: "'Outfit',sans-serif", fontSize: "clamp(22px,2.5vw,32px)", fontWeight: 800,
+                      background: `linear-gradient(135deg,#F8FAFC 0%,${a} 100%)`,
+                      WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                      backgroundClip: "text", margin: "0 0 16px", letterSpacing: "-0.8px", lineHeight: 1.15
+                    }}>{proj.title}</h2>
+
+                    {/* Pull quote */}
+                    <div style={{ borderLeft: `3px solid ${a}`, paddingLeft: 14, marginBottom: 18 }}>
+                      <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: 14, fontStyle: "italic", color: "#64748B", lineHeight: 1.7, margin: 0 }}>
+                        "{points.length > 0 ? (points[0].label || "Building this shaped how I think about backend architecture.") : "Building this shaped how I think about backend architecture."}"
+                      </p>
+                    </div>
+
+                    {/* Description */}
+                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "#64748B", lineHeight: 1.8, marginBottom: 20 }}>{proj.desc}</p>
+
+                    {/* Metrics 2x2 grid */}
+                    {proj.metrics != null && (
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 20 }}>
+                        {proj.metrics.endpoints != null && (
+                          <div style={{ background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 10, padding: "11px 14px" }}>
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#475569", letterSpacing: "1px", marginBottom: 3 }}>ENDPOINTS</div>
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 22, fontWeight: 800, color: "#F8FAFC" }}>{proj.metrics.endpoints}</div>
+                          </div>
+                        )}
+                        {proj.metrics.avgLatency != null && (
+                          <div style={{ background: `${a}10`, border: `1px solid ${a}25`, borderRadius: 10, padding: "11px 14px" }}>
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#475569", letterSpacing: "1px", marginBottom: 3 }}>LATENCY</div>
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 18, fontWeight: 800, color: a }}>{proj.metrics.avgLatency}</div>
+                          </div>
+                        )}
+                        {proj.metrics.errorRate != null && (
+                          <div style={{ background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 10, padding: "11px 14px" }}>
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#475569", letterSpacing: "1px", marginBottom: 3 }}>ERROR RATE</div>
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 18, fontWeight: 800, color: "#10B981" }}>{proj.metrics.errorRate}</div>
+                          </div>
+                        )}
+                        {proj.metrics.deployFrequency != null && (
+                          <div style={{ background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 10, padding: "11px 14px" }}>
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#475569", letterSpacing: "1px", marginBottom: 3 }}>DEPLOY</div>
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, fontWeight: 800, color: "#F8FAFC" }}>{proj.metrics.deployFrequency}</div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Action buttons */}
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                      {proj.postman && <a href={proj.postman} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>⬡ API Docs</a>}
+                      {proj.demo && <a href={proj.demo} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>↗ Demo</a>}
+                      <a href={proj.github} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}18`, border: `1px solid ${a}40`, color: "#F8FAFC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>⌥ GitHub</a>
+                    </div>
+                  </div>
+
+                  {/* ── RIGHT COLUMN ── */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                    {/* Engineering notes */}
+                    {points.length > 0 && (
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                          <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
+                          <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#334155", letterSpacing: "2px" }}>ENGINEERING NOTES</span>
+                          <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                          {points.map((pt, i) => <HighlightBlock key={i} point={pt} index={i} accent={a} />)}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Tech stack */}
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                        <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
+                        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#334155", letterSpacing: "2px" }}>BUILT WITH</span>
+                        <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
+                      </div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+                        {(proj.tech || []).map((tech, i) => (
+                          <motion.div key={`${proj.title}-${tech.name}`} custom={i} variants={tagVariants} initial="enter" animate="center" style={{ display: "flex", alignItems: "center", gap: 7, background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 8, padding: "6px 12px" }}>
+                            <img src={tech.icon} alt={tech.name} style={{ width: 16, height: 16, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; }} />
+                            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>{tech.name}</span>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+
+          {/* ── Bottom nav bar ── */}
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "14px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(0,0,0,0.25)" }}>
+            <NavBtn onClick={prev} disabled={page === 0}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6" /></svg>
+            </NavBtn>
+
+            {/* Dot indicators */}
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              {projects.map((_, i) => (
+                <button key={i} onClick={() => goTo(i)} style={{
+                  width: i === page ? 28 : 7, height: 7, borderRadius: 4, border: "none", cursor: "pointer", padding: 0,
+                  background: i === page ? a : "rgba(255,255,255,0.1)",
+                  transition: "all 0.35s cubic-bezier(.22,1,.36,1)",
+                  boxShadow: i === page ? `0 0 8px ${a}80` : "none",
+                }} />
+              ))}
+            </div>
+
+            <NavBtn onClick={next} disabled={page === projects.length - 1}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+            </NavBtn>
+          </div>
+        </motion.div>
+        </div>
+
+        <p style={{ textAlign: "center", fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#334155", marginTop: 14 }}>
+          ★ Hover engineering notes to spotlight · Use ← → keys or buttons to navigate
+        </p>
+      </motion.div>
+
+      <style>{`
+        @media(max-width: 768px) {
+          .slide-cols { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 };
 
 export default Projects;
+
+

@@ -6,6 +6,7 @@ export const data = {
   location: "Bekasi, West Java, Indonesia",
   github: "https://github.com/B3rlinSugi",
   linkedin: "https://linkedin.com/in/berlinsugi",
+  instagram: "https://www.instagram.com/babehber_/",
   whatsapp: "https://wa.me/6281294500613",
   portfolio: "https://berlinsugi.vercel.app",
 
@@ -92,7 +93,7 @@ export const data = {
         { name: "GitHub",   icon: "https://cdn.simpleicons.org/github/C8D8F0" },
         { name: "GitHub Actions", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" },
         { name: "Docker",   icon: "https://cdn.simpleicons.org/docker/2496ED" },
-        { name: "VS Code",  icon: "https://cdn.simpleicons.org/visualstudiocode/007ACC" },
+        { name: "VS Code",  icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg" },
         { name: "Linux",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" },
         { name: "XAMPP",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg" },
         { name: "Figma",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },

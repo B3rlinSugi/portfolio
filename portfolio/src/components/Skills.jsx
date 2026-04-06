@@ -2,276 +2,245 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { data } from "../data/portfolioData";
 import { LangContext } from "../LangContext";
 import { i18n } from "../i18n";
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import { useScrollAnimation } from "../useScrollAnimation";
-
-const categoryColors = {
-  "Languages":              { color: "#3B82F6", bg: "rgba(59,130,246,0.08)",  border: "rgba(59,130,246,0.25)"  },
-  "Frameworks & Libraries": { color: "#06B6D4", bg: "rgba(6,182,212,0.08)",   border: "rgba(6,182,212,0.25)"   },
-  "Database":               { color: "#8B5CF6", bg: "rgba(139,92,246,0.08)",  border: "rgba(139,92,246,0.25)"  },
-  "API & Security":         { color: "#10B981", bg: "rgba(16,185,129,0.08)",  border: "rgba(16,185,129,0.25)"  },
-  "Tools":                  { color: "#F59E0B", bg: "rgba(245,158,11,0.08)",  border: "rgba(245,158,11,0.25)"  },
-};
 
 const LEARNING_COLOR = { color: "#A78BFA", bg: "rgba(167,139,250,0.08)", border: "rgba(167,139,250,0.25)" };
 
-const SkillPill = ({ item, color, bg, border, index, open }) => {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{
-        display: "inline-flex", alignItems: "center", gap: 9,
-        padding: "9px 16px", borderRadius: 100,
-        background: hovered ? bg : "rgba(15,31,56,0.6)",
-        border: `1px solid ${hovered ? border : "rgba(59,130,246,0.1)"}`,
-        cursor: "default",
-        opacity: open ? 1 : 0,
-        transform: open ? "translateY(0) scale(1)" : "translateY(12px) scale(0.9)",
-        transition: `opacity 0.4s cubic-bezier(.22,1,.36,1) ${index * 60}ms, transform 0.45s cubic-bezier(.34,1.56,.64,1) ${index * 60}ms, background 0.2s, border-color 0.2s, box-shadow 0.2s`,
-        boxShadow: hovered ? `0 0 20px ${bg}, 0 4px 12px rgba(0,0,0,0.2)` : "none",
-      }}
-    >
-      <div style={{ width: 26, height: 26, borderRadius: 8, background: hovered ? bg : "rgba(15,31,56,0.9)", border: `1px solid ${hovered ? border : "rgba(59,130,246,0.1)"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s", transform: hovered ? "rotate(-5deg) scale(1.1)" : "none" }}>
-        <img src={item.icon} alt={item.name} style={{ width: 20, height: 20, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "block"; }} />
-        <span style={{ display: "none", fontSize: 9, color, fontWeight: 700, fontFamily: "'JetBrains Mono',monospace" }}>{item.name[0]}</span>
-      </div>
-      <span style={{ fontSize: 13, fontWeight: 600, color: hovered ? "var(--white)" : "var(--white-2)", fontFamily: "'Outfit',sans-serif", whiteSpace: "nowrap", transition: "color 0.2s" }}>{item.name}</span>
-    </div>
-  );
-};
+// ==========================================
+// 1. MAC OS DOCK ITEM COMPONENT (Option 4)
+// ==========================================
+const DockItem = ({ item, mouseX }) => {
+  let ref = useRef(null);
 
-// Learning pill — same as SkillPill but with a "learning" badge and tooltip
-const LearningPill = ({ item, index, open }) => {
-  const [hovered, setHovered] = useState(false);
-  const { color, bg, border } = LEARNING_COLOR;
+  // Measure the distance from the mouse to the exact center of this specific icon
+  let distance = useTransform(mouseX, (val) => {
+    let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  // Calculate width/scale based on distance. 
+  // Native width: 50px. Max width when hovered: 85px. Falloff range: 130px
+  let widthSync = useTransform(distance, [-130, 0, 130], [50, 85, 50]);
+  let width = useSpring(widthSync, { mass: 0.1, stiffness: 220, damping: 15 });
+
+  // Calculate tooltip pop-up properties
+  let opacitySync = useTransform(distance, [-40, 0, 40], [0, 1, 0]);
+  let opacity = useSpring(opacitySync, { mass: 0.1, stiffness: 200, damping: 20 });
+  let ySync = useTransform(distance, [-40, 0, 40], [5, -5, 5]);
+  let y = useSpring(ySync, { mass: 0.1, stiffness: 200, damping: 20 });
 
   return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: "inline-flex", alignItems: "center", gap: 9,
-        padding: "9px 16px 9px 12px", borderRadius: 100,
-        background: hovered ? bg : "rgba(15,31,56,0.6)",
-        border: `1px solid ${hovered ? border : "rgba(167,139,250,0.12)"}`,
-        cursor: "default", position: "relative",
-        opacity: open ? 1 : 0,
-        transform: open ? "translateY(0) scale(1)" : "translateY(12px) scale(0.9)",
-        transition: `opacity 0.4s cubic-bezier(.22,1,.36,1) ${index * 80}ms, transform 0.45s cubic-bezier(.34,1.56,.64,1) ${index * 80}ms, background 0.2s, border-color 0.2s, box-shadow 0.2s`,
-        boxShadow: hovered ? `0 0 20px ${bg}, 0 4px 12px rgba(0,0,0,0.2)` : "none",
-      }}
-    >
-      {/* Learning indicator dot */}
-      <div style={{ width: 7, height: 7, borderRadius: "50%", background: color, flexShrink: 0, animation: "learningPulse 2s ease-in-out infinite", boxShadow: `0 0 6px ${color}` }} />
-
-      <div style={{ width: 24, height: 24, borderRadius: 7, background: hovered ? bg : "rgba(15,31,56,0.9)", border: `1px solid ${hovered ? border : "rgba(167,139,250,0.1)"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s" }}>
-        <img src={item.icon} alt={item.name} style={{ width: 18, height: 18, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; }} />
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: hovered ? "var(--white)" : "var(--white-2)", fontFamily: "'Outfit',sans-serif", whiteSpace: "nowrap", transition: "color 0.2s", lineHeight: 1 }}>{item.name}</span>
-        {hovered && item.desc && (
-          <span style={{ fontSize: 10, color, fontFamily: "'JetBrains Mono',monospace", whiteSpace: "nowrap", lineHeight: 1 }}>{item.desc}</span>
-        )}
-      </div>
-
-      {/* "learning" badge */}
-      <span style={{
-        fontSize: 8.5, fontWeight: 700, color, background: `${color}12`,
-        border: `1px solid ${color}25`, padding: "2px 6px", borderRadius: 100,
-        fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.5px",
-        textTransform: "uppercase", flexShrink: 0,
-      }}>
-        WIP
-      </span>
-    </div>
-  );
-};
-
-const AccordionItem = ({ category, visible, defaultOpen = false, delay = 0 }) => {
-  const [open, setOpen] = useState(defaultOpen);
-  const [headerHovered, setHeaderHovered] = useState(false);
-  const { color, bg, border } = categoryColors[category.category] || { color: "#3B82F6", bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.2)" };
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (visible && defaultOpen) setOpen(true);
-  }, [visible, defaultOpen]);
-
-  return (
-    <div style={{
-      border: `1px solid ${open ? border : headerHovered ? border + "80" : "rgba(59,130,246,0.1)"}`,
-      borderRadius: 16, overflow: "hidden",
-      background: open ? bg : headerHovered ? `${bg}60` : "rgba(15,31,56,0.4)",
-      transition: "border-color 0.3s, background 0.3s, box-shadow 0.3s",
-      transitionDelay: `${delay}ms`,
-      boxShadow: open
-        ? `0 8px 32px rgba(0,0,0,0.2), 0 0 0 1px ${color}15, 0 0 40px ${color}08`
-        : headerHovered ? `0 4px 20px rgba(0,0,0,0.15), 0 0 0 1px ${color}10` : "none",
-      opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(20px)",
-    }}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        onMouseEnter={() => setHeaderHovered(true)}
-        onMouseLeave={() => setHeaderHovered(false)}
-        style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 22px", background: "none", border: "none", cursor: "pointer", gap: 12 }}
+    <motion.div ref={ref} style={{ width, position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end" }}>
+      
+      {/* Name Tooltip (Only visible when magnified) */}
+      <motion.div 
+        style={{ 
+            opacity, y, position: "absolute", bottom: "100%", marginBottom: "16px", padding: "6px 12px", 
+            background: "rgba(15, 23, 42, 0.9)", color: "#FFFFFF", fontSize: "13px", fontWeight: 600, 
+            borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)", whiteSpace: "nowrap", 
+            pointerEvents: "none", boxShadow: "0 10px 20px rgba(0,0,0,0.4)", zIndex: 50, fontFamily: "'Inter', sans-serif" 
+        }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 10, height: 10, borderRadius: "50%", background: color, boxShadow: open ? `0 0 12px ${color}, 0 0 24px ${color}50` : headerHovered ? `0 0 8px ${color}80` : "none", flexShrink: 0, transition: "box-shadow 0.3s" }} />
-          <span style={{ fontSize: 14, fontWeight: 700, color: open ? "var(--white)" : "var(--white-2)", fontFamily: "'Outfit',sans-serif", transition: "color 0.2s" }}>{category.category}</span>
-          <span style={{ fontSize: 10.5, color, background: bg, border: `1px solid ${border}`, padding: "2px 8px", borderRadius: 100, fontFamily: "'JetBrains Mono',monospace", fontWeight: 600 }}>{category.items.length} skills</span>
-        </div>
-        <div style={{
-          width: 30, height: 30, borderRadius: "50%",
-          background: open ? bg : "rgba(15,31,56,0.8)",
-          border: `1px solid ${open ? border : "rgba(59,130,246,0.1)"}`,
-          display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-          transition: "all 0.3s",
-          boxShadow: headerHovered ? `0 0 14px ${color}30` : "none",
-          position: "relative", overflow: "hidden",
-        }}>
-          {headerHovered && (
-            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(90deg,transparent,${color}30,transparent)`, backgroundSize: "200% 100%", animation: "shimmerBtn 1.2s linear infinite", borderRadius: "50%" }} />
-          )}
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-            style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.38s cubic-bezier(.22,1,.36,1)", position: "relative", zIndex: 1 }}>
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-        </div>
-      </button>
+        {item.name}
+      </motion.div>
 
-      <div style={{ maxHeight: open ? 500 : 0, overflow: "hidden", transition: "max-height 0.5s cubic-bezier(.22,1,.36,1)" }}>
-        <div style={{ padding: "4px 22px 22px", display: "flex", flexWrap: "wrap", gap: 8 }}>
-          {category.items.map((item, i) => (
-            <SkillPill key={item.name} item={item} color={color} bg={bg} border={border} index={i} open={open} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
+      {/* Dock Application Icon Box */}
+      <motion.div 
+        style={{ 
+            width, height: width, borderRadius: "22%", 
+            background: "linear-gradient(to bottom, rgba(30,41,59,0.95), rgba(15,23,42,0.95))", 
+            border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", 
+            boxShadow: "0 12px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2)", transformOrigin: "bottom" 
+        }}
+      >
+         <img src={item.icon} alt={item.name} style={{ width: "60%", height: "60%", objectFit: "contain", filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.5))" }} onError={e=>e.target.style.display="none"} />
+      </motion.div>
 
-// Standalone "Currently Learning" section
+    </motion.div>
+  )
+}
+
+// ==========================================
+// 2. MAC OS DOCK RACK (Option 4)
+// ==========================================
+const MacOSDock = ({ category, index, snapProgress }) => {
+  let mouseX = useMotionValue(Infinity);
+  const dockSpring = { stiffness: 110, damping: 22, mass: 0.45 };
+  const rawDockY = useTransform(snapProgress, [0, 1], [-142 + index * 10, 0]);
+  const rawDockOpacity = useTransform(snapProgress, [0, 0.42, 1], [0, 0.82, 1]);
+  const rawDockScale = useTransform(snapProgress, [0, 0.52, 1], [0.5, 1.14, 1]);
+  const rawDockBlur = useTransform(snapProgress, [0, 1], [8, 0]);
+  const dockY = useSpring(rawDockY, dockSpring);
+  const dockOpacity = useSpring(rawDockOpacity, dockSpring);
+  const dockScale = useSpring(rawDockScale, dockSpring);
+  const dockBlur = useSpring(rawDockBlur, dockSpring);
+  const dockFilter = useTransform(dockBlur, (v) => `blur(${v}px)`);
+
+  return (
+    <motion.div 
+      style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "50px", width: "100%", y: dockY, opacity: dockOpacity, scale: dockScale, filter: dockFilter, transformOrigin: "50% -120px", willChange: "transform, opacity, filter" }}
+    >
+        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "14px", fontWeight: 700, color: "#94A3B8", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>{category.category}</span>
+        
+        {/* Outer scrolling area to prevent clipping tooltips on small screens */}
+        <div style={{ width: "100%", display: "flex", justifyContent: "center", overflowX: "auto", overflowY: "visible", padding: "40px 20px 20px 20px", marginTop: "-40px" }} className="dock-rack">
+            <div 
+               onMouseMove={(e) => mouseX.set(e.clientX)} // Use clientX instead of pageX for perfect viewport mapping
+               onMouseLeave={() => mouseX.set(Infinity)}
+               style={{ 
+                   display: "inline-flex", alignItems: "center", gap: "16px", padding: "16px 28px", 
+                   background: "rgba(255,255,255,0.03)", borderRadius: "34px", border: "1px solid rgba(255,255,255,0.06)", 
+                   borderBottom: "1px solid rgba(255,255,255,0.1)", // strong bottom edge
+                   backdropFilter: "blur(24px)", boxShadow: "0 30px 60px rgba(0,0,0,0.5)", overflow: "visible",
+                   margin: "0 auto"
+               }}
+            >
+                {category.items.map(item => <DockItem key={item.name} item={item} mouseX={mouseX} />)}
+            </div>
+        </div>
+    </motion.div>
+  )
+}
+
+// ==========================================
+// 3. LEARNING SECTION (RETAINED)
+// ==========================================
 const LearningSection = ({ visible }) => {
-  const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const { color, bg, border } = LEARNING_COLOR;
-
-  useEffect(() => { if (visible) setTimeout(() => setOpen(true), 300); }, [visible]);
 
   if (!data.learning || data.learning.length === 0) return null;
 
   return (
     <div style={{
-      border: `1px solid ${hovered ? border : "rgba(167,139,250,0.15)"}`,
-      borderRadius: 16, overflow: "hidden",
-      background: hovered ? bg : "rgba(15,31,56,0.4)",
-      transition: "border-color 0.3s, background 0.3s, box-shadow 0.3s",
-      boxShadow: hovered ? `0 8px 32px rgba(0,0,0,0.2), 0 0 0 1px ${color}15` : "none",
-      opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(20px)",
-      transition2: `opacity 0.55s ease 600ms, transform 0.55s cubic-bezier(.22,1,.36,1) 600ms`,
+      border: `1px solid ${hovered ? border : "rgba(167,139,250,0.15)"}`, borderRadius: "24px", overflow: "hidden",
+      background: hovered ? bg : "rgba(15,31,56,0.4)", transition: "all 0.4s ease",
+      boxShadow: hovered ? `0 8px 32px rgba(0,0,0,0.2), 0 0 0 1px ${color}15` : "0 20px 40px rgba(0,0,0,0.4)",
+      opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(20px)",
     }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
     >
-      {/* Dashed top border to visually separate from "proven" skills */}
       <div style={{ height: 2, background: `repeating-linear-gradient(90deg,${color} 0,${color} 8px,transparent 8px,transparent 16px)`, opacity: 0.4 }} />
-
-      <div style={{ padding: "18px 22px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ padding: "24px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          {/* Animated pulse dot */}
           <div style={{ width: 10, height: 10, borderRadius: "50%", background: color, animation: "learningPulse 2s ease-in-out infinite", flexShrink: 0 }} />
-          <span style={{ fontSize: 14, fontWeight: 700, color: "var(--white-2)", fontFamily: "'Outfit',sans-serif" }}>Currently Learning</span>
-          <span style={{ fontSize: 10.5, color, background: `${color}12`, border: `1px solid ${color}25`, padding: "2px 8px", borderRadius: 100, fontFamily: "'JetBrains Mono',monospace", fontWeight: 600 }}>
-            {data.learning.length} in progress
-          </span>
+          <span style={{ fontSize: 16, fontWeight: 700, color: "var(--white-2)", fontFamily: "'Outfit',sans-serif" }}>Currently Learning</span>
         </div>
-        {/* Info badge */}
-        <span style={{ fontSize: 10, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", background: "rgba(15,31,56,0.8)", border: "1px solid rgba(59,130,246,0.1)", padding: "3px 10px", borderRadius: 6 }}>
-          not yet in production
-        </span>
+        <span style={{ fontSize: 10.5, color, background: `${color}12`, border: `1px solid ${color}25`, padding: "4px 12px", borderRadius: 100, fontFamily: "'JetBrains Mono',monospace", fontWeight: 600 }}>{data.learning.length} in progress</span>
       </div>
-
-      <div style={{ padding: "0 22px 20px", display: "flex", flexWrap: "wrap", gap: 8 }}>
-        {data.learning.map((item, i) => (
-          <LearningPill key={item.name} item={item} index={i} open={open} />
+      
+      <div style={{ padding: "0 32px 24px", display: "flex", flexWrap: "wrap", gap: 12 }}>
+        {data.learning.map((item) => (
+             <div key={item.name} style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "10px 16px", borderRadius: 100, background: "rgba(0,0,0,0.3)", border: `1px solid rgba(167,139,250,0.1)` }}>
+                 <img src={item.icon} alt={item.name} style={{ width: 18, height: 18, objectFit: "contain", filter: "grayscale(30%)" }} onError={e => e.target.style.display = "none"} />
+                 <span style={{ fontSize: 14, fontWeight: 500, color: "var(--white-2)", fontFamily: "'Inter',sans-serif" }}>{item.name}</span>
+             </div>
         ))}
-      </div>
-
-      {/* Subtle explainer */}
-      <div style={{ padding: "10px 22px 16px", borderTop: `1px solid rgba(167,139,250,0.08)` }}>
-        <p style={{ fontSize: 11, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", margin: 0, lineHeight: 1.6 }}>
-          <span style={{ color }}>// </span>
-          Honest about what's WIP. These are being actively explored — no production repos yet.
-        </p>
       </div>
     </div>
   );
 };
 
+
+// ==========================================
+// 4. MAIN EXPORT COMPONENT
+// ==========================================
 const Skills = () => {
-  const [started, setStarted] = useState(false);
   const [scrollRef, isScrollVisible] = useScrollAnimation();
   const lang = useContext(LangContext);
   const t = i18n[lang].skills;
+  const { scrollYProgress: skillsStackProgress } = useScroll({
+    target: scrollRef,
+    offset: ["start end", "start 0.35"],
+  });
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { setStarted(e.isIntersecting); }, { threshold: 0.06 });
-    if (scrollRef.current) obs.observe(scrollRef.current);
-    return () => obs.disconnect();
-  }, [scrollRef]);
+  const spring = { stiffness: 105, damping: 24, mass: 0.5 };
+  const rawSectionY = useTransform(skillsStackProgress, [0, 1], [-136, 0]);
+  const rawSectionOpacity = useTransform(skillsStackProgress, [0, 0.34, 1], [0, 0.84, 1]);
+  const rawSectionScale = useTransform(skillsStackProgress, [0, 0.48, 1], [0.58, 1.08, 1]);
+  const rawSectionBlur = useTransform(skillsStackProgress, [0, 1], [11, 0]);
+  const rawBgY = useTransform(skillsStackProgress, [0, 1], [-72, 0]);
+  const rawBgOpacity = useTransform(skillsStackProgress, [0, 1], [0.18, 1]);
+  const rawHeaderY = useTransform(skillsStackProgress, [0, 1], [-116, 0]);
+  const rawHeaderOpacity = useTransform(skillsStackProgress, [0, 0.46, 1], [0, 0.9, 1]);
+  const rawHeaderScale = useTransform(skillsStackProgress, [0, 0.52, 1], [0.7, 1.08, 1]);
+  const rawLearningY = useTransform(skillsStackProgress, [0, 0.72, 1], [-132, -58, 0]);
+  const rawLearningOpacity = useTransform(skillsStackProgress, [0, 0.72, 1], [0, 0.32, 1]);
+  const rawSnapCoreOpacity = useTransform(skillsStackProgress, [0, 0.2, 0.72], [0.92, 0.72, 0]);
+  const rawSnapCoreScale = useTransform(skillsStackProgress, [0, 0.35, 1], [0.42, 1.22, 1.62]);
+  const rawSnapCoreY = useTransform(skillsStackProgress, [0, 1], [-24, 32]);
+
+  const sectionY = useSpring(rawSectionY, spring);
+  const sectionOpacity = useSpring(rawSectionOpacity, spring);
+  const sectionScale = useSpring(rawSectionScale, spring);
+  const sectionBlur = useSpring(rawSectionBlur, spring);
+  const sectionFilter = useTransform(sectionBlur, (v) => `blur(${v}px)`);
+  const bgY = useSpring(rawBgY, spring);
+  const bgOpacity = useSpring(rawBgOpacity, spring);
+  const headerY = useSpring(rawHeaderY, spring);
+  const headerOpacity = useSpring(rawHeaderOpacity, spring);
+  const headerScale = useSpring(rawHeaderScale, spring);
+  const learningY = useSpring(rawLearningY, spring);
+  const learningOpacity = useSpring(rawLearningOpacity, spring);
+  const snapCoreOpacity = useSpring(rawSnapCoreOpacity, spring);
+  const snapCoreScale = useSpring(rawSnapCoreScale, spring);
+  const snapCoreY = useSpring(rawSnapCoreY, spring);
 
   return (
-    <section id="skills" ref={scrollRef} className={`reveal ${isScrollVisible ? 'visible' : ''}`} style={{ background: "var(--navy)", borderTop: "1px solid rgba(59,130,246,0.07)" }}>
-      <p className="s-label" style={{ opacity: started ? 1 : 0, transition: "opacity .5s", fontFamily: "'JetBrains Mono',monospace" }}>
-        <span style={{ color: "rgba(6,182,212,0.5)" }}>&lt;</span>
-        {t.label}
-        <span style={{ color: "rgba(6,182,212,0.5)" }}> /&gt;</span>
-      </p>
-      <h2 className="s-title" style={{ opacity: started ? 1 : 0, transform: started ? "none" : "translateY(16px)", transition: "opacity .6s ease .1s,transform .6s ease .1s" }}>{t.title}</h2>
+    <section id="skills" ref={scrollRef} style={{ background: "#020617", padding: "120px 0", position: "relative", overflow: "hidden" }}>
+        
+        {/* Abstract OS Desktop Background Patterns */}
+        <motion.div style={{ position: "absolute", inset: 0, y: bgY, opacity: bgOpacity, pointerEvents: "none", zIndex: 0, willChange: "transform, opacity" }}>
+            <div style={{ position: "absolute", inset: 0, backgroundSize: "40px 40px", backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px)" }} />
+            <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: "800px", height: "800px", background: "radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 60%)" }} />
+        </motion.div>
+        <motion.div style={{
+            position: "absolute",
+            left: "50%",
+            marginLeft: "-220px",
+            top: "-180px",
+            width: "440px",
+            height: "440px",
+            background: "radial-gradient(circle, rgba(59,130,246,0.38) 0%, rgba(6,182,212,0.2) 35%, rgba(2,6,23,0.04) 72%, transparent 90%)",
+            filter: "blur(34px)",
+            opacity: snapCoreOpacity,
+            scale: snapCoreScale,
+            y: snapCoreY,
+            pointerEvents: "none",
+            zIndex: 1,
+            willChange: "transform, opacity",
+        }} />
+        
+        <motion.div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 10, y: sectionY, opacity: sectionOpacity, scale: sectionScale, filter: sectionFilter, transformOrigin: "50% -120px", willChange: "transform, opacity, filter" }}>
+            {/* Header Block */}
+            <motion.div style={{ textAlign: "center", marginBottom: "40px", y: headerY, opacity: headerOpacity, scale: headerScale, transformOrigin: "50% -120px", willChange: "transform, opacity" }}>
+               <p style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: "#3B82F6", letterSpacing: "2px", textTransform: "uppercase", fontWeight: 600 }}>
+                  02. TECHNOLOGY STACK
+               </p>
+               <h2 style={{ fontFamily: "'Outfit',sans-serif", fontSize: "40px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-1px", marginTop: "12px", marginBottom: "16px" }}>The Engineering Arsenal.</h2>
+               <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, color: "#64748B", marginTop: "16px" }}>* Interactive Rack modules. Drag cursor along the docks.</p>
+            </motion.div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {/* Proven skills — accordion */}
-        {data.skills.map((cat, i) => (
-          <div key={cat.category} style={{
-            opacity: started ? 1 : 0,
-            transform: started ? "translateY(0)" : "translateY(20px)",
-            transition: `opacity 0.55s ease ${i * 100 + 200}ms, transform 0.55s cubic-bezier(.22,1,.36,1) ${i * 100 + 200}ms`,
-          }}>
-            <AccordionItem category={cat} visible={started} defaultOpen={i === 0} delay={i * 100 + 200} />
-          </div>
-        ))}
+            {/* MacOS Animated Docks */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                {data.skills.map((category, index) => (
+                    <MacOSDock key={category.category} category={category} index={index} snapProgress={skillsStackProgress} />
+                ))}
+            </div>
 
-        {/* Divider */}
-        <div style={{
-          opacity: started ? 1 : 0,
-          transition: "opacity 0.55s ease 700ms",
-          display: "flex", alignItems: "center", gap: 12, margin: "4px 0",
-        }}>
-          <div style={{ flex: 1, height: 1, background: "rgba(59,130,246,0.08)" }} />
-          <span style={{ fontSize: 9.5, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "2px", textTransform: "uppercase" }}>on the radar</span>
-          <div style={{ flex: 1, height: 1, background: "rgba(59,130,246,0.08)" }} />
-        </div>
+            {/* Learning Section */}
+            <motion.div style={{ marginTop: "100px", y: learningY, opacity: learningOpacity, willChange: "transform, opacity" }}>
+                <LearningSection visible={isScrollVisible} />
+            </motion.div>
+        </motion.div>
 
-        {/* Currently learning */}
-        <div style={{
-          opacity: started ? 1 : 0,
-          transform: started ? "translateY(0)" : "translateY(20px)",
-          transition: `opacity 0.55s ease 800ms, transform 0.55s cubic-bezier(.22,1,.36,1) 800ms`,
-        }}>
-          <LearningSection visible={started} />
-        </div>
-      </div>
-
-      <p style={{ textAlign: "center", fontSize: 11, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", marginTop: 20, opacity: started ? 0.6 : 0, transition: "opacity 0.6s ease 0.8s", letterSpacing: "0.5px" }}>
-        {t.hint}
-      </p>
-
-      <style>{`
-        @keyframes shimmerBtn { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-        @keyframes learningPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
-      `}</style>
+        {/* Global styles overriding scrollbar for docks so mobile doesn't look ugly */}
+        <style>{`
+            .dock-rack::-webkit-scrollbar { display: none; }
+            .dock-rack { -ms-overflow-style: none; scrollbar-width: none; }
+            @keyframes learningPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+        `}</style>
     </section>
   );
 };
