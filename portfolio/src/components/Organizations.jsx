@@ -46,7 +46,15 @@ const DetailOverlay = ({ org, ac, onClose }) => createPortal(
       <div style={{ borderRadius: 2, overflow: "hidden", marginBottom: 20, height: 260, background: "#000" }}>
         <img src={org.photo} alt={org.role} loading="lazy" decoding="async"
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          onError={e => { e.target.style.display = "none"; }}
+          onError={(e) => {
+            const fallback = org.photoFallback || org.photo;
+            if (e.currentTarget.dataset.fallbackApplied !== "1" && fallback !== org.photo) {
+              e.currentTarget.dataset.fallbackApplied = "1";
+              e.currentTarget.src = fallback;
+              return;
+            }
+            e.currentTarget.style.display = "none";
+          }}
         />
       </div>
 
@@ -139,7 +147,15 @@ const Polaroid = ({ org, index, visible }) => {
                 transform: hovered ? "scale(1.05)" : "scale(1)",
                 transition: "transform 0.7s cubic-bezier(.22,1,.36,1)",
               }}
-              onError={e => { e.target.style.display = "none"; }}
+              onError={(e) => {
+                const fallback = org.photoFallback || org.photo;
+                if (e.currentTarget.dataset.fallbackApplied !== "1" && fallback !== org.photo) {
+                  e.currentTarget.dataset.fallbackApplied = "1";
+                  e.currentTarget.src = fallback;
+                  return;
+                }
+                e.currentTarget.style.display = "none";
+              }}
             />
             {/* Color wash on hover */}
             <div style={{

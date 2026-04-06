@@ -169,6 +169,7 @@ const buildProjectSignals = (project) => {
   const hasAuth = /\bjwt\b|rbac|role[- ]based|auth|bcrypt|password/.test(haystack);
   const hasRelationalDb = /mysql|postgres|sql|relational|innodb|database/.test(haystack);
   const hasApiDocs = Boolean(project.postman || project.apiDocs || project.openApi);
+  const hasCodeProof = Array.isArray(project.codeProofs) && project.codeProofs.some((item) => item?.url);
   const hasHealth = Boolean(project.healthCheck);
   const hasErrorControl =
     Boolean(project.metrics?.errorRate) ||
@@ -179,6 +180,7 @@ const buildProjectSignals = (project) => {
     { label: "Auth", ok: hasAuth },
     { label: "Relational DB", ok: hasRelationalDb },
     { label: "API Docs", ok: hasApiDocs },
+    { label: "Code Proof", ok: hasCodeProof },
     { label: "Health Check", ok: hasHealth },
     { label: "Error Control", ok: hasErrorControl },
   ];
@@ -219,6 +221,10 @@ const Projects = () => {
   const apiDocsUrl = proj?.apiDocs || proj?.postman || null;
   const openApiUrl = proj?.openApi || null;
   const healthUrl = proj?.healthCheck || null;
+  const codeProofs = Array.isArray(proj?.codeProofs)
+    ? proj.codeProofs.filter((item) => item?.label && item?.url)
+    : [];
+  const primaryCodeProof = codeProofs[0] || null;
   const backendSignals = proj ? buildProjectSignals(proj) : [];
   const claim = getProjectClaim(proj);
 
@@ -486,6 +492,7 @@ const Projects = () => {
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                       {apiDocsUrl && <a href={apiDocsUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>API Docs</a>}
                       {openApiUrl && <a href={openApiUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.3)", color: "#22D3EE", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>OpenAPI</a>}
+                      {primaryCodeProof && <a href={primaryCodeProof.url} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.3)", color: "#C4B5FD", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>Code Proof</a>}
                       {healthUrl && <a href={healthUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", color: "#34D399", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>Health</a>}
                       {proj.demo && <a href={proj.demo} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>Demo</a>}
                       <a href={proj.github} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}18`, border: `1px solid ${a}40`, color: "#F8FAFC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>GitHub</a>
@@ -504,6 +511,42 @@ const Projects = () => {
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {parsedPoints.map((pt, i) => <HighlightBlock key={i} point={pt} index={i} accent={a} />)}
+                        </div>
+                      </div>
+                    )}
+
+                    {codeProofs.length > 0 && (
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                          <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
+                          <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#334155", letterSpacing: "2px" }}>DEEP CODE LINKS</span>
+                          <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
+                        </div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                          {codeProofs.map((item) => (
+                            <a
+                              key={`${proj.title}-${item.label}`}
+                              href={item.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: 6,
+                                padding: "6px 10px",
+                                borderRadius: 8,
+                                background: "rgba(139,92,246,0.1)",
+                                border: "1px solid rgba(139,92,246,0.28)",
+                                color: "#DDD6FE",
+                                textDecoration: "none",
+                                fontFamily: "'JetBrains Mono',monospace",
+                                fontSize: 10.5,
+                                fontWeight: 600,
+                              }}
+                            >
+                              {item.label}
+                            </a>
+                          ))}
                         </div>
                       </div>
                     )}

@@ -99,8 +99,12 @@ const OSWindow = ({ title, children, className, icon, noPadding = false }) => {
 }
 
 const PhotoSlideshow = () => {
-  // Optimized slideshow images for faster mobile loading.
-  const photos = ["/a-slide.jpg", "/b-slide.jpg", "/c-slide.jpg"];
+  // WebP first, JPEG as fallback for older browsers.
+  const photos = [
+    { src: "/a-slide.webp", fallback: "/a-slide.jpg" },
+    { src: "/b-slide.webp", fallback: "/b-slide.jpg" },
+    { src: "/c-slide.webp", fallback: "/c-slide.jpg" },
+  ];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -115,7 +119,7 @@ const PhotoSlideshow = () => {
           <AnimatePresence mode="popLayout">
               <motion.img
                   key={currentIndex}
-                  src={photos[currentIndex]}
+                  src={photos[currentIndex].src}
                   alt="Berlin Sugiyanto"
                   loading="lazy"
                   decoding="async"
@@ -124,8 +128,14 @@ const PhotoSlideshow = () => {
                   exit={{ opacity: 0, scale: 1.1, filter: "blur(5px)" }}
                   transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                   style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", pointerEvents: "none", display: "block", minHeight: "100%" }}
-                  onError={e => { 
-                      e.target.style.display="none"; 
+                  onError={e => {
+                      const fallback = photos[currentIndex].fallback;
+                      if (e.currentTarget.dataset.fallbackApplied !== "1") {
+                        e.currentTarget.dataset.fallbackApplied = "1";
+                        e.currentTarget.src = fallback;
+                        return;
+                      }
+                      e.currentTarget.style.display = "none";
                   }}
               />
           </AnimatePresence>

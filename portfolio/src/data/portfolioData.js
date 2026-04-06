@@ -116,6 +116,16 @@ export const data = {
       github: "https://github.com/B3rlinSugi/student-management-api",
       demo: "https://student-api-demo.vercel.app",
       postman: "https://www.postman.com/berlinsugi/workspace/student-management-api",
+      codeProofs: [
+        {
+          label: "JWT + RBAC Guard",
+          url: "https://github.com/B3rlinSugi/student-management-api/search?q=jwt+rbac+middleware&type=code",
+        },
+        {
+          label: "Student Query Filters",
+          url: "https://github.com/B3rlinSugi/student-management-api/search?q=filter+search+pagination&type=code",
+        },
+      ],
       desc: "My passion project: a comprehensive Student Management API built with Laravel 11. I absolutely love implementing JWT authentication and role-based access control—it's like building digital fortresses for data! CRUD operations with soft delete, advanced filtering/search—all coded with care for scalability and security. This project ignited my love for backend development.",
       points: [
         {
@@ -142,7 +152,7 @@ export const data = {
         { name: "Postman",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
       ],
       apiDocs: "https://www.postman.com/berlinsugi/workspace/student-management-api",
-      openApi: "https://petstore3.swagger.io/api/v3/openapi.json",
+      openApi: null,
       healthCheck: "https://student-api-demo.vercel.app/api/health",
       metrics: {
         endpoints: 18,
@@ -161,6 +171,16 @@ export const data = {
       github: "https://github.com/B3rlinSugi/springboot-student-api",
       demo: null,
       postman: null,
+      codeProofs: [
+        {
+          label: "Spring Security JWT",
+          url: "https://github.com/B3rlinSugi/springboot-student-api/search?q=SecurityConfig+jwt&type=code",
+        },
+        {
+          label: "Service Repository Layer",
+          url: "https://github.com/B3rlinSugi/springboot-student-api/search?q=Service+Repository&type=code",
+        },
+      ],
       desc: "Diving into Java backend with Spring Boot 3—such a thrilling experience! JWT auth, JPA/Hibernate for ORM, and clean layered architecture. I geek out over the Service → Repository pattern and testable code design. This project expanded my coding horizons and deepened my appreciation for Java's elegance.",
       points: [
         {
@@ -181,7 +201,7 @@ export const data = {
         { name: "JWT",        icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
         { name: "Postman",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
       ],
-      apiDocs: null,
+      apiDocs: "https://github.com/B3rlinSugi/springboot-student-api#readme",
       openApi: null,
       healthCheck: "https://springboot-student-api-health.vercel.app/health",
       metrics: {
@@ -201,6 +221,16 @@ export const data = {
       github: "https://github.com/B3rlinSugi/tokoku-ecommerce",
       demo: "https://tokoku-ecommerce.vercel.app",
       postman: null,
+      codeProofs: [
+        {
+          label: "Transaction Checkout Flow",
+          url: "https://github.com/B3rlinSugi/tokoku-ecommerce/search?q=transaction+checkout+stock&type=code",
+        },
+        {
+          label: "Bcrypt + Role Validation",
+          url: "https://github.com/B3rlinSugi/tokoku-ecommerce/search?q=bcrypt+role+validation&type=code",
+        },
+      ],
       desc: "Full-stack e-commerce platform (TokoKu) built with PHP. Learned critical lessons on data consistency (transactions), secure password hashing (bcrypt), payment integration, and real-time reporting. Main takeaway: small design decisions have huge reliability impact.",
       points: [
         {
@@ -225,8 +255,8 @@ export const data = {
         { name: "Bootstrap 5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
         { name: "Chart.js",    icon: "https://cdn.simpleicons.org/chartdotjs/FF6384" },
       ],
-      apiDocs: null,
-      openApi: "https://tokoku-ecommerce.vercel.app/openapi.json",
+      apiDocs: "https://github.com/B3rlinSugi/tokoku-ecommerce#readme",
+      openApi: null,
       healthCheck: "https://tokoku-ecommerce.vercel.app/api/health",
       metrics: {
         endpoints: 22,
@@ -244,6 +274,16 @@ export const data = {
       claimNote: "Academic modernization project that demonstrates secure authentication refactor and reporting improvements; not operated as a production service.",
       github: "https://github.com/B3rlinSugi/cash-flow",
       demo: null,
+      codeProofs: [
+        {
+          label: "Auth Hashing Upgrade",
+          url: "https://github.com/B3rlinSugi/cash-flow/search?q=password_hash+bcrypt+md5&type=code",
+        },
+        {
+          label: "Cashflow Analytics Query",
+          url: "https://github.com/B3rlinSugi/cash-flow/search?q=chart+aggregate+monthly&type=code",
+        },
+      ],
       desc: "A class cash flow management system rebuilt from a legacy codebase — modernised with industry-standard security, real-time analytics, and PDF reporting. The project started as a broken MD5-authenticated system and was refactored into something production-worthy: secure auth, proper database constraints, and an analytics dashboard that gives admins full financial visibility.",
       points: [
         {
@@ -277,6 +317,16 @@ export const data = {
       claimNote: "Academic information-system project used to practice relational schema design, RBAC enforcement, and analytics reporting in a controlled scope.",
       github: "https://github.com/B3rlinSugi/crud-akademik",
       demo: null,
+      codeProofs: [
+        {
+          label: "RBAC + Session Guard",
+          url: "https://github.com/B3rlinSugi/crud-akademik/search?q=role+session+middleware&type=code",
+        },
+        {
+          label: "Prepared Statement Usage",
+          url: "https://github.com/B3rlinSugi/crud-akademik/search?q=prepare+execute+PDO&type=code",
+        },
+      ],
       desc: "An academic data management system built to handle students, courses, and grades for an entire faculty — with multi-table relational database, role-based access control, and a real-time statistical dashboard. The design priority was data integrity and strict access boundaries between Admin and Staff roles.",
       points: [
         {
@@ -350,7 +400,8 @@ export const data = {
       period: "Jul 2024 - Aug 2025",
       desc: "Led two departments managing 15+ members with 100% program completion rate. Drove cross-functional coordination across faculty-level initiatives and represented the faculty in external institutional events — balancing leadership responsibilities alongside full-time academic commitments.",
       highlights: ["15+ Members Led", "100% Completion", "Faculty Representative", "Strategic Planning"],
-      photo: "/org1-opt.jpg",
+      photo: "/org1-opt.webp",
+      photoFallback: "/org1-opt.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
     },
     {
@@ -359,7 +410,8 @@ export const data = {
       period: "Jul 2023 - Jun 2024",
       desc: "Directed and coordinated staff in planning and executing community social programs. Improved team efficiency through structured delegation, ensuring on-time delivery of all scheduled activities with measurable impact on the campus community.",
       highlights: ["Department Lead", "Program Delivery", "Team Coordination", "Community Outreach"],
-      photo: "/org2-opt.jpg",
+      photo: "/org2-opt.webp",
+      photoFallback: "/org2-opt.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
     },
     {
@@ -368,7 +420,8 @@ export const data = {
       period: "Jul 2022 - Jun 2023",
       desc: "Contributed as a core staff member in planning and executing social community programs. Actively participated in campus events and cross-departmental initiatives — building the collaboration and communication skills that underpin my approach to engineering teamwork today.",
       highlights: ["Event Planning", "Community Programs", "Cross-dept Work", "Active Contributor"],
-      photo: "/org3-opt.jpg",
+      photo: "/org3-opt.webp",
+      photoFallback: "/org3-opt.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
     },
   ],

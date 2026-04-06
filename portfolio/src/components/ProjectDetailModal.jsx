@@ -531,6 +531,9 @@ const ProjectDetailModal = () => {
   const apiDocsUrl = project.apiDocs || project.postman || null;
   const openApiUrl = project.openApi || null;
   const healthUrl = project.healthCheck || null;
+  const codeProofs = Array.isArray(project.codeProofs)
+    ? project.codeProofs.filter((item) => item?.label && item?.url)
+    : [];
   const claim = getProjectClaim(project);
 
   return (
@@ -635,6 +638,57 @@ const ProjectDetailModal = () => {
               <p style={{ margin: 0, fontSize: 12.5, color: "#CBD5E1", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif" }}>
                 {project.claimNote}
               </p>
+            </div>
+          )}
+
+          {codeProofs.length > 0 && (
+            <div
+              style={{
+                marginBottom: 20,
+                padding: "10px 12px",
+                borderRadius: 10,
+                background: "rgba(139,92,246,0.08)",
+                border: "1px solid rgba(139,92,246,0.3)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 9.5,
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  color: "#C4B5FD",
+                  fontFamily: "'JetBrains Mono',monospace",
+                  marginBottom: 8,
+                }}
+              >
+                Deep Code Links
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {codeProofs.map((item) => (
+                  <a
+                    key={`${project.title}-${item.label}`}
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      padding: "6px 10px",
+                      borderRadius: 8,
+                      background: "rgba(139,92,246,0.12)",
+                      border: "1px solid rgba(139,92,246,0.35)",
+                      color: "#E9D5FF",
+                      textDecoration: "none",
+                      fontFamily: "'JetBrains Mono',monospace",
+                      fontSize: 10.5,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
             </div>
           )}
 
