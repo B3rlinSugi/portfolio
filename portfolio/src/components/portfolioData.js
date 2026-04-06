@@ -254,7 +254,7 @@ export const data = {
       period: "Jul 2024 - Aug 2025",
       desc: "Led two departments managing 15+ members with 100% program completion rate. Drove cross-functional coordination across faculty-level initiatives and represented the faculty in external institutional events — balancing leadership responsibilities alongside full-time academic commitments.",
       highlights: ["15+ Members Led", "100% Completion", "Faculty Representative", "Strategic Planning"],
-      photo: "/org1.jpg",
+      photo: "/org1-opt.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
     },
     {
@@ -263,7 +263,7 @@ export const data = {
       period: "Jul 2023 - Jun 2024",
       desc: "Directed and coordinated staff in planning and executing community social programs. Improved team efficiency through structured delegation, ensuring on-time delivery of all scheduled activities with measurable impact on the campus community.",
       highlights: ["Department Lead", "Program Delivery", "Team Coordination", "Community Outreach"],
-      photo: "/org2.jpg",
+      photo: "/org2-opt.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
     },
     {
@@ -272,7 +272,7 @@ export const data = {
       period: "Jul 2022 - Jun 2023",
       desc: "Contributed as a core staff member in planning and executing social community programs. Actively participated in campus events and cross-departmental initiatives — building the collaboration and communication skills that underpin my approach to engineering teamwork today.",
       highlights: ["Event Planning", "Community Programs", "Cross-dept Work", "Active Contributor"],
-      photo: "/org3.jpg",
+      photo: "/org3-opt.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
     },
   ],

@@ -14,6 +14,62 @@ const accents = [
   { a: "#F59E0B", b: "#EF4444" },
 ];
 
+const CLAIM_META = {
+  "production-ready": {
+    label: "Production Ready",
+    chip: "PRODUCTION READY",
+    color: "#10B981",
+    bg: "rgba(16,185,129,0.12)",
+    border: "rgba(16,185,129,0.35)",
+    text: "#A7F3D0",
+  },
+  "portfolio-demo": {
+    label: "Portfolio Demo",
+    chip: "PORTFOLIO DEMO",
+    color: "#22D3EE",
+    bg: "rgba(6,182,212,0.12)",
+    border: "rgba(6,182,212,0.35)",
+    text: "#CFFAFE",
+  },
+  "learning-project": {
+    label: "Learning Project",
+    chip: "LEARNING PROJECT",
+    color: "#F59E0B",
+    bg: "rgba(245,158,11,0.12)",
+    border: "rgba(245,158,11,0.35)",
+    text: "#FDE68A",
+  },
+};
+
+const getProjectClaim = (project) => {
+  const key = project?.claimLevel || "portfolio-demo";
+  return CLAIM_META[key] || CLAIM_META["portfolio-demo"];
+};
+
+const normalizePoint = (point) => {
+  if (typeof point === "string") {
+    return {
+      challenge: "Backend challenge",
+      solution: point,
+      result: "",
+    };
+  }
+
+  if (!point || typeof point !== "object") {
+    return {
+      challenge: "Backend challenge",
+      solution: "",
+      result: "",
+    };
+  }
+
+  return {
+    challenge: point.challenge || point.label || "Backend challenge",
+    solution: point.solution || point.detail || "",
+    result: point.result || "",
+  };
+};
+
 /* ── Mermaid ERD definitions per project ── */
 const architectureData = {
   "Student Management API": {
@@ -472,6 +528,10 @@ const ProjectDetailModal = () => {
     { key: "techstack", label: "Tech Stack" },
     { key: "architecture", label: "Architecture" },
   ];
+  const apiDocsUrl = project.apiDocs || project.postman || null;
+  const openApiUrl = project.openApi || null;
+  const healthUrl = project.healthCheck || null;
+  const claim = getProjectClaim(project);
 
   return (
     <div
@@ -525,6 +585,22 @@ const ProjectDetailModal = () => {
             <span style={{ fontSize: 10, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace", background: "rgba(15,31,56,0.8)", border: "1px solid rgba(59,130,246,0.1)", padding: "3px 10px", borderRadius: 6 }}>
               {project.period}
             </span>
+            <span
+              style={{
+                fontSize: 9.5,
+                fontWeight: 700,
+                letterSpacing: "0.6px",
+                textTransform: "uppercase",
+                color: claim.text,
+                background: claim.bg,
+                border: `1px solid ${claim.border}`,
+                padding: "3px 10px",
+                borderRadius: 6,
+                fontFamily: "'JetBrains Mono',monospace",
+              }}
+            >
+              {claim.chip}
+            </span>
           </div>
 
           <h2 style={{ fontFamily: "'Outfit',sans-serif", fontSize: "clamp(18px,3vw,26px)", fontWeight: 800, color: "#F0F6FF", margin: "0 0 8px", letterSpacing: "-0.5px", paddingRight: 40 }}>
@@ -533,6 +609,34 @@ const ProjectDetailModal = () => {
           <p style={{ fontSize: 13.5, color: "#6B84A8", lineHeight: 1.75, fontFamily: "'Outfit',sans-serif", margin: "0 0 20px" }}>
             {project.desc}
           </p>
+
+          {project.claimNote && (
+            <div
+              style={{
+                marginBottom: 20,
+                padding: "10px 12px",
+                borderRadius: 10,
+                background: claim.bg,
+                border: `1px solid ${claim.border}`,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 9.5,
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  color: claim.color,
+                  fontFamily: "'JetBrains Mono',monospace",
+                  marginBottom: 6,
+                }}
+              >
+                Claim Scope
+              </div>
+              <p style={{ margin: 0, fontSize: 12.5, color: "#CBD5E1", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif" }}>
+                {project.claimNote}
+              </p>
+            </div>
+          )}
 
           {/* Tab Bar */}
           <div style={{ display: "flex", gap: 4, borderBottom: "1px solid rgba(59,130,246,0.1)", marginBottom: 0 }}>
@@ -567,14 +671,28 @@ const ProjectDetailModal = () => {
           {activeTab === "achievements" && (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {project.points && project.points.length > 0 ? (
-                project.points.map((pt, i) => (
+                project.points.map((rawPoint, i) => {
+                  const pt = normalizePoint(rawPoint);
+                  return (
                   <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 16px", borderRadius: 10, background: `${a}06`, border: `1px solid ${a}12` }}>
                     <div style={{ width: 22, height: 22, borderRadius: 7, flexShrink: 0, background: `${a}18`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9.5, fontWeight: 700, color: a, fontFamily: "'JetBrains Mono',monospace", marginTop: 1 }}>
                       {i + 1}
                     </div>
-                    <p style={{ fontSize: 13.5, color: "#8BA4C8", lineHeight: 1.75, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{typeof pt === "string" ? pt : `${pt.challenge} / ${pt.solution} / ${pt.result}`}</p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6, flex: 1 }}>
+                      <div style={{ fontSize: 10.5, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.5px", textTransform: "uppercase" }}>Problem</div>
+                      <p style={{ fontSize: 13.5, color: "#E2E8F0", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt.challenge}</p>
+                      <div style={{ fontSize: 10.5, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.5px", textTransform: "uppercase" }}>Action</div>
+                      <p style={{ fontSize: 13.5, color: "#8BA4C8", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt.solution || "Implemented backend logic and delivery flow for this case."}</p>
+                      {pt.result && (
+                        <>
+                          <div style={{ fontSize: 10.5, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.5px", textTransform: "uppercase" }}>Result</div>
+                          <p style={{ fontSize: 13.5, color: "#A7F3D0", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt.result}</p>
+                        </>
+                      )}
+                    </div>
                   </div>
-                ))
+                );
+              })
               ) : (
                 <div style={{ padding: "14px 16px", borderRadius: 10, background: "rgba(15,31,56,0.4)", border: "1px solid rgba(59,130,246,0.1)" }}>
                   <p style={{ margin: 0, fontSize: 13, color: "var(--muted)", fontFamily: "'JetBrains Mono',monospace" }}>No detailed project achievement data tersedia untuk saat ini.</p>
@@ -588,7 +706,7 @@ const ProjectDetailModal = () => {
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
               {project.tech.map(t => (
                 <div key={t.name} style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(6,14,30,0.7)", border: "1px solid rgba(59,130,246,0.18)", borderRadius: 10, padding: "10px 16px" }}>
-                  <img src={t.icon} alt={t.name} style={{ width: 24, height: 24, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; }} />
+                  <img src={t.icon} alt={t.name} loading="lazy" decoding="async" style={{ width: 24, height: 24, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; }} />
                   <span style={{ fontSize: 13, color: "var(--white-2)", fontFamily: "'JetBrains Mono',monospace", fontWeight: 600 }}>{t.name}</span>
                 </div>
               ))}
@@ -623,15 +741,37 @@ const ProjectDetailModal = () => {
               Live Demo
             </a>
           )}
-          {project.postman != null && project.postman !== "" && (
+          {apiDocsUrl != null && apiDocsUrl !== "" && (
             <a
-              href={project.postman} target="_blank" rel="noreferrer"
+              href={apiDocsUrl} target="_blank" rel="noreferrer"
               style={{ display: "inline-flex", flex: 1, minWidth: 140, alignItems: "center", justifyContent: "center", gap: 8, padding: "11px 20px", borderRadius: 10, background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.35)", color: "#34D399", fontSize: 13.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
               onMouseEnter={e => { e.currentTarget.style.background = "rgba(16,185,129,0.2)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "rgba(16,185,129,0.12)"; e.currentTarget.style.transform = "none"; }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
               API Docs
+            </a>
+          )}
+          {openApiUrl != null && openApiUrl !== "" && (
+            <a
+              href={openApiUrl} target="_blank" rel="noreferrer"
+              style={{ display: "inline-flex", flex: 1, minWidth: 140, alignItems: "center", justifyContent: "center", gap: 8, padding: "11px 20px", borderRadius: 10, background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.3)", color: "#22D3EE", fontSize: 13.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(6,182,212,0.18)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(6,182,212,0.1)"; e.currentTarget.style.transform = "none"; }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16v16H4z" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>
+              OpenAPI
+            </a>
+          )}
+          {healthUrl != null && healthUrl !== "" && (
+            <a
+              href={healthUrl} target="_blank" rel="noreferrer"
+              style={{ display: "inline-flex", flex: 1, minWidth: 140, alignItems: "center", justifyContent: "center", gap: 8, padding: "11px 20px", borderRadius: 10, background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", color: "#34D399", fontSize: 13.5, fontWeight: 600, textDecoration: "none", fontFamily: "'Outfit',sans-serif", transition: "all 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(16,185,129,0.18)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(16,185,129,0.1)"; e.currentTarget.style.transform = "none"; }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+              Health Check
             </a>
           )}
           <button

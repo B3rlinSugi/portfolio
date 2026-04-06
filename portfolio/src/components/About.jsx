@@ -99,9 +99,8 @@ const OSWindow = ({ title, children, className, icon, noPadding = false }) => {
 }
 
 const PhotoSlideshow = () => {
-  // Tempatkan file gambar dengan nama a.jpg, b.jpg, c.jpg di direktori public/
-  // Jika Anda mau menambah foto baru, tinggal tambahkan ke daftar array di bawah ini:
-  const photos = ["/a.jpg.jpeg", "/b.jpg.jpeg", "/c.jpg.jpeg"];
+  // Optimized slideshow images for faster mobile loading.
+  const photos = ["/a-slide.jpg", "/b-slide.jpg", "/c-slide.jpg"];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -118,6 +117,8 @@ const PhotoSlideshow = () => {
                   key={currentIndex}
                   src={photos[currentIndex]}
                   alt="Berlin Sugiyanto"
+                  loading="lazy"
+                  decoding="async"
                   initial={{ opacity: 0, scale: 0.75, filter: "blur(10px)" }}
                   animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                   exit={{ opacity: 0, scale: 1.1, filter: "blur(5px)" }}
@@ -295,7 +296,7 @@ const About = () => {
            {/* WIN 2: Narrative Text */}
            <OSWindow boundsRef={workspaceRef} title="vscode - about_me.md" className="win-2" icon="📄">
                <h2 style={{ fontFamily: "'Outfit',sans-serif", fontSize: "36px", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.2, letterSpacing: "-0.5px", marginBottom: "20px" }}>
-                 Architecting the unseen muscles of the modern web.
+                 Building resilient backend systems for modern products.
                </h2>
                <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)", padding: "6px 16px", borderRadius: "8px", marginBottom: "24px", width: "fit-content" }}>
                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10B981", boxShadow: "0 0 10px rgba(16,185,129,0.8)" }} />
@@ -305,7 +306,7 @@ const About = () => {
                  {data.about}
                </p>
                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "17px", color: "#94A3B8", lineHeight: 1.8, cursor: "text" }}>
-                 Currently an Informatics Engineering student at <strong style={{ color: "#F8FAFC", fontWeight: 600 }}>Universitas Gunadarma</strong>. I specialize in designing scalable database schemas, constructing rapid APIs, and writing clean structural logic that ensures front-end applications perform flawlessly.
+                 Fresh graduate in Informatics Engineering from <strong style={{ color: "#F8FAFC", fontWeight: 600 }}>Universitas Gunadarma</strong>. I specialize in designing scalable database schemas, building secure APIs, and writing clean backend logic that keeps applications stable, fast, and maintainable.
                </p>
            </OSWindow>
 
@@ -324,7 +325,7 @@ const About = () => {
                    {skillsData.map((s, i) => (
                        <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", padding: "20px 16px", background: "rgba(255,255,255,0.02)", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
                            <div style={{ width: 36, height: 36, flexShrink: 0, filter: "brightness(1.5)" }}>
-                               <img src={s.icon} style={{ width: "100%", height: "100%", objectFit: "contain" }} onError={e => e.target.style.display="none"} />
+                               <img src={s.icon} alt={`${s.name} icon`} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "contain" }} onError={e => e.target.style.display="none"} />
                            </div>
                            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#E2E8F0", fontWeight: 600 }}>{s.name}</span>
                        </div>

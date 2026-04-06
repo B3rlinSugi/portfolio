@@ -12,10 +12,67 @@ const ACCENTS = [
   { a: "#F59E0B", b: "#EF4444" },
 ];
 
+const CLAIM_META = {
+  "production-ready": {
+    label: "Production Ready",
+    chip: "PRODUCTION READY",
+    color: "#10B981",
+    bg: "rgba(16,185,129,0.12)",
+    border: "rgba(16,185,129,0.35)",
+    text: "#A7F3D0",
+  },
+  "portfolio-demo": {
+    label: "Portfolio Demo",
+    chip: "PORTFOLIO DEMO",
+    color: "#22D3EE",
+    bg: "rgba(6,182,212,0.12)",
+    border: "rgba(6,182,212,0.35)",
+    text: "#CFFAFE",
+  },
+  "learning-project": {
+    label: "Learning Project",
+    chip: "LEARNING PROJECT",
+    color: "#F59E0B",
+    bg: "rgba(245,158,11,0.12)",
+    border: "rgba(245,158,11,0.35)",
+    text: "#FDE68A",
+  },
+};
+
+const getProjectClaim = (project) => {
+  const key = project?.claimLevel || "portfolio-demo";
+  return CLAIM_META[key] || CLAIM_META["portfolio-demo"];
+};
+
+const normalizePoint = (point) => {
+  if (typeof point === "string") {
+    return {
+      problem: "Backend challenge",
+      action: point,
+      result: "",
+    };
+  }
+
+  if (!point || typeof point !== "object") {
+    return {
+      problem: "Backend challenge",
+      action: "",
+      result: "",
+    };
+  }
+
+  return {
+    problem: point.challenge || point.label || "Backend challenge",
+    action: point.solution || point.detail || "",
+    result: point.result || "",
+  };
+};
+
 // ─── HIGHLIGHT BLOCK with spotlight ──────────────────────────────────────────
 const HighlightBlock = ({ point, index, accent }) => {
   const [hovered, setHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const parsed = normalizePoint(point);
 
   return (
     <div
@@ -43,10 +100,30 @@ const HighlightBlock = ({ point, index, accent }) => {
       <div style={{ position: "relative", zIndex: 1, display: "flex", gap: 10 }}>
         <div style={{ width: 20, height: 20, borderRadius: 6, background: `${accent}18`, border: `1px solid ${accent}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, color: accent, fontFamily: "'JetBrains Mono',monospace", flexShrink: 0, marginTop: 2 }}>{index + 1}</div>
         <div>
-          {point.label && <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, fontWeight: 700, color: accent, marginBottom: 4 }}>{point.label}</div>}
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#94A3B8", lineHeight: 1.75, margin: 0 }}>
-            {point.detail || (typeof point === "string" ? point : "")}
-          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: accent, letterSpacing: "0.6px", textTransform: "uppercase" }}>
+              Problem
+            </div>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#E2E8F0", lineHeight: 1.6, margin: 0 }}>
+              {parsed.problem}
+            </p>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: accent, letterSpacing: "0.6px", textTransform: "uppercase", marginTop: 2 }}>
+              Action
+            </div>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#94A3B8", lineHeight: 1.6, margin: 0 }}>
+              {parsed.action || "Implemented backend logic and delivery flow for this case."}
+            </p>
+            {parsed.result && (
+              <>
+                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: accent, letterSpacing: "0.6px", textTransform: "uppercase", marginTop: 2 }}>
+                  Result
+                </div>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#A7F3D0", lineHeight: 1.6, margin: 0 }}>
+                  {parsed.result}
+                </p>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -78,6 +155,35 @@ const NavBtn = ({ onClick, disabled, children }) => {
 };
 
 // ─── MAIN COMPONENT ────────────────────────────────────────────────────────────
+const buildProjectSignals = (project) => {
+  const pointsText = (project.points || []).map((pt) => {
+    if (typeof pt === "string") return pt;
+    return [pt.label, pt.detail, pt.challenge, pt.solution, pt.result].filter(Boolean).join(" ");
+  });
+  const techText = (project.tech || []).map((tech) => tech.name || "");
+  const haystack = [project.title, project.type, project.desc, ...pointsText, ...techText]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  const hasAuth = /\bjwt\b|rbac|role[- ]based|auth|bcrypt|password/.test(haystack);
+  const hasRelationalDb = /mysql|postgres|sql|relational|innodb|database/.test(haystack);
+  const hasApiDocs = Boolean(project.postman || project.apiDocs || project.openApi);
+  const hasHealth = Boolean(project.healthCheck);
+  const hasErrorControl =
+    Boolean(project.metrics?.errorRate) ||
+    hasHealth ||
+    /\berror\b|exception|validation|monitor|sentry/.test(haystack);
+
+  return [
+    { label: "Auth", ok: hasAuth },
+    { label: "Relational DB", ok: hasRelationalDb },
+    { label: "API Docs", ok: hasApiDocs },
+    { label: "Health Check", ok: hasHealth },
+    { label: "Error Control", ok: hasErrorControl },
+  ];
+};
+
 const Projects = () => {
   const projectsRef = useRef(null);
   const [page, setPage] = useState(0);
@@ -108,6 +214,13 @@ const Projects = () => {
   const proj = projects[page];
   const { a, b } = ACCENTS[page % ACCENTS.length];
   const points = Array.isArray(proj?.points) ? proj.points : [];
+  const parsedPoints = points.map((pt) => normalizePoint(pt));
+  const leadPoint = parsedPoints[0] || null;
+  const apiDocsUrl = proj?.apiDocs || proj?.postman || null;
+  const openApiUrl = proj?.openApi || null;
+  const healthUrl = proj?.healthCheck || null;
+  const backendSignals = proj ? buildProjectSignals(proj) : [];
+  const claim = getProjectClaim(proj);
 
   if (!proj) return null;
 
@@ -238,6 +351,22 @@ const Projects = () => {
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
                       <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, fontWeight: 700, color: a, background: `${a}10`, border: `1px solid ${a}25`, padding: "3px 10px", borderRadius: 6 }}>{proj.type}</span>
                       <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: "#475569" }}>{proj.period}</span>
+                      <span
+                        style={{
+                          fontFamily: "'JetBrains Mono',monospace",
+                          fontSize: 9.5,
+                          fontWeight: 700,
+                          letterSpacing: "0.6px",
+                          color: claim.text,
+                          background: claim.bg,
+                          border: `1px solid ${claim.border}`,
+                          padding: "3px 10px",
+                          borderRadius: 6,
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {claim.chip}
+                      </span>
                     </div>
 
                     {/* Gradient title */}
@@ -251,12 +380,77 @@ const Projects = () => {
                     {/* Pull quote */}
                     <div style={{ borderLeft: `3px solid ${a}`, paddingLeft: 14, marginBottom: 18 }}>
                       <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: 14, fontStyle: "italic", color: "#64748B", lineHeight: 1.7, margin: 0 }}>
-                        "{points.length > 0 ? (points[0].label || "Building this shaped how I think about backend architecture.") : "Building this shaped how I think about backend architecture."}"
+                        "{leadPoint?.problem || "Building this shaped how I think about backend architecture."}"
                       </p>
                     </div>
 
                     {/* Description */}
                     <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "#64748B", lineHeight: 1.8, marginBottom: 20 }}>{proj.desc}</p>
+
+                    {proj.claimNote && (
+                      <div
+                        style={{
+                          marginBottom: 20,
+                          padding: "10px 12px",
+                          borderRadius: 10,
+                          background: claim.bg,
+                          border: `1px solid ${claim.border}`,
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontFamily: "'JetBrains Mono',monospace",
+                            fontSize: 9.5,
+                            letterSpacing: "1px",
+                            textTransform: "uppercase",
+                            color: claim.color,
+                            marginBottom: 5,
+                          }}
+                        >
+                          Claim Scope
+                        </div>
+                        <p style={{ margin: 0, fontFamily: "'Inter',sans-serif", fontSize: 12.5, color: "#CBD5E1", lineHeight: 1.6 }}>
+                          {proj.claimNote}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Backend proof strip */}
+                    <div style={{ marginBottom: 20 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                        <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
+                        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#334155", letterSpacing: "2px" }}>BACKEND PROOF</span>
+                        <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
+                      </div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                        {backendSignals.map((signal) => (
+                          <div
+                            key={`${proj.title}-${signal.label}`}
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 7,
+                              padding: "6px 10px",
+                              borderRadius: 8,
+                              background: signal.ok ? "rgba(16,185,129,0.1)" : "rgba(100,116,139,0.1)",
+                              border: signal.ok ? "1px solid rgba(16,185,129,0.3)" : "1px solid rgba(100,116,139,0.3)",
+                            }}
+                          >
+                            <span
+                              style={{
+                                width: 6,
+                                height: 6,
+                                borderRadius: "50%",
+                                background: signal.ok ? "#10B981" : "#64748B",
+                              }}
+                            />
+                            <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, color: signal.ok ? "#A7F3D0" : "#94A3B8" }}>
+                              {signal.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
                     {/* Metrics 2x2 grid */}
                     {proj.metrics != null && (
@@ -290,9 +484,11 @@ const Projects = () => {
 
                     {/* Action buttons */}
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                      {proj.postman && <a href={proj.postman} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>⬡ API Docs</a>}
-                      {proj.demo && <a href={proj.demo} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>↗ Demo</a>}
-                      <a href={proj.github} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}18`, border: `1px solid ${a}40`, color: "#F8FAFC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>⌥ GitHub</a>
+                      {apiDocsUrl && <a href={apiDocsUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>API Docs</a>}
+                      {openApiUrl && <a href={openApiUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.3)", color: "#22D3EE", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>OpenAPI</a>}
+                      {healthUrl && <a href={healthUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", color: "#34D399", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>Health</a>}
+                      {proj.demo && <a href={proj.demo} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>Demo</a>}
+                      <a href={proj.github} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}18`, border: `1px solid ${a}40`, color: "#F8FAFC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>GitHub</a>
                     </div>
                   </div>
 
@@ -307,7 +503,7 @@ const Projects = () => {
                           <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                          {points.map((pt, i) => <HighlightBlock key={i} point={pt} index={i} accent={a} />)}
+                          {parsedPoints.map((pt, i) => <HighlightBlock key={i} point={pt} index={i} accent={a} />)}
                         </div>
                       </div>
                     )}
@@ -322,7 +518,7 @@ const Projects = () => {
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
                         {(proj.tech || []).map((tech, i) => (
                           <motion.div key={`${proj.title}-${tech.name}`} custom={i} variants={tagVariants} initial="enter" animate="center" style={{ display: "flex", alignItems: "center", gap: 7, background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 8, padding: "6px 12px" }}>
-                            <img src={tech.icon} alt={tech.name} style={{ width: 16, height: 16, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; }} />
+                            <img src={tech.icon} alt={tech.name} loading="lazy" decoding="async" style={{ width: 16, height: 16, objectFit: "contain" }} onError={e => { e.target.style.display = "none"; }} />
                             <span style={{ fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>{tech.name}</span>
                           </motion.div>
                         ))}

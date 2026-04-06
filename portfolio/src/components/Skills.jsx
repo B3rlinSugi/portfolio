@@ -10,7 +10,7 @@ const LEARNING_COLOR = { color: "#A78BFA", bg: "rgba(167,139,250,0.08)", border:
 // ==========================================
 // 1. MAC OS DOCK ITEM COMPONENT (Option 4)
 // ==========================================
-const DockItem = ({ item, mouseX }) => {
+const DockItem = ({ item, mouseX, isTouch }) => {
   let ref = useRef(null);
 
   // Measure the distance from the mouse to the exact center of this specific icon
@@ -23,6 +23,7 @@ const DockItem = ({ item, mouseX }) => {
   // Native width: 50px. Max width when hovered: 85px. Falloff range: 130px
   let widthSync = useTransform(distance, [-130, 0, 130], [50, 85, 50]);
   let width = useSpring(widthSync, { mass: 0.1, stiffness: 220, damping: 15 });
+  const iconSize = isTouch ? 58 : width;
 
   // Calculate tooltip pop-up properties
   let opacitySync = useTransform(distance, [-40, 0, 40], [0, 1, 0]);
@@ -33,29 +34,44 @@ const DockItem = ({ item, mouseX }) => {
   return (
     <motion.div ref={ref} style={{ width, position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end" }}>
       
-      {/* Name Tooltip (Only visible when magnified) */}
-      <motion.div 
-        style={{ 
-            opacity, y, position: "absolute", bottom: "100%", marginBottom: "16px", padding: "6px 12px", 
-            background: "rgba(15, 23, 42, 0.9)", color: "#FFFFFF", fontSize: "13px", fontWeight: 600, 
-            borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)", whiteSpace: "nowrap", 
-            pointerEvents: "none", boxShadow: "0 10px 20px rgba(0,0,0,0.4)", zIndex: 50, fontFamily: "'Inter', sans-serif" 
-        }}
-      >
-        {item.name}
-      </motion.div>
+      {!isTouch && (
+        <motion.div 
+          style={{ 
+              opacity, y, position: "absolute", bottom: "100%", marginBottom: "16px", padding: "6px 12px", 
+              background: "rgba(15, 23, 42, 0.9)", color: "#FFFFFF", fontSize: "13px", fontWeight: 600, 
+              borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)", whiteSpace: "nowrap", 
+              pointerEvents: "none", boxShadow: "0 10px 20px rgba(0,0,0,0.4)", zIndex: 50, fontFamily: "'Inter', sans-serif" 
+          }}
+        >
+          {item.name}
+        </motion.div>
+      )}
 
       {/* Dock Application Icon Box */}
       <motion.div 
         style={{ 
-            width, height: width, borderRadius: "22%", 
+            width: iconSize, height: iconSize, borderRadius: "22%", 
             background: "linear-gradient(to bottom, rgba(30,41,59,0.95), rgba(15,23,42,0.95))", 
             border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", 
             boxShadow: "0 12px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2)", transformOrigin: "bottom" 
         }}
       >
-         <img src={item.icon} alt={item.name} style={{ width: "60%", height: "60%", objectFit: "contain", filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.5))" }} onError={e=>e.target.style.display="none"} />
+         <img src={item.icon} alt={item.name} loading="lazy" decoding="async" style={{ width: "60%", height: "60%", objectFit: "contain", filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.5))" }} onError={e=>e.target.style.display="none"} />
       </motion.div>
+
+      {isTouch && (
+        <div style={{
+          marginTop: 8,
+          maxWidth: 70,
+          fontFamily: "'JetBrains Mono',monospace",
+          fontSize: 9,
+          color: "#94A3B8",
+          textAlign: "center",
+          lineHeight: 1.25,
+        }}>
+          {item.name}
+        </div>
+      )}
 
     </motion.div>
   )
@@ -64,7 +80,7 @@ const DockItem = ({ item, mouseX }) => {
 // ==========================================
 // 2. MAC OS DOCK RACK (Option 4)
 // ==========================================
-const MacOSDock = ({ category, index, snapProgress }) => {
+const MacOSDock = ({ category, index, snapProgress, isTouch }) => {
   let mouseX = useMotionValue(Infinity);
   const dockSpring = { stiffness: 110, damping: 22, mass: 0.45 };
   const rawDockY = useTransform(snapProgress, [0, 1], [-142 + index * 10, 0]);
@@ -86,17 +102,17 @@ const MacOSDock = ({ category, index, snapProgress }) => {
         {/* Outer scrolling area to prevent clipping tooltips on small screens */}
         <div style={{ width: "100%", display: "flex", justifyContent: "center", overflowX: "auto", overflowY: "visible", padding: "40px 20px 20px 20px", marginTop: "-40px" }} className="dock-rack">
             <div 
-               onMouseMove={(e) => mouseX.set(e.clientX)} // Use clientX instead of pageX for perfect viewport mapping
-               onMouseLeave={() => mouseX.set(Infinity)}
+               onMouseMove={isTouch ? undefined : (e) => mouseX.set(e.clientX)} // Use clientX instead of pageX for perfect viewport mapping
+               onMouseLeave={isTouch ? undefined : () => mouseX.set(Infinity)}
                style={{ 
-                   display: "inline-flex", alignItems: "center", gap: "16px", padding: "16px 28px", 
+                   display: "inline-flex", alignItems: "center", gap: isTouch ? "10px" : "16px", padding: isTouch ? "14px 16px" : "16px 28px", 
                    background: "rgba(255,255,255,0.03)", borderRadius: "34px", border: "1px solid rgba(255,255,255,0.06)", 
                    borderBottom: "1px solid rgba(255,255,255,0.1)", // strong bottom edge
                    backdropFilter: "blur(24px)", boxShadow: "0 30px 60px rgba(0,0,0,0.5)", overflow: "visible",
                    margin: "0 auto"
                }}
             >
-                {category.items.map(item => <DockItem key={item.name} item={item} mouseX={mouseX} />)}
+                {category.items.map(item => <DockItem key={item.name} item={item} mouseX={mouseX} isTouch={isTouch} />)}
             </div>
         </div>
     </motion.div>
@@ -133,7 +149,7 @@ const LearningSection = ({ visible }) => {
       <div style={{ padding: "0 32px 24px", display: "flex", flexWrap: "wrap", gap: 12 }}>
         {data.learning.map((item) => (
              <div key={item.name} style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "10px 16px", borderRadius: 100, background: "rgba(0,0,0,0.3)", border: `1px solid rgba(167,139,250,0.1)` }}>
-                 <img src={item.icon} alt={item.name} style={{ width: 18, height: 18, objectFit: "contain", filter: "grayscale(30%)" }} onError={e => e.target.style.display = "none"} />
+                 <img src={item.icon} alt={item.name} loading="lazy" decoding="async" style={{ width: 18, height: 18, objectFit: "contain", filter: "grayscale(30%)" }} onError={e => e.target.style.display = "none"} />
                  <span style={{ fontSize: 14, fontWeight: 500, color: "var(--white-2)", fontFamily: "'Inter',sans-serif" }}>{item.name}</span>
              </div>
         ))}
@@ -148,6 +164,7 @@ const LearningSection = ({ visible }) => {
 // ==========================================
 const Skills = () => {
   const [scrollRef, isScrollVisible] = useScrollAnimation();
+  const [isTouchDock, setIsTouchDock] = useState(false);
   const lang = useContext(LangContext);
   const t = i18n[lang].skills;
   const { scrollYProgress: skillsStackProgress } = useScroll({
@@ -186,6 +203,24 @@ const Skills = () => {
   const snapCoreOpacity = useSpring(rawSnapCoreOpacity, spring);
   const snapCoreScale = useSpring(rawSnapCoreScale, spring);
   const snapCoreY = useSpring(rawSnapCoreY, spring);
+  const dockHint = isTouchDock
+    ? "* Tap-friendly rack enabled for mobile and touch devices."
+    : "* Interactive Rack modules. Drag cursor along the docks.";
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(hover: none), (pointer: coarse)");
+    const update = () => setIsTouchDock(media.matches);
+    update();
+
+    if (media.addEventListener) {
+      media.addEventListener("change", update);
+      return () => media.removeEventListener("change", update);
+    }
+
+    media.addListener(update);
+    return () => media.removeListener(update);
+  }, []);
 
   return (
     <section id="skills" ref={scrollRef} style={{ background: "#020617", padding: "120px 0", position: "relative", overflow: "hidden" }}>
@@ -219,13 +254,13 @@ const Skills = () => {
                   02. TECHNOLOGY STACK
                </p>
                <h2 style={{ fontFamily: "'Outfit',sans-serif", fontSize: "40px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-1px", marginTop: "12px", marginBottom: "16px" }}>The Engineering Arsenal.</h2>
-               <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, color: "#64748B", marginTop: "16px" }}>* Interactive Rack modules. Drag cursor along the docks.</p>
+               <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, color: "#64748B", marginTop: "16px" }}>{dockHint}</p>
             </motion.div>
 
             {/* MacOS Animated Docks */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 {data.skills.map((category, index) => (
-                    <MacOSDock key={category.category} category={category} index={index} snapProgress={skillsStackProgress} />
+                    <MacOSDock key={category.category} category={category} index={index} snapProgress={skillsStackProgress} isTouch={isTouchDock} />
                 ))}
             </div>
 

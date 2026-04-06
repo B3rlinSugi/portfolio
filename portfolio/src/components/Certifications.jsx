@@ -124,7 +124,7 @@ const VaultCard = ({ cert, index, visible, dimmed }) => {
           transition: "all 0.3s",
           boxShadow: hovered ? `0 8px 24px ${a}30` : "none",
         }}>
-          <img src={cert.icon} alt={cert.name}
+          <img src={cert.icon} alt={cert.name} loading="lazy" decoding="async"
             style={{ width: 38, height: 38, objectFit: "contain" }}
             onError={e => { e.target.style.display = "none"; }}
           />

@@ -9,8 +9,13 @@ export const data = {
   instagram: "https://www.instagram.com/babehber_/",
   whatsapp: "https://wa.me/6281294500613",
   portfolio: "https://berlinsugi.vercel.app",
+  contactTemplates: {
+    emailSubject: "Interview Opportunity - Junior Backend Developer",
+    emailBody: "Halo Berlin,\n\nSaya tertarik membahas peluang Junior Backend Developer bersama Anda.\nApakah Anda tersedia untuk interview minggu ini?\n\nTerima kasih.",
+    whatsappMessage: "Halo Berlin, saya tertarik dengan profil backend kamu. Boleh lanjut diskusi peluang kerja?",
+  },
 
-  tagline: "Passionate backend developer who loves crafting clean, efficient code. Excited to build APIs that solve real problems and scale beautifully. Always learning, always coding!",
+  tagline: "Junior backend developer focused on secure REST APIs, reliable database design, and clean authentication flows that are easy to scale and maintain.",
 
   about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00). I'm a coding enthusiast who thrives on building robust backend systems. From RESTful APIs to database optimization, I enjoy the challenge of writing code that performs and delights users. Proficient in PHP/Laravel, Java, MySQL, and Git—eager to bring my coding passion to a collaborative team.",
 
@@ -106,14 +111,28 @@ export const data = {
       title: "Student Management API",
       type: "RESTful API",
       period: "Mar 2026",
+      claimLevel: "portfolio-demo",
+      claimNote: "Built with production-oriented practices (JWT, RBAC, health check), but currently deployed as a portfolio showcase with limited real-user traffic.",
       github: "https://github.com/B3rlinSugi/student-management-api",
       demo: "https://student-api-demo.vercel.app",
       postman: "https://www.postman.com/berlinsugi/workspace/student-management-api",
       desc: "My passion project: a comprehensive Student Management API built with Laravel 11. I absolutely love implementing JWT authentication and role-based access control—it's like building digital fortresses for data! CRUD operations with soft delete, advanced filtering/search—all coded with care for scalability and security. This project ignited my love for backend development.",
       points: [
-        { label: "JWT Auth & RBAC", detail: "Implemented stateless authentication with Admin/User roles, bcrypt password hashing, token refresh, and logout blacklisting." },
-        { label: "Soft Delete Safety", detail: "Used Laravel SoftDeletes to prevent accidental data loss—users can restore deleted records. Learned importance of careful deletion workflows." },
-        { label: "Advanced Filtering", detail: "Single query endpoint handles search (name, email, ID), filtering by major/status/gender, sorting, and pagination. Discovered query optimization early on." },
+        {
+          challenge: "Needed secure stateless authentication and strict role boundaries for admin and user operations.",
+          solution: "Implemented JWT auth with role middleware, bcrypt hashing, token refresh flow, and logout invalidation handling.",
+          result: "Authentication and access boundaries stayed consistent across protected endpoints during QA scenarios.",
+        },
+        {
+          challenge: "Student records required safe deletion without risking irreversible data loss.",
+          solution: "Applied SoftDeletes with dedicated restore workflow and guarded force-delete actions for authorized access only.",
+          result: "Delete lifecycle became recoverable and safer for operational usage.",
+        },
+        {
+          challenge: "Listing endpoints needed flexible search/filter/sort without endpoint duplication.",
+          solution: "Built a unified query layer for search, filtering, sorting, and pagination in one API flow.",
+          result: "Data retrieval became faster to integrate from frontend and easier to maintain.",
+        },
       ],
       tech: [
         { name: "Laravel 11", icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
@@ -137,13 +156,23 @@ export const data = {
       title: "Spring Boot Student API",
       type: "RESTful API",
       period: "Mar 2026",
+      claimLevel: "learning-project",
+      claimNote: "Learning-focused Java backend project to strengthen Spring Boot architecture, JWT security flow, and service-repository design patterns.",
       github: "https://github.com/B3rlinSugi/springboot-student-api",
       demo: null,
       postman: null,
       desc: "Diving into Java backend with Spring Boot 3—such a thrilling experience! JWT auth, JPA/Hibernate for ORM, and clean layered architecture. I geek out over the Service → Repository pattern and testable code design. This project expanded my coding horizons and deepened my appreciation for Java's elegance.",
       points: [
-        { label: "Java & Spring Boot", detail: "First Java project using Spring Boot 3 with Spring Security and JWT. Implemented MVC architecture (Controller → Service → Repository)." },
-        { label: "ORM & Database", detail: "Used Spring Data JPA and Hibernate for database operations. Learned about entity relationships, lazy/eager loading, and clean data access patterns." },
+        {
+          challenge: "Needed a maintainable Java backend structure that separates business logic from transport logic.",
+          solution: "Implemented layered architecture with Controller, Service, and Repository using Spring Boot and Spring Security JWT.",
+          result: "Codebase became easier to test and reason about for each responsibility layer.",
+        },
+        {
+          challenge: "Database operations required cleaner entity handling and scalable query patterns.",
+          solution: "Used Spring Data JPA and Hibernate for ORM mapping, relation handling, and repository abstraction.",
+          result: "CRUD and relation flows became more consistent with less manual SQL overhead.",
+        },
       ],
       tech: [
         { name: "Spring Boot", icon: "https://cdn.simpleicons.org/springboot/6DB33F" },
@@ -167,14 +196,28 @@ export const data = {
       title: "TokoKu — E-Commerce Platform",
       type: "Full-Stack Web App",
       period: "Jan 2026 - Feb 2026",
+      claimLevel: "portfolio-demo",
+      claimNote: "Built as an end-to-end portfolio simulation focused on transaction consistency and backend security, not as a live commercial operation.",
       github: "https://github.com/B3rlinSugi/tokoku-ecommerce",
       demo: "https://tokoku-ecommerce.vercel.app",
       postman: null,
       desc: "Full-stack e-commerce platform (TokoKu) built with PHP. Learned critical lessons on data consistency (transactions), secure password hashing (bcrypt), payment integration, and real-time reporting. Main takeaway: small design decisions have huge reliability impact.",
       points: [
-        { label: "Database Transactions", detail: "Used InnoDB transactions to ensure atomic cart-to-payment-to-inventory updates. No partial failures—either entire order succeeds or rolls back." },
-        { label: "Security Basics", detail: "Replaced MD5 with bcrypt for password hashing. Implemented admin/customer roles, validated discounts server-side, and added tokenized password reset." },
-        { label: "Real-time Reporting", detail: "Optimized SQL aggregate queries for 6-month sales dashboard. Chart.js visualization helps admin see revenue trends instantly without manual calculations." },
+        {
+          challenge: "Checkout flow risked partial write failures between order, payment, and stock updates.",
+          solution: "Applied InnoDB transactional handling for cart-to-payment-to-inventory operations as one atomic sequence.",
+          result: "Order processing stayed consistent with rollback protection on failure cases.",
+        },
+        {
+          challenge: "Legacy security setup was weak and vulnerable to misuse.",
+          solution: "Migrated from MD5 to bcrypt, added role checks, and validated discount/payment rules on server side.",
+          result: "Security posture improved and unauthorized flow manipulation was reduced in testing.",
+        },
+        {
+          challenge: "Admin needed quick insight into sales trends without manual reporting.",
+          solution: "Optimized aggregate SQL queries and delivered chart-ready analytics views for six-month reporting.",
+          result: "Dashboard became responsive and useful for faster operational decisions.",
+        },
       ],
       tech: [
         { name: "PHP 8",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
@@ -197,13 +240,27 @@ export const data = {
       title: "Cash Flow Manager",
       type: "Academic Project",
       period: "Jun 2023 - Jul 2023",
+      claimLevel: "learning-project",
+      claimNote: "Academic modernization project that demonstrates secure authentication refactor and reporting improvements; not operated as a production service.",
       github: "https://github.com/B3rlinSugi/cash-flow",
       demo: null,
       desc: "A class cash flow management system rebuilt from a legacy codebase — modernised with industry-standard security, real-time analytics, and PDF reporting. The project started as a broken MD5-authenticated system and was refactored into something production-worthy: secure auth, proper database constraints, and an analytics dashboard that gives admins full financial visibility.",
       points: [
-        { label: "Secure Password Storage", detail: "Replaced MD5 (broken) with bcrypt hashing. Added Foreign Key constraints and proper indexing. Prevented SQL injection by using prepared statements everywhere." },
-        { label: "Financial Analytics", detail: "Built 6-month Chart.js dashboard showing income/expense trends, payment status tracking, and automatic overdue detection. Aggregated queries optimized for performance." },
-        { label: "PDF Reporting", detail: "Server-side PDF export with filtering by month and transaction type. Admins can generate auditable financial reports without manual data entry." },
+        {
+          challenge: "Legacy code used insecure authentication and weak data integrity controls.",
+          solution: "Replaced MD5 with bcrypt, enforced FK constraints, and standardized prepared statements for database access.",
+          result: "Core security and integrity issues from the old system were removed.",
+        },
+        {
+          challenge: "Finance tracking lacked clear trend visibility for income and expense behavior.",
+          solution: "Implemented six-month analytics dashboard with aggregate queries and overdue payment status tracking.",
+          result: "Admins could monitor financial movement quickly without manual recap work.",
+        },
+        {
+          challenge: "Financial reports needed exportable documents for audit and sharing.",
+          solution: "Built server-side PDF generation with month and transaction-type filtering.",
+          result: "Teams could generate structured financial reports directly from the system.",
+        },
       ],
       tech: [
         { name: "PHP 8",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
@@ -216,13 +273,27 @@ export const data = {
       title: "Sistem Data Akademik",
       type: "Academic Project",
       period: "Mar 2024 - Jul 2024",
+      claimLevel: "learning-project",
+      claimNote: "Academic information-system project used to practice relational schema design, RBAC enforcement, and analytics reporting in a controlled scope.",
       github: "https://github.com/B3rlinSugi/crud-akademik",
       demo: null,
       desc: "An academic data management system built to handle students, courses, and grades for an entire faculty — with multi-table relational database, role-based access control, and a real-time statistical dashboard. The design priority was data integrity and strict access boundaries between Admin and Staff roles.",
       points: [
-        { label: "Database Integrity", detail: "Designed 3-table normalised database (students, courses, grades) with Foreign Key constraints. Prevents orphaned records and ensures consistency across related entities." },
-        { label: "RBAC Security", detail: "Implemented Admin/Staff roles with server-side access control using PDO prepared statements. Eliminates SQL injection and prevents privilege escalation via URL manipulation." },
-        { label: "Data Analytics", detail: "Built self-serve reporting dashboard with class-specific PDF export, student statistics (enrollment, gender distribution, grade spread), and optimized aggregate queries." },
+        {
+          challenge: "Student-course-grade data required strict relational integrity across multiple tables.",
+          solution: "Designed normalized schema with foreign key constraints for students, courses, and grades relations.",
+          result: "Data consistency improved and orphaned records were prevented by schema rules.",
+        },
+        {
+          challenge: "Admin and staff permissions needed strong enforcement beyond UI-level controls.",
+          solution: "Implemented server-side RBAC checks with PDO prepared statements for secure route and query handling.",
+          result: "Privilege boundaries stayed controlled and SQL injection exposure was minimized.",
+        },
+        {
+          challenge: "Faculty staff needed quick statistics and printable class-level reporting.",
+          solution: "Built analytics dashboard with optimized aggregates and class-specific PDF export flow.",
+          result: "Reporting workflow became faster and less dependent on manual data extraction.",
+        },
       ],
       tech: [
         { name: "PHP 8",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
@@ -279,7 +350,7 @@ export const data = {
       period: "Jul 2024 - Aug 2025",
       desc: "Led two departments managing 15+ members with 100% program completion rate. Drove cross-functional coordination across faculty-level initiatives and represented the faculty in external institutional events — balancing leadership responsibilities alongside full-time academic commitments.",
       highlights: ["15+ Members Led", "100% Completion", "Faculty Representative", "Strategic Planning"],
-      photo: "/org1.jpg",
+      photo: "/org1-opt.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
     },
     {
@@ -288,7 +359,7 @@ export const data = {
       period: "Jul 2023 - Jun 2024",
       desc: "Directed and coordinated staff in planning and executing community social programs. Improved team efficiency through structured delegation, ensuring on-time delivery of all scheduled activities with measurable impact on the campus community.",
       highlights: ["Department Lead", "Program Delivery", "Team Coordination", "Community Outreach"],
-      photo: "/org2.jpg",
+      photo: "/org2-opt.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
     },
     {
@@ -297,7 +368,7 @@ export const data = {
       period: "Jul 2022 - Jun 2023",
       desc: "Contributed as a core staff member in planning and executing social community programs. Actively participated in campus events and cross-departmental initiatives — building the collaboration and communication skills that underpin my approach to engineering teamwork today.",
       highlights: ["Event Planning", "Community Programs", "Cross-dept Work", "Active Contributor"],
-      photo: "/org3.jpg",
+      photo: "/org3-opt.jpg",
       instagram: "https://www.instagram.com/bemfti.ug/",
     },
   ],

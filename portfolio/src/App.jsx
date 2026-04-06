@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import "./index.css";
@@ -9,14 +9,14 @@ import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 
-import Certifications from "./components/Certifications";
-import Organizations from "./components/Organizations";
-import Contact from "./components/Contact";
-import GitHubActivity from "./components/GitHubActivity";
-import GitHubStats from "./components/GitHubStats";
-
 import TerminalEgg from "./components/TerminalEgg";
 import ProjectDetailModal from "./components/ProjectDetailModal";
+
+const GitHubActivity = lazy(() => import("./components/GitHubActivity"));
+const GitHubStats = lazy(() => import("./components/GitHubStats"));
+const Certifications = lazy(() => import("./components/Certifications"));
+const Organizations = lazy(() => import("./components/Organizations"));
+const Contact = lazy(() => import("./components/Contact"));
 
 if (import.meta.env.VITE_SENTRY_DSN) {
   Sentry.init({
@@ -387,10 +387,70 @@ const BackToTop = () => {
   const [hovered,setHovered] = useState(false);
   useEffect(()=>{const onScroll=()=>setShow(window.scrollY>400);window.addEventListener("scroll",onScroll,{passive:true});return()=>window.removeEventListener("scroll",onScroll);},[]);
   return (
-    <button onClick={()=>window.scrollTo({top:0,behavior:"smooth"})} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}
+    <button aria-label="Back to top" onClick={()=>window.scrollTo({top:0,behavior:"smooth"})} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}
       style={{ position:"fixed", bottom:28, right:20, zIndex:50, width:42, height:42, borderRadius:11, background:hovered?"linear-gradient(135deg,#1D4ED8,#06B6D4)":"rgba(15,31,56,0.9)", border:`1px solid ${hovered?"transparent":"rgba(59,130,246,0.25)"}`, color:hovered?"#fff":"var(--white-2)", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", opacity:show?1:0, transform:show?"translateY(0) scale(1)":"translateY(12px) scale(0.85)", transition:"all 0.3s cubic-bezier(.22,1,.36,1)", pointerEvents:show?"all":"none", boxShadow:hovered?"0 0 24px rgba(29,78,216,0.4)":"0 4px 16px rgba(0,0,0,0.3)", backdropFilter:"blur(12px)" }} title="Back to top">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
     </button>
+  );
+};
+
+const SectionSkeleton = ({ label, minHeight = 460 }) => (
+  <div
+    aria-hidden="true"
+    style={{
+      minHeight,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderTop: "1px solid rgba(59,130,246,0.05)",
+      background: "linear-gradient(to bottom, rgba(2,6,23,0.55), rgba(2,6,23,0.2))",
+    }}
+  >
+    <span
+      style={{
+        fontFamily: "'JetBrains Mono',monospace",
+        fontSize: 11,
+        color: "#334155",
+        letterSpacing: "1.4px",
+        textTransform: "uppercase",
+      }}
+    >
+      Loading {label}...
+    </span>
+  </div>
+);
+
+const DeferredSection = ({ anchorId, minHeight = 460, children }) => {
+  const holderRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (mounted) return;
+    const node = holderRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMounted(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "420px 0px" }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [mounted]);
+
+  return (
+    <div
+      ref={holderRef}
+      id={mounted ? undefined : anchorId}
+      style={{ minHeight: mounted ? undefined : minHeight }}
+    >
+      {children(mounted)}
+    </div>
   );
 };
 
@@ -469,33 +529,80 @@ function App() {
 
   return (
     <LangContext.Provider value={lang}>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       {loading && <Loader onDone={revealApp} />}
       <GradientMesh />
-      <div style={{
+      <main
+        id="main-content"
+        tabIndex="-1"
+        style={{
         background:"transparent", minHeight:"100vh",
         opacity: 1,
         transform: "none",
         transition: "opacity 0.2s ease",
         pointerEvents: loading ? "none" : "auto",
         position:"relative", zIndex:1,
-      }}>
+      }}
+      >
         <div id="progress-bar" style={{ position:"fixed", top:0, left:0, height:3, background:"linear-gradient(to right,#1D4ED8,#06B6D4)", zIndex:201, width:"0%", transition:"width 0.08s linear", pointerEvents:"none" }} />
         <Navbar lang={lang} setLang={handleSetLang} theme={theme} setTheme={setTheme} />
         <Hero />
         <About />
         <Skills />
         <Projects />
-        <GitHubActivity />
-        <GitHubStats />
+        <DeferredSection anchorId="github-activity" minHeight={560}>
+          {(mounted) => (
+            mounted ? (
+              <Suspense fallback={<SectionSkeleton label="GitHub" minHeight={560} />}>
+                <GitHubActivity />
+                <GitHubStats />
+              </Suspense>
+            ) : (
+              <SectionSkeleton label="GitHub" minHeight={560} />
+            )
+          )}
+        </DeferredSection>
 
-        <Certifications />
-        <Organizations />
-        <Contact />
+        <DeferredSection anchorId="certifications" minHeight={540}>
+          {(mounted) => (
+            mounted ? (
+              <Suspense fallback={<SectionSkeleton label="Certifications" minHeight={540} />}>
+                <Certifications />
+              </Suspense>
+            ) : (
+              <SectionSkeleton label="Certifications" minHeight={540} />
+            )
+          )}
+        </DeferredSection>
+
+        <DeferredSection anchorId="organizations" minHeight={540}>
+          {(mounted) => (
+            mounted ? (
+              <Suspense fallback={<SectionSkeleton label="Organizations" minHeight={540} />}>
+                <Organizations />
+              </Suspense>
+            ) : (
+              <SectionSkeleton label="Organizations" minHeight={540} />
+            )
+          )}
+        </DeferredSection>
+
+        <DeferredSection anchorId="contact" minHeight={500}>
+          {(mounted) => (
+            mounted ? (
+              <Suspense fallback={<SectionSkeleton label="Contact" minHeight={500} />}>
+                <Contact />
+              </Suspense>
+            ) : (
+              <SectionSkeleton label="Contact" minHeight={500} />
+            )
+          )}
+        </DeferredSection>
         <SectionDots />
         <BackToTop />
         <TerminalEgg />
         <ProjectDetailModal />
-      </div>
+      </main>
     </LangContext.Provider>
   );
 }

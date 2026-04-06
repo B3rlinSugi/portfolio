@@ -44,7 +44,7 @@ const DetailOverlay = ({ org, ac, onClose }) => createPortal(
     >
       {/* Photo */}
       <div style={{ borderRadius: 2, overflow: "hidden", marginBottom: 20, height: 260, background: "#000" }}>
-        <img src={org.photo} alt={org.role}
+        <img src={org.photo} alt={org.role} loading="lazy" decoding="async"
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           onError={e => { e.target.style.display = "none"; }}
         />
@@ -133,7 +133,7 @@ const Polaroid = ({ org, index, visible }) => {
 
           {/* Photo area */}
           <div style={{ borderRadius: 1, overflow: "hidden", height: 240, background: "#1E293B", position: "relative" }}>
-            <img src={org.photo} alt={org.role}
+            <img src={org.photo} alt={org.role} loading="lazy" decoding="async"
               style={{
                 width: "100%", height: "100%", objectFit: "cover", display: "block",
                 transform: hovered ? "scale(1.05)" : "scale(1)",
