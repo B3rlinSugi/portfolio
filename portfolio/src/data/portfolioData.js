@@ -17,42 +17,13 @@ export const data = {
 
   tagline: "Junior backend developer focused on secure REST APIs, reliable database design, and clean authentication flows that are easy to scale and maintain.",
 
-  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00). I'm a coding enthusiast who thrives on building robust backend systems. From RESTful APIs to database optimization, I enjoy the challenge of writing code that performs and delights users. Proficient in PHP/Laravel, Java, MySQL, and Git—eager to bring my coding passion to a collaborative team.",
+  about: "Fresh graduate in Informatics Engineering from Gunadarma University (GPA: 3.63/4.00). I'm a coding enthusiast who thrives on building robust backend systems. From RESTful APIs to database optimization, I enjoy the challenge of writing code that performs well and scales cleanly. Proficient in PHP/Laravel, Java, MySQL, and Git — eager to bring my backend skills to a collaborative team.",
 
   backendHighlights: [
     { label: "Focus Areas", value: "APIs • Databases • Clean Code" },
     { label: "Learning Journey", value: "Auth • Transactions • Performance" },
     { label: "Growth Mindset", value: "Security • Testing • Reliability" },
   ],
-
-  monitoring: {
-    serviceMetrics: [
-      { metric: "P95 Latency", value: 175, unit: "ms", target: 250 },
-      { metric: "Error Rate", value: 0.07, unit: "%", target: 0.5 },
-      { metric: "Request Rate", value: 1520, unit: "rpm", target: 1200 },
-      { metric: "CPU Usage", value: 62, unit: "%", target: 80 },
-      { metric: "Memory Usage", value: 68, unit: "%", target: 85 },
-    ],
-    uptime: "99.95%",
-    lastIncident: "2026-03-28",
-    openIncidents: 1,
-    chartNotes: "Tiap metrik direfleksikan dalam status A to C, untuk cepat dilihat." 
-  },
-
-  runbook: {
-    incidentResponse: [
-      "1. Identifikasi kejadian dengan memonitor logs dan alert (Sentry / Prometheus).",
-      "2. Validasi issue via healthcheck endpoint dan log trace (endpoint /api/health dan /metrics).",
-      "3. Putuskan mitigasi sementara (circuit breaker, rollback, traffic shift).",
-      "4. Terapkan patch di branch hotfix, deploy ke staging, lalu production.",
-      "5. Jalankan post-mortem: akar penyebab, tindakan pencegahan, dan bagi hasil dalam tim." 
-    ],
-    maintenance: [
-      "- Daily: cek backlog alert, healthcheck, dan status GitHub Actions.",
-      "- Weekly: update OpenAPI docs, regression test suite, dan dependency audit.",
-      "- Monthly: SLA review, capacity planning, dan stress test." 
-    ]
-  },
 
   skills: [
     {
@@ -69,7 +40,9 @@ export const data = {
     {
       category: "Frameworks & Libraries",
       items: [
+        { name: "Spring Boot", icon: "https://cdn.simpleicons.org/springboot/6DB33F" },
         { name: "Laravel",     icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
+        { name: "React",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
         { name: "CodeIgniter", icon: "https://cdn.simpleicons.org/codeigniter/EF4223" },
         { name: "Bootstrap 5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
         { name: "Vue.js",      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg" },
@@ -94,14 +67,15 @@ export const data = {
     {
       category: "Tools",
       items: [
-        { name: "Git",      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
-        { name: "GitHub",   icon: "https://cdn.simpleicons.org/github/C8D8F0" },
-        { name: "GitHub Actions", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" },
-        { name: "Docker",   icon: "https://cdn.simpleicons.org/docker/2496ED" },
-        { name: "VS Code",  icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg" },
-        { name: "Linux",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" },
-        { name: "XAMPP",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg" },
-        { name: "Figma",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
+        { name: "Git",            icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
+        { name: "GitHub",         icon: "https://cdn.simpleicons.org/github/C8D8F0" },
+        { name: "Railway",        icon: "https://cdn.simpleicons.org/railway/131415" },
+        { name: "Vercel",         icon: "https://cdn.simpleicons.org/vercel/000000" },
+        { name: "Docker",         icon: "https://cdn.simpleicons.org/docker/2496ED" },
+        { name: "VS Code",        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg" },
+        { name: "Linux",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" },
+        { name: "XAMPP",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg" },
+        { name: "Figma",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
       ],
     },
   ],
@@ -111,22 +85,10 @@ export const data = {
       title: "Student Management API",
       type: "RESTful API",
       period: "Mar 2026",
-      claimLevel: "portfolio-demo",
-      claimNote: "Built with production-oriented practices (JWT, RBAC, health check), but currently deployed as a portfolio showcase with limited real-user traffic.",
       github: "https://github.com/B3rlinSugi/student-management-api",
-      demo: "https://student-api-demo.vercel.app",
-      postman: "https://www.postman.com/berlinsugi/workspace/student-management-api",
-      codeProofs: [
-        {
-          label: "JWT + RBAC Guard",
-          url: "https://github.com/B3rlinSugi/student-management-api/search?q=jwt+rbac+middleware&type=code",
-        },
-        {
-          label: "Student Query Filters",
-          url: "https://github.com/B3rlinSugi/student-management-api/search?q=filter+search+pagination&type=code",
-        },
-      ],
-      desc: "My passion project: a comprehensive Student Management API built with Laravel 11. I absolutely love implementing JWT authentication and role-based access control—it's like building digital fortresses for data! CRUD operations with soft delete, advanced filtering/search—all coded with care for scalability and security. This project ignited my love for backend development.",
+      demo: "https://student-management-api-production-b847.up.railway.app",
+      postman: null,
+      desc: "A production-ready RESTful API built with Laravel 11 — featuring JWT Authentication, Role-Based Access Control, full CRUD with Soft Delete, Search, Filter & Pagination. Designed around enterprise-grade backend patterns: stateless auth, thin controllers, and a single query layer handling search, filter, sort, and pagination simultaneously.",
       points: [
         {
           challenge: "Needed secure stateless authentication and strict role boundaries for admin and user operations.",
@@ -151,37 +113,23 @@ export const data = {
         { name: "JWT",        icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
         { name: "Postman",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
       ],
-      apiDocs: "https://www.postman.com/berlinsugi/workspace/student-management-api",
+      apiDocs: "https://github.com/B3rlinSugi/student-management-api#readme",
       openApi: null,
-      healthCheck: "https://student-api-demo.vercel.app/api/health",
       metrics: {
         endpoints: 18,
-        avgLatency: "170ms",
-        errorRate: "0.06%",
+        avgLatency: "~170ms",
+        errorRate: "< 1%",
         deployFrequency: "weekly",
-        pendingIssues: 3,
       },
     },
     {
       title: "Spring Boot Student API",
       type: "RESTful API",
       period: "Mar 2026",
-      claimLevel: "learning-project",
-      claimNote: "Learning-focused Java backend project to strengthen Spring Boot architecture, JWT security flow, and service-repository design patterns.",
       github: "https://github.com/B3rlinSugi/springboot-student-api",
-      demo: null,
+      demo: "https://springboot-student-api-production-32eb.up.railway.app",
       postman: null,
-      codeProofs: [
-        {
-          label: "Spring Security JWT",
-          url: "https://github.com/B3rlinSugi/springboot-student-api/search?q=SecurityConfig+jwt&type=code",
-        },
-        {
-          label: "Service Repository Layer",
-          url: "https://github.com/B3rlinSugi/springboot-student-api/search?q=Service+Repository&type=code",
-        },
-      ],
-      desc: "Diving into Java backend with Spring Boot 3—such a thrilling experience! JWT auth, JPA/Hibernate for ORM, and clean layered architecture. I geek out over the Service → Repository pattern and testable code design. This project expanded my coding horizons and deepened my appreciation for Java's elegance.",
+      desc: "A Java backend built with Spring Boot 3, implementing JWT-secured endpoints, JPA/Hibernate ORM, and a clean layered architecture (Controller → Service → Repository). Focused on correctly applying Spring Security's filter chain, separation of concerns, and consistent entity-to-DTO mapping — demonstrating proper Java backend structure.",
       points: [
         {
           challenge: "Needed a maintainable Java backend structure that separates business logic from transport logic.",
@@ -196,42 +144,28 @@ export const data = {
       ],
       tech: [
         { name: "Spring Boot", icon: "https://cdn.simpleicons.org/springboot/6DB33F" },
-        { name: "Java 17",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
-        { name: "MySQL",      icon: "https://cdn.simpleicons.org/mysql/00758F" },
-        { name: "JWT",        icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
-        { name: "Postman",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
+        { name: "Java 17",     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
+        { name: "MySQL",       icon: "https://cdn.simpleicons.org/mysql/00758F" },
+        { name: "JWT",         icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
+        { name: "Postman",     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
       ],
       apiDocs: "https://github.com/B3rlinSugi/springboot-student-api#readme",
       openApi: null,
-      healthCheck: "https://springboot-student-api-health.vercel.app/health",
       metrics: {
         endpoints: 12,
-        avgLatency: "190ms",
-        errorRate: "0.14%",
+        avgLatency: "~190ms",
+        errorRate: "< 1%",
         deployFrequency: "bi-weekly",
-        pendingIssues: 5,
       },
     },
     {
       title: "TokoKu — E-Commerce Platform",
       type: "Full-Stack Web App",
       period: "Jan 2026 - Feb 2026",
-      claimLevel: "portfolio-demo",
-      claimNote: "Built as an end-to-end portfolio simulation focused on transaction consistency and backend security, not as a live commercial operation.",
       github: "https://github.com/B3rlinSugi/tokoku-ecommerce",
-      demo: "https://tokoku-ecommerce.vercel.app",
+      demo: "https://tokoku-ecommerce-production.up.railway.app",
       postman: null,
-      codeProofs: [
-        {
-          label: "Transaction Checkout Flow",
-          url: "https://github.com/B3rlinSugi/tokoku-ecommerce/search?q=transaction+checkout+stock&type=code",
-        },
-        {
-          label: "Bcrypt + Role Validation",
-          url: "https://github.com/B3rlinSugi/tokoku-ecommerce/search?q=bcrypt+role+validation&type=code",
-        },
-      ],
-      desc: "Full-stack e-commerce platform (TokoKu) built with PHP. Learned critical lessons on data consistency (transactions), secure password hashing (bcrypt), payment integration, and real-time reporting. Main takeaway: small design decisions have huge reliability impact.",
+      desc: "Full-stack e-commerce platform built with PHP — engineered for transaction reliability across the entire order lifecycle: cart → checkout → payment → stock deduction. Core focus on data consistency using InnoDB transactions, server-side security hardening (bcrypt, RBAC), and an admin dashboard with aggregate analytics.",
       points: [
         {
           challenge: "Checkout flow risked partial write failures between order, payment, and stock updates.",
@@ -257,34 +191,20 @@ export const data = {
       ],
       apiDocs: "https://github.com/B3rlinSugi/tokoku-ecommerce#readme",
       openApi: null,
-      healthCheck: "https://tokoku-ecommerce.vercel.app/api/health",
       metrics: {
         endpoints: 22,
-        avgLatency: "210ms",
-        errorRate: "0.08%",
+        avgLatency: "~210ms",
+        errorRate: "< 1%",
         deployFrequency: "weekly",
-        pendingIssues: 4,
       },
     },
     {
       title: "Cash Flow Manager",
       type: "Academic Project",
       period: "Jun 2023 - Jul 2023",
-      claimLevel: "learning-project",
-      claimNote: "Academic modernization project that demonstrates secure authentication refactor and reporting improvements; not operated as a production service.",
       github: "https://github.com/B3rlinSugi/cash-flow",
       demo: null,
-      codeProofs: [
-        {
-          label: "Auth Hashing Upgrade",
-          url: "https://github.com/B3rlinSugi/cash-flow/search?q=password_hash+bcrypt+md5&type=code",
-        },
-        {
-          label: "Cashflow Analytics Query",
-          url: "https://github.com/B3rlinSugi/cash-flow/search?q=chart+aggregate+monthly&type=code",
-        },
-      ],
-      desc: "A class cash flow management system rebuilt from a legacy codebase — modernised with industry-standard security, real-time analytics, and PDF reporting. The project started as a broken MD5-authenticated system and was refactored into something production-worthy: secure auth, proper database constraints, and an analytics dashboard that gives admins full financial visibility.",
+      desc: "A class cash flow management system rebuilt from a legacy codebase — modernised with industry-standard security, real-time analytics, and PDF reporting. The project started as a broken MD5-authenticated system and was refactored with secure auth, proper database constraints, and an analytics dashboard that gives admins full financial visibility.",
       points: [
         {
           challenge: "Legacy code used insecure authentication and weak data integrity controls.",
@@ -313,20 +233,8 @@ export const data = {
       title: "Sistem Data Akademik",
       type: "Academic Project",
       period: "Mar 2024 - Jul 2024",
-      claimLevel: "learning-project",
-      claimNote: "Academic information-system project used to practice relational schema design, RBAC enforcement, and analytics reporting in a controlled scope.",
       github: "https://github.com/B3rlinSugi/crud-akademik",
       demo: null,
-      codeProofs: [
-        {
-          label: "RBAC + Session Guard",
-          url: "https://github.com/B3rlinSugi/crud-akademik/search?q=role+session+middleware&type=code",
-        },
-        {
-          label: "Prepared Statement Usage",
-          url: "https://github.com/B3rlinSugi/crud-akademik/search?q=prepare+execute+PDO&type=code",
-        },
-      ],
       desc: "An academic data management system built to handle students, courses, and grades for an entire faculty — with multi-table relational database, role-based access control, and a real-time statistical dashboard. The design priority was data integrity and strict access boundaries between Admin and Staff roles.",
       points: [
         {
