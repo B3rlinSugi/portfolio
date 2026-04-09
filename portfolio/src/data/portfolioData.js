@@ -30,7 +30,7 @@ export const data = {
       category: "Languages",
       items: [
         { name: "PHP",        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
-        { name: "Java",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-plain.svg" },
+        { name: "Java",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
         { name: "Python",     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
         { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
         { name: "HTML5",      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" },
@@ -42,7 +42,7 @@ export const data = {
       items: [
         { name: "Spring Boot", icon: "https://cdn.simpleicons.org/springboot/6DB33F" },
         { name: "Laravel",     icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
-        { name: "React",       icon: "https://cdn.jsdelivr.gh/devicons/devicon@latest/icons/react/react-original.svg" },
+        { name: "React",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
         { name: "CodeIgniter", icon: "https://cdn.simpleicons.org/codeigniter/EF4223" },
         { name: "Bootstrap 5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
         { name: "Vue.js",      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg" },
@@ -58,10 +58,10 @@ export const data = {
     {
       category: "API & Security",
       items: [
-        { name: "REST API", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" },
+        { name: "REST API", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/openapi/openapi-original.svg" },
         { name: "Postman",  icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
         { name: "JWT",      icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
-        { name: "bcrypt",   icon: "https://cdn.simpleicons.org/nodedotjs/339933" },
+        { name: "bcrypt",   icon: "https://cdn.simpleicons.org/simplelogin/6255ed" },
       ],
     },
     {
@@ -79,7 +79,7 @@ export const data = {
       category: "Tools & OS",
       items: [
         { name: "Linux",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" },
-        { name: "VS Code",        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg" },
+        { name: "VS Code",        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" },
         { name: "XAMPP",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg" },
         { name: "Figma",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
       ],

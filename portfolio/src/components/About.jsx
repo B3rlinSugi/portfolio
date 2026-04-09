@@ -22,9 +22,9 @@ function useCounter(target, duration = 1600, inView = false) {
 const skillsData = [
   { name: "PHP",      color: "#8892BF", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
   { name: "Laravel",  color: "#FF2D20", icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
-  { name: "Java",     color: "#F59E0B", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
+  { name: "Java",     color: "#F59E0B", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
   { name: "MySQL",    color: "#00758F", icon: "https://cdn.simpleicons.org/mysql/00758F" },
-  { name: "REST API", color: "#009688", icon: "https://cdn.simpleicons.org/fastapi/009688" },
+  { name: "REST API", color: "#009688", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/openapi/openapi-original.svg" },
   { name: "Postman",  color: "#FF6C37", icon: "https://cdn.simpleicons.org/postman/FF6C37" },
   { name: "Git",      color: "#F05032", icon: "https://cdn.simpleicons.org/git/F05032" },
   { name: "Linux",    color: "#FCC624", icon: "https://cdn.simpleicons.org/linux/FCC624" },
