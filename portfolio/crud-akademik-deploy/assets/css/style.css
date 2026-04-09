@@ -1,0 +1,36 @@
+/* =============================================
+   Sistem Data Akademik — Custom CSS v2.0
+   ============================================= */
+
+body { font-family: 'Poppins', sans-serif; font-size: 14px; background-color: #f8f9fc; }
+
+/* Navbar spacing */
+body { padding-top: 56px; }
+
+/* Cards */
+.card { border-radius: .75rem; }
+.border-start.border-4 { border-left-width: 4px !important; }
+
+/* Table */
+.table thead th {
+    font-size: .78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04rem;
+    white-space: nowrap;
+}
+
+/* Badges */
+.badge { font-weight: 500; }
+
+/* Pagination */
+.page-link { font-size: .85rem; }
+
+/* Form */
+.form-label { font-size: .875rem; }
+
+/* Hover row */
+.table-hover tbody tr:hover { background-color: #f0f4ff; }
+
+/* Alert auto */
+.alert { border-radius: .5rem; }

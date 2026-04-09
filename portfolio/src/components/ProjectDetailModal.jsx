@@ -49,7 +49,7 @@ const getProjectClaim = (project) => {
 const normalizePoint = (point) => {
   if (typeof point === "string") {
     return {
-      challenge: "Backend challenge",
+      challenge: "Integration Challenge",
       solution: point,
       result: "",
     };
@@ -57,14 +57,14 @@ const normalizePoint = (point) => {
 
   if (!point || typeof point !== "object") {
     return {
-      challenge: "Backend challenge",
+      challenge: "Technical Requirement",
       solution: "",
       result: "",
     };
   }
 
   return {
-    challenge: point.challenge || point.label || "Backend challenge",
+    challenge: point.challenge || point.label || "Technical Challenge",
     solution: point.solution || point.detail || "",
     result: point.result || "",
   };
@@ -733,10 +733,10 @@ const ProjectDetailModal = () => {
                       {i + 1}
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 6, flex: 1 }}>
-                      <div style={{ fontSize: 10.5, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.5px", textTransform: "uppercase" }}>Problem</div>
+                      <div style={{ fontSize: 10.5, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.5px", textTransform: "uppercase" }}>Challenge</div>
                       <p style={{ fontSize: 13.5, color: "#E2E8F0", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt.challenge}</p>
-                      <div style={{ fontSize: 10.5, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.5px", textTransform: "uppercase" }}>Action</div>
-                      <p style={{ fontSize: 13.5, color: "#8BA4C8", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt.solution || "Implemented backend logic and delivery flow for this case."}</p>
+                      <div style={{ fontSize: 10.5, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.5px", textTransform: "uppercase" }}>Solution</div>
+                      <p style={{ fontSize: 13.5, color: "#8BA4C8", lineHeight: 1.65, fontFamily: "'Outfit',sans-serif", margin: 0 }}>{pt.solution || "Architected standard backend flow for this module."}</p>
                       {pt.result && (
                         <>
                           <div style={{ fontSize: 10.5, color: a, fontFamily: "'JetBrains Mono',monospace", letterSpacing: "0.5px", textTransform: "uppercase" }}>Result</div>

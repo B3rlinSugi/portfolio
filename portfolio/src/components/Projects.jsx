@@ -47,23 +47,23 @@ const getProjectClaim = (project) => {
 const normalizePoint = (point) => {
   if (typeof point === "string") {
     return {
-      problem: "Backend challenge",
-      action: point,
+      challenge: "Integration Challenge",
+      solution: point,
       result: "",
     };
   }
 
   if (!point || typeof point !== "object") {
     return {
-      problem: "Backend challenge",
-      action: "",
+      challenge: "Technical Requirement",
+      solution: "",
       result: "",
     };
   }
 
   return {
-    problem: point.challenge || point.label || "Backend challenge",
-    action: point.solution || point.detail || "",
+    challenge: point.challenge || point.label || "Technical Challenge",
+    solution: point.solution || point.detail || "",
     result: point.result || "",
   };
 };
@@ -105,13 +105,13 @@ const HighlightBlock = ({ point, index, accent }) => {
               Problem
             </div>
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#E2E8F0", lineHeight: 1.6, margin: 0 }}>
-              {parsed.problem}
+              {parsed.challenge}
             </p>
             <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: accent, letterSpacing: "0.6px", textTransform: "uppercase", marginTop: 2 }}>
-              Action
+              Solution
             </div>
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#94A3B8", lineHeight: 1.6, margin: 0 }}>
-              {parsed.action || "Implemented backend logic and delivery flow for this case."}
+              {parsed.solution || "Synthesized backend logic for optimal delivery."}
             </p>
             {parsed.result && (
               <>
@@ -410,7 +410,7 @@ const checkStatus = async (url) => {
                     {/* Pull quote */}
                     <div style={{ borderLeft: `3px solid ${a}`, paddingLeft: 14, marginBottom: 18 }}>
                       <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: 14, fontStyle: "italic", color: "#64748B", lineHeight: 1.7, margin: 0 }}>
-                        "{leadPoint?.problem || "Building this shaped how I think about backend architecture."}"
+                        "{leadPoint?.challenge || "Solving this architectural core shaped the system stability."}"
                       </p>
                     </div>
 
