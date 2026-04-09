@@ -163,7 +163,7 @@ export const data = {
       type: "Fullstack E-Commerce",
       period: "Jan 2025 - Mar 2025",
       github: "https://github.com/B3rlinSugi/tokoku-ecommerce",
-      demo: null,
+      demo: "https://tokoku-ecommerce-production.up.railway.app",
       desc: "A performance-optimized E-Commerce engine built with Vanilla PHP. Engineered to handle large transaction volumes using atomic SQL operations, secure session-based state management, and an intelligent voucher calculation engine for real-time dynamic pricing.",
       points: [
         {
