@@ -188,7 +188,8 @@ const buildProjectSignals = (project) => {
 
 const Projects = () => {
   const projectsRef = useRef(null);
-  const [page, setPage] = useState(0);
+const [page, setPage] = useState(0);
+  const [statuses, setStatuses] = useState({});
   const lang = useContext(LangContext);
   const t = i18n[lang].projects;
   const projects = data.projects || [];
@@ -213,8 +214,31 @@ const Projects = () => {
     return () => window.removeEventListener("keydown", handler);
   }, [prev, next]);
 
-  const proj = projects[page];
+const proj = projects[page];
   const { a, b } = ACCENTS[page % ACCENTS.length];
+
+  useEffect(() => {
+const checkStatus = async (url) => {
+      if (!url) return null;
+      try {
+        const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+        return res.ok ? 'live' : 'offline';
+      } catch {
+        return 'offline';
+      }
+    };
+
+
+    const updateStatuses = async () => {
+      const newStatuses = {};
+      if (proj.healthCheck) newStatuses.health = await checkStatus(proj.healthCheck);
+      if (proj.demo) newStatuses.demo = await checkStatus(proj.demo);
+      setStatuses(newStatuses);
+    };
+
+    updateStatuses();
+  }, [proj]);
+
   const points = Array.isArray(proj?.points) ? proj.points : [];
   const parsedPoints = points.map((pt) => normalizePoint(pt));
   const leadPoint = parsedPoints[0] || null;
@@ -493,8 +517,16 @@ const Projects = () => {
                       {apiDocsUrl && <a href={apiDocsUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>API Docs</a>}
                       {openApiUrl && <a href={openApiUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.3)", color: "#22D3EE", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>OpenAPI</a>}
                       {primaryCodeProof && <a href={primaryCodeProof.url} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.3)", color: "#C4B5FD", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>Code Proof</a>}
-                      {healthUrl && <a href={healthUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", color: "#34D399", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>Health</a>}
-                      {proj.demo && <a href={proj.demo} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}10`, border: `1px solid ${a}30`, color: a, fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>Demo</a>}
+{healthUrl && (
+  <a href={healthUrl} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: statuses.health === 'live' ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)", border: statuses.health === 'live' ? "1px solid rgba(16,185,129,0.3)" : "1px solid rgba(239,68,68,0.3)", color: statuses.health === 'live' ? "#34D399" : "#FCA5A5", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace", opacity: statuses.health === 'checking' ? 0.5 : 1 }} title={statuses.health || 'Checking...'}>
+    {statuses.health === 'live' ? '🟢' : statuses.health === 'offline' ? '🔴' : '⏳'} Health
+  </a>
+)}
+{proj.demo && (
+  <a href={proj.demo} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: statuses.demo === 'live' ? `${a}10` : "rgba(239,68,68,0.1)", border: statuses.demo === 'live' ? `1px solid ${a}30` : "1px solid rgba(239,68,68,0.3)", color: statuses.demo === 'live' ? a : "#FCA5A5", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace", opacity: statuses.demo === 'checking' ? 0.5 : 1 }} title={statuses.demo || 'Checking...'}>
+    {statuses.demo === 'live' ? '🟢' : statuses.demo === 'offline' ? '🔴' : '⏳'} Demo
+  </a>
+)}
                       <a href={proj.github} target="_blank" rel="noreferrer" style={{ padding: "8px 16px", borderRadius: 9, background: `${a}18`, border: `1px solid ${a}40`, color: "#F8FAFC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: "'JetBrains Mono',monospace" }}>GitHub</a>
                     </div>
                   </div>

@@ -170,13 +170,19 @@ const PlayerCard = ({ visible }) => {
             marginTop: -40, zIndex: 5, position: "relative",
             background: "linear-gradient(135deg,#064E3B,#0D766A)",
             boxShadow: "0 8px 24px rgba(0,0,0,0.5), 0 0 0 2px rgba(16,185,129,0.4)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            overflow: "hidden", flexDirection: "column", gap: 0,
+            overflow: "hidden",
           }}>
-            <span style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: 16, color: "#10B981", letterSpacing: "1px", lineHeight: 1 }}>BSH</span>
-            <div style={{ width: 24, height: 1.5, background: "rgba(16,185,129,0.4)", borderRadius: 1, margin: "3px 0" }} />
-            <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7, color: "rgba(16,185,129,0.6)", letterSpacing: "1.5px" }}>DEV</span>
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 60%)" }} />
+            <img
+              src="/foto.jpg"
+              alt="Berlin Sugiyanto"
+              loading="lazy"
+              decoding="async"
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+              onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
+            />
+            <div style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#064E3B,#0D766A)" }}>
+              <span style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: 16, color: "#10B981" }}>BSH</span>
+            </div>
           </div>
         </div>
 
@@ -463,7 +469,7 @@ const Contact = () => {
               transition={{ delay: 0.9 }}
               style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 18 }}
             >
-              {["Full-time","Hybrid","Internship","Contract","Remote"].map(c => (
+              {(t.chips || ["Full-time","Hybrid","Internship","Contract","Remote"]).map(c => (
                 <span key={c} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, fontWeight: 600, color: "#334155", border: "1px solid rgba(255,255,255,0.06)", padding: "4px 12px", borderRadius: 100 }}>{c}</span>
               ))}
             </motion.div>

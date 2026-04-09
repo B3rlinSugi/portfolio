@@ -11,9 +11,9 @@ import Projects from "./components/Projects";
 
 import TerminalEgg from "./components/TerminalEgg";
 import ProjectDetailModal from "./components/ProjectDetailModal";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const GitHubActivity = lazy(() => import("./components/GitHubActivity"));
-const GitHubStats = lazy(() => import("./components/GitHubStats"));
 const Certifications = lazy(() => import("./components/Certifications"));
 const Organizations = lazy(() => import("./components/Organizations"));
 const Contact = lazy(() => import("./components/Contact"));
@@ -174,7 +174,7 @@ const Loader = ({ onDone }) => {
             textAlign: "left",
           }}
         >
-          Moving Letters Rebuild
+          berlinsugi.vercel.app
         </p>
 
         <div
@@ -357,7 +357,7 @@ const Loader = ({ onDone }) => {
 
 const sections = [
   {id:"hero",label:"Home"},{id:"about",label:"About"},{id:"skills",label:"Skills"},
-  {id:"projects",label:"Projects"},{id:"github-activity",label:"GitHub"},{id:"operational-readiness",label:"Ops"},{id:"openapi-viewer",label:"API Docs"},{id:"certifications",label:"Certifications"},
+  {id:"projects",label:"Projects"},{id:"github-activity",label:"GitHub"},{id:"certifications",label:"Certifications"},
   {id:"organizations",label:"Organizations"},{id:"contact",label:"Contact"},
 ];
 
@@ -473,39 +473,11 @@ function App() {
     return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
   });
 
-  // Apply theme to <html> element
+  // Apply theme to <html> element — theming handled entirely via index.css CSS variables
   useEffect(() => {
-  document.documentElement.setAttribute("data-theme", theme);
-  localStorage.setItem("portfolio-theme", theme);
-
-  const styleId = "light-mode-overrides";
-  let el = document.getElementById(styleId);
-  if (!el) {
-    el = document.createElement("style");
-    el.id = styleId;
-    document.head.appendChild(el);
-  }
-
-  if (theme === "light") {
-    el.textContent = `
-      section { background: #F0F4FF !important; }
-      #about, #projects, #certifications, #organizations, #github-activity { background: #E8EEFF !important; }
-      [style*="rgba(15,31,56"], [style*="rgba(6,14,30"], [style*="rgba(10,22,40"], [style*="rgba(4,10,22"] {
-        background: rgba(255,255,255,0.88) !important;
-        color: #0A1628 !important;
-        border-color: rgba(29,78,216,0.15) !important;
-      }
-      [style*="color: #6B84A8"], [style*="color:#6B84A8"],
-      [style*="color: #8BA4C8"], [style*="color:#8BA4C8"],
-      [style*="color: var(--muted)"] { color: #2D4A8A !important; }
-      [style*="color: var(--white)"], [style*="color:var(--white)"] { color: #0A1628 !important; }
-      [style*="color: var(--white-2)"], [style*="color:var(--white-2)"] { color: #1E3A6E !important; }
-      .s-title { color: #0A1628 !important; }
-    `;
-  } else {
-    el.textContent = "";
-  }
-}, [theme]);
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("portfolio-theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     if (!loading) return;
@@ -553,10 +525,11 @@ function App() {
         <DeferredSection anchorId="github-activity" minHeight={560}>
           {(mounted) => (
             mounted ? (
-              <Suspense fallback={<SectionSkeleton label="GitHub" minHeight={560} />}>
-                <GitHubActivity />
-                <GitHubStats />
-              </Suspense>
+              <ErrorBoundary>
+                <Suspense fallback={<SectionSkeleton label="GitHub" minHeight={560} />}>
+                  <GitHubActivity />
+                </Suspense>
+              </ErrorBoundary>
             ) : (
               <SectionSkeleton label="GitHub" minHeight={560} />
             )
@@ -566,9 +539,11 @@ function App() {
         <DeferredSection anchorId="certifications" minHeight={540}>
           {(mounted) => (
             mounted ? (
-              <Suspense fallback={<SectionSkeleton label="Certifications" minHeight={540} />}>
-                <Certifications />
-              </Suspense>
+              <ErrorBoundary>
+                <Suspense fallback={<SectionSkeleton label="Certifications" minHeight={540} />}>
+                  <Certifications />
+                </Suspense>
+              </ErrorBoundary>
             ) : (
               <SectionSkeleton label="Certifications" minHeight={540} />
             )
@@ -578,9 +553,11 @@ function App() {
         <DeferredSection anchorId="organizations" minHeight={540}>
           {(mounted) => (
             mounted ? (
-              <Suspense fallback={<SectionSkeleton label="Organizations" minHeight={540} />}>
-                <Organizations />
-              </Suspense>
+              <ErrorBoundary>
+                <Suspense fallback={<SectionSkeleton label="Organizations" minHeight={540} />}>
+                  <Organizations />
+                </Suspense>
+              </ErrorBoundary>
             ) : (
               <SectionSkeleton label="Organizations" minHeight={540} />
             )
@@ -590,9 +567,11 @@ function App() {
         <DeferredSection anchorId="contact" minHeight={500}>
           {(mounted) => (
             mounted ? (
-              <Suspense fallback={<SectionSkeleton label="Contact" minHeight={500} />}>
-                <Contact />
-              </Suspense>
+              <ErrorBoundary>
+                <Suspense fallback={<SectionSkeleton label="Contact" minHeight={500} />}>
+                  <Contact />
+                </Suspense>
+              </ErrorBoundary>
             ) : (
               <SectionSkeleton label="Contact" minHeight={500} />
             )

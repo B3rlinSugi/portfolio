@@ -69,8 +69,8 @@ export const data = {
       items: [
         { name: "Git",            icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
         { name: "GitHub",         icon: "https://cdn.simpleicons.org/github/C8D8F0" },
-        { name: "Railway",        icon: "https://cdn.simpleicons.org/railway/131415" },
-        { name: "Vercel",         icon: "https://cdn.simpleicons.org/vercel/000000" },
+        { name: "Railway",        icon: "https://cdn.simpleicons.org/railway/FFFFFF" },
+        { name: "Vercel",         icon: "https://cdn.simpleicons.org/vercel/FFFFFF" },
         { name: "Docker",         icon: "https://cdn.simpleicons.org/docker/2496ED" },
         { name: "VS Code",        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg" },
         { name: "Linux",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" },

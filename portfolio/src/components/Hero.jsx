@@ -1,4 +1,3 @@
-"use client";
 import { data } from "../data/portfolioData";
 import { useState, useContext, useRef } from "react";
 import { LangContext } from "../LangContext";
@@ -361,9 +360,6 @@ const Hero = () => {
         </div>
       </motion.div>
 
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
-      `}</style>
       </motion.section>
     </div>
   );
