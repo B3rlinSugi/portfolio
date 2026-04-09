@@ -203,7 +203,7 @@ export const data = {
       type: "Academic Project",
       period: "Jun 2023 - Jul 2023",
       github: "https://github.com/B3rlinSugi/cash-flow",
-      demo: null,
+      demo: "https://cash-flow-production-d733.up.railway.app",
       desc: "A class cash flow management system rebuilt from a legacy codebase — modernised with industry-standard security, real-time analytics, and PDF reporting. The project started as a broken MD5-authenticated system and was refactored with secure auth, proper database constraints, and an analytics dashboard that gives admins full financial visibility.",
       points: [
         {
