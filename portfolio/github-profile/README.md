@@ -35,6 +35,29 @@ A high-performance **Backend Engineer** focused on building scalable, secure, an
 
 ---
 
+### ⚙️ DevOps Lifecycle Workflow
+
+I automate everything from local development to production rollout.
+
+```mermaid
+graph LR
+    Dev["💻 Local Development"]
+    Git["🌿 Git Push (Main)"]
+    Build["🏗️ Auto-Build (CI)"]
+    Deploy["🚀 Auto-Deploy (CD)"]
+    Prod["🌐 Production Envs"]
+    Monitor["🔍 Health Checks"]
+
+    Dev --> Git
+    Git --> Build
+    Build --> Deploy
+    Deploy --> Prod
+    Prod --> Monitor
+    Monitor -->|Feedback| Dev
+```
+
+---
+
 ### 📁 Featured Projects
 
 #### 1. [Sistem Data Akademik](https://github.com/B3rlinSugi/crud-akademik)

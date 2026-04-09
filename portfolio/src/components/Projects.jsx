@@ -183,6 +183,7 @@ const buildProjectSignals = (project) => {
     { label: "Code Proof", ok: hasCodeProof },
     { label: "Health Check", ok: hasHealth },
     { label: "Error Control", ok: hasErrorControl },
+    { label: "CI/CD", ok: !!project.demo },
   ];
 };
 

@@ -42,7 +42,7 @@ export const data = {
       items: [
         { name: "Spring Boot", icon: "https://cdn.simpleicons.org/springboot/6DB33F" },
         { name: "Laravel",     icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
-        { name: "React",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+        { name: "React",       icon: "https://cdn.jsdelivr.gh/devicons/devicon@latest/icons/react/react-original.svg" },
         { name: "CodeIgniter", icon: "https://cdn.simpleicons.org/codeigniter/EF4223" },
         { name: "Bootstrap 5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
         { name: "Vue.js",      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg" },
@@ -65,15 +65,21 @@ export const data = {
       ],
     },
     {
-      category: "Tools",
+      category: "DevOps & Cloud",
       items: [
         { name: "Git",            icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
         { name: "GitHub",         icon: "https://cdn.simpleicons.org/github/C8D8F0" },
         { name: "Railway",        icon: "https://cdn.simpleicons.org/railway/FFFFFF" },
         { name: "Vercel",         icon: "https://cdn.simpleicons.org/vercel/FFFFFF" },
         { name: "Docker",         icon: "https://cdn.simpleicons.org/docker/2496ED" },
-        { name: "VS Code",        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg" },
+        { name: "CI/CD",          icon: "https://cdn.simpleicons.org/githubactions/2088FF" },
+      ],
+    },
+    {
+      category: "Tools & OS",
+      items: [
         { name: "Linux",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" },
+        { name: "VS Code",        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg" },
         { name: "XAMPP",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg" },
         { name: "Figma",          icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
       ],
