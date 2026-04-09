@@ -234,7 +234,7 @@ export const data = {
       type: "Academic Project",
       period: "Mar 2024 - Jul 2024",
       github: "https://github.com/B3rlinSugi/crud-akademik",
-      demo: null,
+      demo: "https://crud-akademik.42web.io",
       desc: "An academic data management system built to handle students, courses, and grades for an entire faculty — with multi-table relational database, role-based access control, and a real-time statistical dashboard. The design priority was data integrity and strict access boundaries between Admin and Staff roles.",
       points: [
         {
