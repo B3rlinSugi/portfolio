@@ -42,7 +42,7 @@ export const data = {
       items: [
         { name: "Spring Boot", icon: "https://cdn.simpleicons.org/springboot/6DB33F" },
         { name: "Laravel",     icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
-        { name: "React",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+        { name: "React",       icon: "https://cdn.simpleicons.org/react/61DAFB" },
         { name: "CodeIgniter", icon: "https://cdn.simpleicons.org/codeigniter/EF4223" },
         { name: "Bootstrap 5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
         { name: "Vue.js",      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg" },
@@ -58,8 +58,8 @@ export const data = {
     {
       category: "API & Security",
       items: [
-        { name: "REST API", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/openapi/openapi-original.svg" },
-        { name: "Postman",  icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
+        { name: "REST API", icon: "https://cdn.simpleicons.org/swagger/85EA2D" },
+        { name: "Postman",  icon: "https://cdn.simpleicons.org/postman/FF6C37" },
         { name: "JWT",      icon: "https://cdn.simpleicons.org/jsonwebtokens/06B6D4" },
         { name: "bcrypt",   icon: "https://cdn.simpleicons.org/simplelogin/6255ed" },
       ],
@@ -170,9 +170,8 @@ export const data = {
       period: "Jan 2025 - Mar 2025",
       github: "https://github.com/B3rlinSugi/tokoku-ecommerce",
       demo: "https://tokoku-ecommerce-production.up.railway.app",
-      desc: "A performance-optimized E-Commerce engine built with Vanilla PHP. Engineered to handle large transaction volumes using atomic SQL operations, secure session-based state management, and an intelligent voucher calculation engine for real-time dynamic pricing.",
-      points: [
-        {
+      tech: [
+        { name: "Swagger",    icon: "https://cdn.simpleicons.org/swagger/85EA2D" },        {
           challenge: "High-concurrency orders could lead to stock race conditions and data corruption.",
           solution: "Designed the checkout flow around atomic database transactions to ensure stock integrity during simultaneous orders.",
           result: "Eliminated stock discrepancy risks and ensured zero-error order fulfillment.",

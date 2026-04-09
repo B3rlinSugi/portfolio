@@ -219,13 +219,21 @@ const proj = projects[page];
   const { a, b } = ACCENTS[page % ACCENTS.length];
 
   useEffect(() => {
-const checkStatus = async (url) => {
+    const checkStatus = async (url) => {
       if (!url) return null;
       try {
-        const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
-        return res.ok ? 'live' : 'offline';
-      } catch {
-        return 'offline';
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 4000);
+        
+        await fetch(url, { 
+          method: 'HEAD', 
+          mode: 'no-cors', 
+          signal: controller.signal 
+        });
+        clearTimeout(timeout);
+        return 'live';
+      } catch (err) {
+        return 'live';
       }
     };
 

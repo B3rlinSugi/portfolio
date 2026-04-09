@@ -1,82 +1,83 @@
-# 🖥️ System.Profile (B3rlinSugi)
+<div align="center">
+  <img src="https://capsule-render.vercel.app/render?type=soft&color=auto&height=200&section=header&text=Berlin%20Sugiyanto&fontSize=70" width="100%" />
+</div>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/System_Status-Online-3B82F6?style=for-the-badge&logo=statuspage&logoColor=white" />
-  <img src="https://img.shields.io/badge/Developer_Tier-Senior_Backend-6366F1?style=for-the-badge&logo=codeforces&logoColor=white" />
-  <img src="https://img.shields.io/badge/Main_Stack-Laravel_/_Spring_Boot-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" />
-</p>
+<div align="center">
+  <img src="https://komarev.com/ghpvc/?username=B3rlinSugi&label=Profile%20views&color=0e75b6&style=flat" alt="B3rlinSugi" />
+</div>
 
 ---
 
-### 🔎 Whoami
-A high-performance **Backend Engineer** focused on building scalable, secure, and production-ready RESTful ecosystems. Expert in PHP (Laravel) and Java (Spring Boot) with a deep passion for relational database integrity and stateless terminal-grade architectures.
+### 🚀 About Me
+Backend Engineering enthusiast with a passion for building robust, scalable systems and high-performance REST APIs. Fresh graduate from **Gunadarma University** with a **GPA of 3.63/4.00**.
+
+- 🔭 I’m currently building **Enterprise Student Management APIs**
+- 🌱 I’m currently learning **DevOps, Docker, and CI/CD Pipelines**
+- ⚡ Fun fact: I love optimizing database queries for fun!
 
 ---
 
 ### 🚀 Core Engineering Stacks
 
-| Ecosystem | Technologies |
-|---|---|
-| **Backend Core** | `Laravel 11+`, `Spring Boot 3.x`, `PHP 8.2`, `Java 17` |
-| **Authentication** | `JWT (Stateless)`, `OAuth 2.0`, `Sanctum`, `RBAC` |
-| **Data Persistence** | `MySQL 8.0`, `PostgreSQL`, `Eloquent ORM`, `Spring Data JPA` |
-| **DevOps & Cloud** | `Docker`, `Railway`, `Vercel`, `CI/CD Pipelines` |
-| **Visual Analytics** | `Chart.js`, `TCPDF / Dompdf`, `Grafana` |
+<table>
+  <tr>
+    <td align="center" width="200"><strong>Languages</strong></td>
+    <td align="center" width="200"><strong>Frameworks</strong></td>
+    <td align="center" width="200"><strong>Databases</strong></td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://skillicons.dev/icons?i=php,java,py,js,html,css" />
+    </td>
+    <td align="center">
+      <img src="https://skillicons.dev/icons?i=spring,laravel,react,ci,bootstrap,vue" />
+    </td>
+    <td align="center">
+      <img src="https://skillicons.dev/icons?i=mysql,postgres" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><strong>API & Security</strong></td>
+    <td align="center"><strong>DevOps & Tools</strong></td>
+    <td align="center"><strong>OS & Others</strong></td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://skillicons.dev/icons?i=postman,jwt" />
+    </td>
+    <td align="center">
+      <img src="https://skillicons.dev/icons?i=git,github,railway,vercel,docker,githubactions" />
+    </td>
+    <td align="center">
+      <img src="https://skillicons.dev/icons?i=linux,vscode,figma" />
+    </td>
+  </tr>
+</table>
 
 ---
 
-### 📊 Vital System Statistics
+### 📈 GitHub Analytics
 
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=B3rlinSugi&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117" alt="GitHub Stats" />
-  <br/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=B3rlinSugi&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117" alt="Top Languages" />
-</p>
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=B3rlinSugi&show_icons=true&theme=tokyonight&count_private=true" alt="GitHub Stats" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=B3rlinSugi&layout=compact&theme=tokyonight" alt="Top Langs" />
+</div>
 
----
-
-### ⚙️ DevOps Lifecycle Workflow
-
-I automate everything from local development to production rollout.
-
-```mermaid
-graph LR
-    Dev["💻 Local Development"]
-    Git["🌿 Git Push (Main)"]
-    Build["🏗️ Auto-Build (CI)"]
-    Deploy["🚀 Auto-Deploy (CD)"]
-    Prod["🌐 Production Envs"]
-    Monitor["🔍 Health Checks"]
-
-    Dev --> Git
-    Git --> Build
-    Build --> Deploy
-    Deploy --> Prod
-    Prod --> Monitor
-    Monitor -->|Feedback| Dev
-```
+<div align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=B3rlinSugi&theme=tokyonight" alt="GitHub Streak" />
+</div>
 
 ---
 
-### 📁 Featured Projects
+### 📫 Let's Connect!
 
-#### 1. [Sistem Data Akademik](https://github.com/B3rlinSugi/crud-akademik)
-> Institutional-grade student record system with RBAC and automated PDF archiving.
+<div align="center">
+  <a href="https://linkedin.com/in/berlinsugi"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
+  <a href="https://instagram.com/babehber_"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" /></a>
+  <a href="mailto:berlinsugiyanto23@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" /></a>
+  <a href="https://wa.me/6281294500613"><img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" /></a>
+</div>
 
-#### 2. [Cash Flow Manager](https://github.com/B3rlinSugi/cash-flow)
-> Legacy-to-Modern financial migration project with real-time fiscal analytics.
-
-#### 3. [Student Management API (Laravel)](https://github.com/B3rlinSugi/student-management-api)
-> enterprise-grade SIS backend with N+1 protected relational mapping.
-
----
-
-### 🌐 Direct Uplink
-- **Live Portfolio:** [berlinsugi.vercel.app](https://berlinsugi.vercel.app)
-- **LinkedIn:** [berlinsugi](https://linkedin.com/in/berlinsugi)
-- **Email:** `berlinsugiyanto23@gmail.com`
-
----
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0D1117&height=100&section=footer" width="100%" />
-</p>
+<div align="center">
+  <img src="https://capsule-render.vercel.app/render?type=slice&color=auto&height=20&section=footer" width="100%" />
+</div>

@@ -23,11 +23,11 @@ const skillsData = [
   { name: "PHP",      color: "#8892BF", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
   { name: "Laravel",  color: "#FF2D20", icon: "https://cdn.simpleicons.org/laravel/FF2D20" },
   { name: "Java",     color: "#F59E0B", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
+  { name: "React",    color: "#61DAFB", icon: "https://cdn.simpleicons.org/react/61DAFB" },
   { name: "MySQL",    color: "#00758F", icon: "https://cdn.simpleicons.org/mysql/00758F" },
-  { name: "REST API", color: "#009688", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/openapi/openapi-original.svg" },
+  { name: "REST API", color: "#85EA2D", icon: "https://cdn.simpleicons.org/swagger/85EA2D" },
   { name: "Postman",  color: "#FF6C37", icon: "https://cdn.simpleicons.org/postman/FF6C37" },
   { name: "Git",      color: "#F05032", icon: "https://cdn.simpleicons.org/git/F05032" },
-  { name: "Linux",    color: "#FCC624", icon: "https://cdn.simpleicons.org/linux/FCC624" },
 ];
 
 const stats = [
@@ -65,7 +65,6 @@ const OSWindow = ({ title, children, className, icon, noPadding = false }) => {
           }}
           className={`os-window ${className}`}
        >
-           {/* Radar Glow Effect */}
            <motion.div
               className="pointer-events-none absolute inset-0"
               animate={{ opacity: isHovered ? 1 : 0 }}
@@ -75,8 +74,6 @@ const OSWindow = ({ title, children, className, icon, noPadding = false }) => {
                  zIndex: 0
               }}
            />
-
-           {/* OS Title Bar */}
            <div style={{ position: "relative", zIndex: 1, height: "40px", background: "rgba(255,255,255,0.03)", display: "flex", alignItems: "center", padding: "0 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", flexShrink: 0 }}>
                <div style={{ display: "flex", gap: "8px", width: "60px" }}>
                    <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#EF4444" }}/>
@@ -89,8 +86,6 @@ const OSWindow = ({ title, children, className, icon, noPadding = false }) => {
                </div>
                <div style={{ width: "60px" }} />
            </div>
-           
-           {/* Window Content */}
            <div style={{ position: "relative", zIndex: 1, flex: 1, overflowY: "auto", overflowX: "hidden", padding: noPadding ? "0" : "32px", display: "flex", flexDirection: "column" }}>
                {children}
            </div>
@@ -99,7 +94,6 @@ const OSWindow = ({ title, children, className, icon, noPadding = false }) => {
 }
 
 const PhotoSlideshow = () => {
-  // WebP first, JPEG as fallback for older browsers.
   const photos = [
     { src: "/a-slide.webp", fallback: "/a-slide.jpg" },
     { src: "/b-slide.webp", fallback: "/b-slide.jpg" },
@@ -110,7 +104,7 @@ const PhotoSlideshow = () => {
   useEffect(() => {
       const interval = setInterval(() => {
            setCurrentIndex(prev => (prev + 1) % photos.length);
-      }, 3500); // Durasi perpindahan antar foto (3.5 detik)
+      }, 3500);
       return () => clearInterval(interval);
   }, []);
 
@@ -162,7 +156,6 @@ const About = () => {
   const workspaceRef = useRef(null);
   const aboutRef = useRef(null);
 
-  // Reveal from center line outward (inverse of Hero's pinch)
   const { scrollYProgress } = useScroll({
     target: aboutRef,
     offset: ["start end", "start 0.4"],
@@ -198,17 +191,17 @@ const About = () => {
   const rawMagnetCoreSc = useTransform(aboutExitProgress, [0.45, 1], [0.66, 1.22]);
   const rawMagnetCoreY  = useTransform(aboutExitProgress, [0.45, 1], [26, 0]);
 
-  const clipTop    = useSpring(rawClipTop,    spring);
+  const clipTop = useSpring(rawClipTop, spring);
   const clipBottom = useSpring(rawClipBottom, spring);
-  const opacity    = useSpring(rawOpacity,    spring);
-  const y          = useSpring(rawY,          spring);
+  const opacity = useSpring(rawOpacity, spring);
+  const y = useSpring(rawY, spring);
   const topBlendOp = useSpring(rawTopBlendOp, spring);
-  const topGlowOp  = useSpring(rawTopGlowOp,  spring);
-  const topGlowSc  = useSpring(rawTopGlowSc,  spring);
-  const depthBgY   = useSpring(rawDepthBgY,   spring);
-  const depthBgSc  = useSpring(rawDepthBgSc,  spring);
-  const depthCtY   = useSpring(rawDepthCtY,   spring);
-  const depthCtSc  = useSpring(rawDepthCtSc,  spring);
+  const topGlowOp = useSpring(rawTopGlowOp, spring);
+  const topGlowSc = useSpring(rawTopGlowSc, spring);
+  const depthBgY = useSpring(rawDepthBgY, spring);
+  const depthBgSc = useSpring(rawDepthBgSc, spring);
+  const depthCtY = useSpring(rawDepthCtY, spring);
+  const depthCtSc = useSpring(rawDepthCtSc, spring);
   const stackExitY = useSpring(rawStackExitY, spring);
   const stackExitOp = useSpring(rawStackExitOp, spring);
   const stackExitSc = useSpring(rawStackExitSc, spring);
@@ -216,7 +209,7 @@ const About = () => {
   const stackFilter = useTransform(stackExitBlur, (v) => `blur(${v}px)`);
   const magnetCoreOp = useSpring(rawMagnetCoreOp, spring);
   const magnetCoreSc = useSpring(rawMagnetCoreSc, spring);
-  const magnetCoreY  = useSpring(rawMagnetCoreY, spring);
+  const magnetCoreY = useSpring(rawMagnetCoreY, spring);
 
   const stackY = useTransform([depthCtY, stackExitY], ([entryY, exitY]) => entryY + exitY);
   const stackScale = useTransform([depthCtSc, stackExitSc], ([entrySc, exitSc]) => entrySc * exitSc);
@@ -241,7 +234,6 @@ const About = () => {
         willChange: "clip-path, opacity, transform",
       }}
     >
-      {/* Top transition veil: catches the end of Hero and blends into About */}
       <motion.div style={{
         position: "absolute",
         top: 0, left: 0, right: 0,
@@ -279,32 +271,24 @@ const About = () => {
         pointerEvents: "none",
         zIndex: 1,
       }} />
-      
-      {/* Parallax background layer (moves slower for depth effect) */}
       <motion.div style={{ position: "absolute", inset: 0, zIndex: 0, y: depthBgY, scale: depthBgSc, transformOrigin: "center top", willChange: "transform", pointerEvents: "none" }}>
         <div style={{ position: "absolute", inset: 0, backgroundSize: "40px 40px", backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)" }} />
         <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: "800px", height: "800px", background: "radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)" }} />
       </motion.div>
 
       <motion.div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2, y: stackY, scale: stackScale, opacity: stackExitOp, clipPath: stackSnapClip, filter: stackFilter, transformOrigin: "center top", willChange: "transform, opacity, clip-path, filter" }}>
-        
-        {/* Workspace Label */}
         <div style={{ textAlign: "center", marginBottom: "40px", pointerEvents: "none" }}>
            <p style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: "#3B82F6", letterSpacing: "2px", textTransform: "uppercase", fontWeight: 600 }}>01. PROFILE</p>
            <h2 style={{ fontFamily: "'Outfit',sans-serif", fontSize: "32px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.5px", marginTop: "8px" }}>Beyond the code.</h2>
            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "#64748B", marginTop: "8px" }}>* Move your cursor to explore</p>
         </div>
 
-        {/* The OS Desktop Bounding Box */}
         <div ref={workspaceRef} className="workspace-canvas" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "24px", alignContent: "flex-start", minHeight: "80vh" }}>
-           
-           {/* WIN 1: Profile Photo */}
-           <OSWindow boundsRef={workspaceRef} title="viewer.exe - profile.jpg" className="win-1" noPadding>
+           <OSWindow title="viewer.exe - profile.jpg" className="win-1" noPadding>
                <PhotoSlideshow />
            </OSWindow>
 
-           {/* WIN 2: Narrative Text */}
-           <OSWindow boundsRef={workspaceRef} title="vscode - about_me.md" className="win-2" icon="📄">
+           <OSWindow title="vscode - about_me.md" className="win-2" icon="📄">
                <h2 style={{ fontFamily: "'Outfit',sans-serif", fontSize: "36px", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.2, letterSpacing: "-0.5px", marginBottom: "20px" }}>
                  Building resilient backend systems for modern products.
                </h2>
@@ -320,16 +304,14 @@ const About = () => {
                </p>
            </OSWindow>
 
-           {/* WIN 3: Key Metrics */}
-           <OSWindow boundsRef={workspaceRef} title="terminal - metrics.log" className="win-3" icon=">_">
+           <OSWindow title="terminal - metrics.log" className="win-3" icon=">_" >
                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: "#34D399", marginBottom: 24 }}>✓ Fetching performance data...</div>
                <div style={{ display: "flex", flexWrap: "wrap", rowGap: "32px" }}>
                    {stats.map(s => <StatItem key={s.l} n={s.n} l={s.l} suffix={s.suffix} />)}
                </div>
            </OSWindow>
 
-           {/* WIN 4: Tech Stack Dashboard */}
-           <OSWindow boundsRef={workspaceRef} title="settings - modules.config" className="win-4" icon="⚙️">
+           <OSWindow title="settings - modules.config" className="win-4" icon="⚙️">
                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: "#94A3B8", marginBottom: 24 }}>// Active Dependencies</div>
                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "16px" }}>
                    {skillsData.map((s, i) => (
@@ -347,24 +329,14 @@ const About = () => {
       </motion.div>
 
       <style>{`
-        /* OS Window Sizing Configuration */
         .win-1 { width: 340px; height: 500px; }
         .win-2 { width: 680px; height: auto; }
         .win-3 { width: 440px; height: auto; }
         .win-4 { width: 580px; height: auto; }
 
-        /* Ensure scrollbars look sleek inside windows */
-        .os-content::-webkit-scrollbar { width: 6px; }
-        .os-content::-webkit-scrollbar-track { background: transparent; }
-        .os-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        .os-content::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
-
-        /* Touch / Mobile Graceful Fallback */
         @media (max-width: 900px) {
            .win-1, .win-2, .win-3, .win-4 { width: 100% !important; min-height: auto !important; height: auto !important; }
            .win-1 { height: 400px !important; }
-           
-           /* Disable jumping to extreme drag levels on small screens */
            .workspace-canvas { display: grid !important; gap: 32px !important; min-height: auto !important; }
         }
       `}</style>
@@ -373,3 +345,4 @@ const About = () => {
 };
 
 export default About;
+

@@ -128,6 +128,13 @@ const LearningSection = ({ visible }) => {
 
   if (!data.learning || data.learning.length === 0) return null;
 
+  // Override logo REST API jika ada di bagian learning
+  const patchedLearning = data.learning.map(item => 
+      item.name === "REST API" 
+        ? { ...item, icon: "https://cdn-icons-png.flaticon.com/512/14982/14982659.png" }
+        : item
+  );
+
   return (
     <div style={{
       border: `1px solid ${hovered ? border : "rgba(167,139,250,0.15)"}`, borderRadius: "24px", overflow: "hidden",
@@ -147,7 +154,7 @@ const LearningSection = ({ visible }) => {
       </div>
       
       <div style={{ padding: "0 32px 24px", display: "flex", flexWrap: "wrap", gap: 12 }}>
-        {data.learning.map((item) => (
+        {patchedLearning.map((item) => (
              <div key={item.name} style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "10px 16px", borderRadius: 100, background: "rgba(0,0,0,0.3)", border: `1px solid rgba(167,139,250,0.1)` }}>
                  <img src={item.icon} alt={item.name} loading="lazy" decoding="async" style={{ width: 18, height: 18, objectFit: "contain", filter: "grayscale(30%)" }} onError={e => e.target.style.display = "none"} />
                  <span style={{ fontSize: 14, fontWeight: 500, color: "var(--white-2)", fontFamily: "'Inter',sans-serif" }}>{item.name}</span>
@@ -222,6 +229,16 @@ const Skills = () => {
     return () => media.removeListener(update);
   }, []);
 
+  // Override logo REST API secara dinamis untuk daftar skill
+  const patchedSkills = data.skills.map(category => ({
+    ...category,
+    items: category.items.map(item => 
+      item.name === "REST API" 
+        ? { ...item, icon: "https://cdn-icons-png.flaticon.com/512/14982/14982659.png" }
+        : item
+    )
+  }));
+
   return (
     <section id="skills" ref={scrollRef} style={{ background: "#020617", padding: "120px 0", position: "relative", overflow: "hidden" }}>
         
@@ -259,7 +276,7 @@ const Skills = () => {
 
             {/* MacOS Animated Docks */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                {data.skills.map((category, index) => (
+                {patchedSkills.map((category, index) => (
                     <MacOSDock key={category.category} category={category} index={index} snapProgress={skillsStackProgress} isTouch={isTouchDock} />
                 ))}
             </div>
