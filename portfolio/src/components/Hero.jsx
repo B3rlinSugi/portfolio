@@ -141,47 +141,19 @@ const Hero = () => {
   const actionLinks = getContactActionLinks(data);
   const go = id => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-  // Pinch + Line Reveal scroll tracking
+  // Pinch + Line Reveal scroll tracking (optimized — 4 springs instead of 16)
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
 
-  // How much scroll progress until fully pinched (0 → 1)
-  const rawClipTop    = useTransform(scrollYProgress, [0.3, 0.75], [0,   50]);
-  const rawClipBottom = useTransform(scrollYProgress, [0.3, 0.75], [0,   50]);
-  const rawOpacity    = useTransform(scrollYProgress, [0.25, 0.65], [1,   0]);
-  const rawScale      = useTransform(scrollYProgress, [0,    0.5],  [1, 0.96]);
-  const rawLineOp     = useTransform(scrollYProgress, [0.55, 0.65, 0.75], [0, 1, 0]);
-  const rawLineScale  = useTransform(scrollYProgress, [0.55, 0.68], [0,   1]);
-  const rawDepthBgY   = useTransform(scrollYProgress, [0, 1], [0, 92]);
-  const rawDepthBgSc  = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-  const rawDepthFgY   = useTransform(scrollYProgress, [0, 1], [0, -72]);
-  const rawDepthFgSc  = useTransform(scrollYProgress, [0, 1], [1, 0.98]);
-  const rawBridgeOpacity = useTransform(scrollYProgress, [0.45, 0.78], [0, 1]);
-  const rawBridgeY       = useTransform(scrollYProgress, [0.45, 0.78], [28, 0]);
-  const rawBridgeGlowOp  = useTransform(scrollYProgress, [0.5, 0.82], [0, 1]);
-  const rawBridgeGlowSc  = useTransform(scrollYProgress, [0.5, 0.82], [0.92, 1]);
-
-  // Spring-smoothed values for buttery feel
   const spring = { stiffness: 80, damping: 20, mass: 0.5 };
-  const clipTop    = useSpring(rawClipTop,    spring);
-  const clipBottom = useSpring(rawClipBottom, spring);
-  const opacity    = useSpring(rawOpacity,    spring);
-  const scale      = useSpring(rawScale,      spring);
-  const lineOp     = useSpring(rawLineOp,     spring);
-  const lineScale  = useSpring(rawLineScale,  spring);
-  const depthBgY   = useSpring(rawDepthBgY,   spring);
-  const depthBgSc  = useSpring(rawDepthBgSc,  spring);
-  const depthFgY   = useSpring(rawDepthFgY,   spring);
-  const depthFgSc  = useSpring(rawDepthFgSc,  spring);
-  const bridgeOpacity = useSpring(rawBridgeOpacity, spring);
-  const bridgeY       = useSpring(rawBridgeY, spring);
-  const bridgeGlowOp  = useSpring(rawBridgeGlowOp, spring);
-  const bridgeGlowSc  = useSpring(rawBridgeGlowSc, spring);
+  const clipTop    = useSpring(useTransform(scrollYProgress, [0.3, 0.75], [0, 50]), spring);
+  const clipBottom = useSpring(useTransform(scrollYProgress, [0.3, 0.75], [0, 50]), spring);
+  const opacity    = useSpring(useTransform(scrollYProgress, [0.25, 0.65], [1, 0]), spring);
+  const lineOp     = useSpring(useTransform(scrollYProgress, [0.55, 0.65, 0.75], [0, 1, 0]), spring);
 
-  // clip-path as a motion string: pinch from top & bottom toward center
   const clipPath = useTransform(
     [clipTop, clipBottom],
     ([t, b]) => `inset(${t}% 0 ${b}% 0)`
@@ -189,7 +161,7 @@ const Hero = () => {
 
   return (
     <div ref={heroRef} style={{ position: "relative" }}>
-      {/* ── Pinch line that appears at center as Hero collapses ── */}
+      {/* Pinch line at center as Hero collapses */}
       <motion.div style={{
         position: "sticky",
         top: "50vh",
@@ -199,13 +171,12 @@ const Hero = () => {
         zIndex: 20,
         pointerEvents: "none",
         opacity: lineOp,
-        scaleX: lineScale,
         transformOrigin: "center",
         boxShadow: "0 0 12px rgba(59,130,246,0.6)",
         marginTop: "-1px",
       }} />
 
-      {/* ── Hero content that gets pinched ── */}
+      {/* Hero content with pinch clip-path */}
       <motion.section
         id="hero"
         style={{
@@ -213,49 +184,13 @@ const Hero = () => {
           display: "flex", alignItems: "center", justifyContent: "center",
           position: "relative", padding: 0, maxWidth: "none",
           overflow: "hidden", background: "#040914",
-          clipPath, opacity, scale,
-          willChange: "clip-path, opacity, transform",
+          clipPath, opacity,
+          willChange: "clip-path, opacity",
         }}
       >
-      <motion.div style={{
-        position: "absolute",
-        inset: 0,
-        zIndex: 0,
-        y: depthBgY,
-        scale: depthBgSc,
-        transformOrigin: "center top",
-        willChange: "transform",
-      }}>
-        <AuroraBackground />
-      </motion.div>
+      <AuroraBackground />
 
-      {/* Scroll bridge: softly blends Hero into About as user scrolls down */}
-      <motion.div style={{
-        position: "absolute",
-        left: 0, right: 0, bottom: 0,
-        height: "24vh",
-        minHeight: "120px",
-        background: "linear-gradient(to bottom, rgba(4,9,20,0) 0%, rgba(2,6,23,0.88) 68%, rgba(2,6,23,1) 100%)",
-        opacity: bridgeOpacity,
-        y: bridgeY,
-        pointerEvents: "none",
-        zIndex: 1,
-      }} />
-      <motion.div style={{
-        position: "absolute",
-        left: "7%", right: "7%",
-        bottom: "8vh",
-        height: "24vh",
-        minHeight: "130px",
-        background: "radial-gradient(ellipse at center, rgba(59,130,246,0.16) 0%, rgba(6,182,212,0.1) 35%, transparent 75%)",
-        filter: "blur(18px)",
-        opacity: bridgeGlowOp,
-        scale: bridgeGlowSc,
-        pointerEvents: "none",
-        zIndex: 1,
-      }} />
-
-      <motion.div ref={scrollRef} style={{ position: "relative", zIndex: 2, maxWidth: 1200, margin: "0 auto", padding: "130px 24px 80px", width: "100%", y: depthFgY, scale: depthFgSc, transformOrigin: "center top", willChange: "transform" }}>
+      <div ref={scrollRef} style={{ position: "relative", zIndex: 2, maxWidth: 1200, margin: "0 auto", padding: "130px 24px 80px", width: "100%" }}>
 
         {/* ── Main Hero Two-Column Layout ── */}
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "48px", width: "100%", marginTop: "80px" }}>
@@ -358,7 +293,7 @@ const Hero = () => {
               <BentoPhoto />
            </motion.div>
         </div>
-      </motion.div>
+      </div>
 
       </motion.section>
     </div>

@@ -2,7 +2,7 @@ import { useState, useContext, useEffect, useCallback, useRef } from "react";
 import { LangContext } from "../LangContext";
 import { i18n } from "../i18n";
 import { data } from "../data/portfolioData";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ACCENTS = [
   { a: "#3B82F6", b: "#06B6D4" },
@@ -194,10 +194,18 @@ const [page, setPage] = useState(0);
   const lang = useContext(LangContext);
   const t = i18n[lang].projects;
   const projects = data.projects || [];
-  const { scrollYProgress: morphProgress } = useScroll({
-    target: projectsRef,
-    offset: ["start end", "start 0.32"],
-  });
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = projectsRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      { threshold: 0.05, rootMargin: "60px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   const goTo = useCallback((next) => {
     setPage(next);
@@ -283,88 +291,55 @@ const proj = projects[page];
     }),
   };
 
-  const morphSpring = { stiffness: 92, damping: 24, mass: 0.55 };
-  const rawSectionY = useTransform(morphProgress, [0, 1], [40, 0]);
-  const rawSectionOpacity = useTransform(morphProgress, [0, 0.4, 1], [0, 0.88, 1]);
-  const rawSectionScale = useTransform(morphProgress, [0, 1], [0.992, 1]);
-  const rawBlueprintOpacity = useTransform(morphProgress, [0, 0.65, 1], [0.55, 0.22, 0.04]);
-  const rawBlueprintMarksOpacity = useTransform(morphProgress, [0, 0.72, 1], [0.55, 0.2, 0]);
-  const rawBlueprintY = useTransform(morphProgress, [0, 1], [8, 0]);
-  const blueprintGridSize = useTransform(morphProgress, [0, 1], ["32px 32px", "40px 40px"]);
-  const rawHeaderY = useTransform(morphProgress, [0, 1], [24, 0]);
-  const rawHeaderOpacity = useTransform(morphProgress, [0, 0.45, 1], [0, 0.9, 1]);
-  const rawHeaderScale = useTransform(morphProgress, [0, 0.5, 1], [0.98, 1.01, 1]);
-  const rawCardY = useTransform(morphProgress, [0, 1], [30, 0]);
-  const rawCardOpacity = useTransform(morphProgress, [0, 0.46, 1], [0, 0.9, 1]);
-  const rawCardRotateX = useTransform(morphProgress, [0, 1], [3.5, 0]);
-  const rawCardScale = useTransform(morphProgress, [0, 0.58, 1], [0.98, 1.01, 1]);
-  const cardShadow = useTransform(morphProgress, [0, 1], [
-    "0 8px 18px rgba(0,0,0,0.2)",
-    "0 24px 52px rgba(0,0,0,0.42)",
-  ]);
-
-  const sectionY = useSpring(rawSectionY, morphSpring);
-  const sectionOpacity = useSpring(rawSectionOpacity, morphSpring);
-  const sectionScale = useSpring(rawSectionScale, morphSpring);
-  const blueprintOpacity = useSpring(rawBlueprintOpacity, morphSpring);
-  const blueprintMarksOpacity = useSpring(rawBlueprintMarksOpacity, morphSpring);
-  const blueprintY = useSpring(rawBlueprintY, morphSpring);
-  const headerY = useSpring(rawHeaderY, morphSpring);
-  const headerOpacity = useSpring(rawHeaderOpacity, morphSpring);
-  const headerScale = useSpring(rawHeaderScale, morphSpring);
-  const cardY = useSpring(rawCardY, morphSpring);
-  const cardOpacity = useSpring(rawCardOpacity, morphSpring);
-  const cardRotateX = useSpring(rawCardRotateX, morphSpring);
-  const cardScale = useSpring(rawCardScale, morphSpring);
-
   return (
-    <section id="projects" ref={projectsRef} style={{ background: "#020617", padding: "100px 0", borderTop: "1px solid rgba(59,130,246,0.07)", position: "relative", overflow: "hidden" }}>
+    <section
+      id="projects"
+      ref={projectsRef}
+      style={{
+        background: "#020617",
+        padding: "100px 0",
+        borderTop: "1px solid rgba(59,130,246,0.07)",
+        position: "relative",
+        overflow: "hidden",
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(48px)",
+        transition: "opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1)",
+        willChange: "opacity, transform",
+      }}
+    >
       {/* Bg ambient glow — shifts color per slide */}
       <div style={{ position: "absolute", top: "15%", left: "50%", transform: "translateX(-50%)", width: 700, height: 500, background: `radial-gradient(ellipse, ${a}07 0%, transparent 65%)`, pointerEvents: "none", transition: "background 0.8s ease" }} />
       {/* Bg grid */}
       <div style={{ position: "absolute", inset: 0, backgroundSize: "40px 40px", backgroundImage: "linear-gradient(to right,rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,0.015) 1px,transparent 1px)", pointerEvents: "none" }} />
-      {/* Blueprint morph overlay (Skills -> Projects transition) */}
-      <motion.div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 2, opacity: blueprintOpacity, y: blueprintY }}>
-        <motion.div style={{
-          position: "absolute",
-          inset: 0,
-          backgroundSize: blueprintGridSize,
-          backgroundImage: "linear-gradient(to right, rgba(56,189,248,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(56,189,248,0.12) 1px, transparent 1px)",
-        }} />
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 50% 24%, rgba(56,189,248,0.12) 0%, transparent 58%)" }} />
-        <motion.div style={{ position: "absolute", left: "50%", top: 78, width: "min(860px, calc(100% - 48px))", height: 220, transform: "translateX(-50%)", opacity: blueprintMarksOpacity }}>
-          <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 1, background: "linear-gradient(to right, transparent, rgba(56,189,248,0.36) 14%, rgba(6,182,212,0.36) 50%, rgba(56,189,248,0.36) 86%, transparent)" }} />
-          <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 1, background: "linear-gradient(to right, transparent, rgba(56,189,248,0.24) 18%, rgba(56,189,248,0.24) 82%, transparent)" }} />
-          <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 1, background: "linear-gradient(to bottom, transparent, rgba(56,189,248,0.22) 12%, rgba(56,189,248,0.22) 88%, transparent)" }} />
-          <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 1, background: "linear-gradient(to bottom, transparent, rgba(56,189,248,0.22) 12%, rgba(56,189,248,0.22) 88%, transparent)" }} />
-          <div style={{ position: "absolute", top: -14, left: 0, fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: "1.8px", color: "rgba(56,189,248,0.54)", textTransform: "uppercase" }}>Blueprint Morph</div>
-          <div style={{ position: "absolute", top: -14, right: 0, fontFamily: "'JetBrains Mono',monospace", fontSize: 10, letterSpacing: "1.4px", color: "rgba(56,189,248,0.46)" }}>03 / PROJECTS</div>
-        </motion.div>
-      </motion.div>
 
-      <motion.div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 3, y: sectionY, opacity: sectionOpacity, scale: sectionScale, transformOrigin: "center top", willChange: "transform, opacity" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 3 }}>
 
-        {/* Header — centered, matching About/Skills style */}
-        <motion.div style={{ textAlign: "center", marginBottom: 40, y: headerY, opacity: headerOpacity, scale: headerScale, transformOrigin: "center top", willChange: "transform, opacity" }}>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          style={{ textAlign: "center", marginBottom: 40 }}
+        >
           <p style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: "#3B82F6", letterSpacing: "2px", textTransform: "uppercase", fontWeight: 600, margin: "0 0 8px" }}>03. {t.label.toUpperCase()}</p>
           <h2 style={{ fontFamily: "'Outfit',sans-serif", fontSize: 32, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.5px", margin: "8px 0 8px" }}>{t.title}.</h2>
           <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#64748B", margin: 0 }}>← → keyboard · {String(page + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</p>
         </motion.div>
 
-        {/* ── CARD SHELL — fixed height, no shift ── */}
-        <div style={{ perspective: 1200 }}>
-        <motion.div style={{
+        {/* Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        >
+        <div style={{
           background: "rgba(5,10,22,0.75)",
           border: `1px solid ${a}20`,
           borderRadius: 20, overflow: "hidden",
           transition: "border-color 0.6s ease",
-          y: cardY,
-          opacity: cardOpacity,
-          rotateX: cardRotateX,
-          scale: cardScale,
-          boxShadow: cardShadow,
-          transformOrigin: "center top",
-          willChange: "transform, opacity, box-shadow",
+          boxShadow: "0 24px 52px rgba(0,0,0,0.42)",
         }}>
           {/* Top accent stripe */}
           <div style={{ height: 3, background: `linear-gradient(to right,${a},${b})`, transition: "background 0.6s ease" }} />
@@ -636,13 +611,13 @@ const proj = projects[page];
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6" /></svg>
             </NavBtn>
           </div>
-        </motion.div>
         </div>
+        </motion.div>
 
         <p style={{ textAlign: "center", fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#334155", marginTop: 14 }}>
           ★ Hover engineering notes to spotlight · Use ← → keys or buttons to navigate
         </p>
-      </motion.div>
+      </div>
 
       <style>{`
         @media(max-width: 768px) {

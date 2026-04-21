@@ -2,8 +2,7 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { data } from "../data/portfolioData";
 import { LangContext } from "../LangContext";
 import { i18n } from "../i18n";
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
-import { useScrollAnimation } from "../useScrollAnimation";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const LEARNING_COLOR = { color: "#A78BFA", bg: "rgba(167,139,250,0.08)", border: "rgba(167,139,250,0.25)" };
 
@@ -80,34 +79,28 @@ const DockItem = ({ item, mouseX, isTouch }) => {
 // ==========================================
 // 2. MAC OS DOCK RACK (Option 4)
 // ==========================================
-const MacOSDock = ({ category, index, snapProgress, isTouch }) => {
+const MacOSDock = ({ category, index, isTouch }) => {
   let mouseX = useMotionValue(Infinity);
-  const dockSpring = { stiffness: 110, damping: 22, mass: 0.45 };
-  const rawDockY = useTransform(snapProgress, [0, 1], [-142 + index * 10, 0]);
-  const rawDockOpacity = useTransform(snapProgress, [0, 0.42, 1], [0, 0.82, 1]);
-  const rawDockScale = useTransform(snapProgress, [0, 0.52, 1], [0.5, 1.14, 1]);
-  const rawDockBlur = useTransform(snapProgress, [0, 1], [8, 0]);
-  const dockY = useSpring(rawDockY, dockSpring);
-  const dockOpacity = useSpring(rawDockOpacity, dockSpring);
-  const dockScale = useSpring(rawDockScale, dockSpring);
-  const dockBlur = useSpring(rawDockBlur, dockSpring);
-  const dockFilter = useTransform(dockBlur, (v) => `blur(${v}px)`);
 
   return (
     <motion.div 
-      style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "50px", width: "100%", y: dockY, opacity: dockOpacity, scale: dockScale, filter: dockFilter, transformOrigin: "50% -120px", willChange: "transform, opacity, filter" }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
+      style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "50px", width: "100%" }}
     >
         <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "14px", fontWeight: 700, color: "#94A3B8", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>{category.category}</span>
         
         {/* Outer scrolling area to prevent clipping tooltips on small screens */}
         <div style={{ width: "100%", display: "flex", justifyContent: "center", overflowX: "auto", overflowY: "visible", padding: "40px 20px 20px 20px", marginTop: "-40px" }} className="dock-rack">
             <div 
-               onMouseMove={isTouch ? undefined : (e) => mouseX.set(e.clientX)} // Use clientX instead of pageX for perfect viewport mapping
+               onMouseMove={isTouch ? undefined : (e) => mouseX.set(e.clientX)}
                onMouseLeave={isTouch ? undefined : () => mouseX.set(Infinity)}
                style={{ 
                    display: "inline-flex", alignItems: "center", gap: isTouch ? "10px" : "16px", padding: isTouch ? "14px 16px" : "16px 28px", 
                    background: "rgba(255,255,255,0.03)", borderRadius: "34px", border: "1px solid rgba(255,255,255,0.06)", 
-                   borderBottom: "1px solid rgba(255,255,255,0.1)", // strong bottom edge
+                   borderBottom: "1px solid rgba(255,255,255,0.1)",
                    backdropFilter: "blur(24px)", boxShadow: "0 30px 60px rgba(0,0,0,0.5)", overflow: "visible",
                    margin: "0 auto"
                }}
@@ -170,49 +163,26 @@ const LearningSection = ({ visible }) => {
 // 4. MAIN EXPORT COMPONENT
 // ==========================================
 const Skills = () => {
-  const [scrollRef, isScrollVisible] = useScrollAnimation();
+  const skillsRef = useRef(null);
   const [isTouchDock, setIsTouchDock] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const lang = useContext(LangContext);
   const t = i18n[lang].skills;
-  const { scrollYProgress: skillsStackProgress } = useScroll({
-    target: scrollRef,
-    offset: ["start end", "start 0.35"],
-  });
 
-  const spring = { stiffness: 105, damping: 24, mass: 0.5 };
-  const rawSectionY = useTransform(skillsStackProgress, [0, 1], [-136, 0]);
-  const rawSectionOpacity = useTransform(skillsStackProgress, [0, 0.34, 1], [0, 0.84, 1]);
-  const rawSectionScale = useTransform(skillsStackProgress, [0, 0.48, 1], [0.58, 1.08, 1]);
-  const rawSectionBlur = useTransform(skillsStackProgress, [0, 1], [11, 0]);
-  const rawBgY = useTransform(skillsStackProgress, [0, 1], [-72, 0]);
-  const rawBgOpacity = useTransform(skillsStackProgress, [0, 1], [0.18, 1]);
-  const rawHeaderY = useTransform(skillsStackProgress, [0, 1], [-116, 0]);
-  const rawHeaderOpacity = useTransform(skillsStackProgress, [0, 0.46, 1], [0, 0.9, 1]);
-  const rawHeaderScale = useTransform(skillsStackProgress, [0, 0.52, 1], [0.7, 1.08, 1]);
-  const rawLearningY = useTransform(skillsStackProgress, [0, 0.72, 1], [-132, -58, 0]);
-  const rawLearningOpacity = useTransform(skillsStackProgress, [0, 0.72, 1], [0, 0.32, 1]);
-  const rawSnapCoreOpacity = useTransform(skillsStackProgress, [0, 0.2, 0.72], [0.92, 0.72, 0]);
-  const rawSnapCoreScale = useTransform(skillsStackProgress, [0, 0.35, 1], [0.42, 1.22, 1.62]);
-  const rawSnapCoreY = useTransform(skillsStackProgress, [0, 1], [-24, 32]);
-
-  const sectionY = useSpring(rawSectionY, spring);
-  const sectionOpacity = useSpring(rawSectionOpacity, spring);
-  const sectionScale = useSpring(rawSectionScale, spring);
-  const sectionBlur = useSpring(rawSectionBlur, spring);
-  const sectionFilter = useTransform(sectionBlur, (v) => `blur(${v}px)`);
-  const bgY = useSpring(rawBgY, spring);
-  const bgOpacity = useSpring(rawBgOpacity, spring);
-  const headerY = useSpring(rawHeaderY, spring);
-  const headerOpacity = useSpring(rawHeaderOpacity, spring);
-  const headerScale = useSpring(rawHeaderScale, spring);
-  const learningY = useSpring(rawLearningY, spring);
-  const learningOpacity = useSpring(rawLearningOpacity, spring);
-  const snapCoreOpacity = useSpring(rawSnapCoreOpacity, spring);
-  const snapCoreScale = useSpring(rawSnapCoreScale, spring);
-  const snapCoreY = useSpring(rawSnapCoreY, spring);
   const dockHint = isTouchDock
     ? "* Tap-friendly rack enabled for mobile and touch devices."
     : "* Interactive Rack modules. Drag cursor along the docks.";
+
+  useEffect(() => {
+    const node = skillsRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      { threshold: 0.05, rootMargin: "60px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -240,33 +210,35 @@ const Skills = () => {
   }));
 
   return (
-    <section id="skills" ref={scrollRef} style={{ background: "#020617", padding: "120px 0", position: "relative", overflow: "hidden" }}>
-        
-        {/* Abstract OS Desktop Background Patterns */}
-        <motion.div style={{ position: "absolute", inset: 0, y: bgY, opacity: bgOpacity, pointerEvents: "none", zIndex: 0, willChange: "transform, opacity" }}>
+    <section
+      id="skills"
+      ref={skillsRef}
+      style={{
+        background: "#020617",
+        padding: "120px 0",
+        position: "relative",
+        overflow: "hidden",
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(48px)",
+        transition: "opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1)",
+        willChange: "opacity, transform",
+      }}
+    >
+        {/* Background grid */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}>
             <div style={{ position: "absolute", inset: 0, backgroundSize: "40px 40px", backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px)" }} />
             <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: "800px", height: "800px", background: "radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 60%)" }} />
-        </motion.div>
-        <motion.div style={{
-            position: "absolute",
-            left: "50%",
-            marginLeft: "-220px",
-            top: "-180px",
-            width: "440px",
-            height: "440px",
-            background: "radial-gradient(circle, rgba(59,130,246,0.38) 0%, rgba(6,182,212,0.2) 35%, rgba(2,6,23,0.04) 72%, transparent 90%)",
-            filter: "blur(34px)",
-            opacity: snapCoreOpacity,
-            scale: snapCoreScale,
-            y: snapCoreY,
-            pointerEvents: "none",
-            zIndex: 1,
-            willChange: "transform, opacity",
-        }} />
+        </div>
         
-        <motion.div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 10, y: sectionY, opacity: sectionOpacity, scale: sectionScale, filter: sectionFilter, transformOrigin: "50% -120px", willChange: "transform, opacity, filter" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 10 }}>
             {/* Header Block */}
-            <motion.div style={{ textAlign: "center", marginBottom: "40px", y: headerY, opacity: headerOpacity, scale: headerScale, transformOrigin: "50% -120px", willChange: "transform, opacity" }}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              style={{ textAlign: "center", marginBottom: "40px" }}
+            >
                <p style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: "#3B82F6", letterSpacing: "2px", textTransform: "uppercase", fontWeight: 600 }}>
                   02. TECHNOLOGY STACK
                </p>
@@ -277,15 +249,21 @@ const Skills = () => {
             {/* MacOS Animated Docks */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 {patchedSkills.map((category, index) => (
-                    <MacOSDock key={category.category} category={category} index={index} snapProgress={skillsStackProgress} isTouch={isTouchDock} />
+                    <MacOSDock key={category.category} category={category} index={index} isTouch={isTouchDock} />
                 ))}
             </div>
 
             {/* Learning Section */}
-            <motion.div style={{ marginTop: "100px", y: learningY, opacity: learningOpacity, willChange: "transform, opacity" }}>
-                <LearningSection visible={isScrollVisible} />
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              style={{ marginTop: "100px" }}
+            >
+                <LearningSection visible={isVisible} />
             </motion.div>
-        </motion.div>
+        </div>
 
         {/* Global styles overriding scrollbar for docks so mobile doesn't look ugly */}
         <style>{`

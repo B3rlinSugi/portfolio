@@ -45,315 +45,146 @@ const GradientMesh = () => (
 );
 
 const Loader = ({ onDone }) => {
-  const [phase, setPhase] = useState(0); // 0:boot, 1:animating, 2:unlock, 3:exit
+  const [phase, setPhase] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [activeLine, setActiveLine] = useState(0);
-
-  const lines = [
-    { id: "name", text: "Berlin Sugiyanto", size: "clamp(38px, 6.8vw, 84px)", color: "#F8E6CF" },
-    { id: "portfolio", text: "Web Portfolio", size: "clamp(26px, 4.2vw, 48px)", color: "#F97316" },
-    { id: "backend", text: "Backend Developer", size: "clamp(22px, 3.5vw, 38px)", color: "#FB923C" },
-  ];
 
   useEffect(() => {
-    const start = setTimeout(() => setPhase(1), 150);
+    const start = setTimeout(() => setPhase(1), 200);
     return () => clearTimeout(start);
   }, []);
 
   useEffect(() => {
     if (phase !== 1) return;
-
     if (progress >= 100) {
-      const unlockDelay = setTimeout(() => setPhase(2), 420);
+      const unlockDelay = setTimeout(() => setPhase(2), 600);
       return () => clearTimeout(unlockDelay);
     }
-
-    const step = progress < 45 ? 3.1 : progress < 84 ? 1.55 : 0.8;
+    const step = progress < 30 ? 3 : progress < 70 ? 2 : 1.2;
     const tick = setTimeout(() => {
       setProgress((p) => Math.min(100, Number((p + step).toFixed(1))));
-    }, progress < 82 ? 108 : 126);
-
+    }, progress < 70 ? 70 : 90);
     return () => clearTimeout(tick);
   }, [phase, progress]);
 
   useEffect(() => {
-    if (phase !== 1) return;
-    const rotate = setInterval(() => {
-      setActiveLine((prev) => (prev + 1) % lines.length);
-    }, 1450);
-    return () => clearInterval(rotate);
-  }, [phase, lines.length]);
-
-  useEffect(() => {
     if (phase !== 2) return;
-    const exitDelay = setTimeout(() => setPhase(3), 420);
-    const done = setTimeout(onDone, 980);
-    return () => {
-      clearTimeout(exitDelay);
-      clearTimeout(done);
-    };
+    const exitDelay = setTimeout(() => setPhase(3), 500);
+    const done = setTimeout(onDone, 1200); 
+    return () => { clearTimeout(exitDelay); clearTimeout(done); };
   }, [phase, onDone]);
 
-  // Failsafe: prevent blank screen if animation timing gets interrupted.
   useEffect(() => {
     const safety = setTimeout(onDone, 12000);
     return () => clearTimeout(safety);
   }, [onDone]);
 
-  const statusText =
-    phase === 0
-      ? "Preparing typography sequence..."
-      : phase === 1
-        ? progress < 34
-          ? "Rendering identity line..."
-          : progress < 68
-            ? "Constructing portfolio headline..."
-            : "Activating backend signature..."
-        : phase === 2
-          ? "Sequence complete. Entering website..."
-          : "Transfer complete.";
-
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 9999,
-        background:
-          "radial-gradient(circle at 20% 18%, #3b1f0f 0%, #1e120b 42%, #080707 100%)",
-        overflow: "hidden",
-        display: "grid",
-        placeItems: "center",
-        opacity: phase === 3 ? 0 : 1,
-        transition: "opacity 0.72s ease",
-        willChange: "opacity",
-        pointerEvents: phase === 3 ? "none" : "all",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "linear-gradient(to right, rgba(251,146,60,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(251,146,60,0.08) 1px, transparent 1px)",
-          backgroundSize: "38px 38px",
-          opacity: 0.16,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          width: "66vw",
-          height: "66vw",
-          minWidth: 360,
-          minHeight: 360,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(249,115,22,0.3) 0%, rgba(245,158,11,0.1) 44%, transparent 72%)",
-          filter: "blur(22px)",
-          animation: "mlWarmAura 10s ease-in-out infinite",
-        }}
-      />
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 9999,
+      background: "#020617",
+      overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center",
+      opacity: phase === 3 ? 0 : 1,
+      pointerEvents: phase === 3 ? "none" : "all",
+      transition: "opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
+    }}>
 
-      <div
-        style={{
-          width: "min(940px, calc(100% - 28px))",
-          position: "relative",
-          zIndex: 3,
-          textAlign: "left",
-        }}
-      >
-        <p
-          style={{
-            margin: 0,
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 12,
-            letterSpacing: "2.6px",
-            color: "#FDBA74",
-            textTransform: "uppercase",
-            textAlign: "left",
-          }}
-        >
-          berlinsugi.vercel.app
-        </p>
+      {/* Background glow behind editor */}
+      <div style={{
+        position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+        width: "70vw", height: "70vh",
+        background: "radial-gradient(ellipse, rgba(56,189,248,0.08) 0%, transparent 60%)",
+        pointerEvents: "none", filter: "blur(60px)",
+      }} />
 
-        <div
-          style={{
-            margin: "18px 0 22px",
-            width: "100%",
-            padding: "30px 24px 28px",
-            borderRadius: 20,
-            border: "1px solid rgba(251,146,60,0.35)",
-            background:
-              "linear-gradient(180deg, rgba(36,22,12,0.86) 0%, rgba(12,8,6,0.96) 100%)",
-            boxShadow:
-              "0 24px 58px rgba(0,0,0,0.45), inset 0 0 20px rgba(249,115,22,0.18)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 14,
-            }}
-          >
-            {lines.map((line, rowIdx) => {
-              const isActive = rowIdx === activeLine;
-              const baseDelay = 180 + rowIdx * 180;
-              return (
-                <div
-                  key={line.id}
-                  style={{
-                    position: "relative",
-                    paddingLeft: 22,
-                    borderLeft: `3px solid ${isActive ? "#F97316" : "rgba(251,146,60,0.35)"}`,
-                    transition: "border-color 0.25s ease",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      left: -3,
-                      top: 0,
-                      bottom: 0,
-                      width: 3,
-                      background: "linear-gradient(180deg, #F97316 0%, #FB923C 100%)",
-                      transformOrigin: "0 50%",
-                      opacity: isActive ? 1 : 0.35,
-                      animation: isActive
-                        ? "mlLinePulse 0.9s ease-in-out infinite"
-                        : "none",
-                    }}
-                  />
-                  <div
-                    style={{
-                      fontFamily: "'Outfit', sans-serif",
-                      fontWeight: 800,
-                      fontSize: line.size,
-                      letterSpacing: "-0.8px",
-                      lineHeight: 1.02,
-                      color: line.color,
-                      textShadow: isActive
-                        ? "0 0 14px rgba(249,115,22,0.4)"
-                        : "0 0 8px rgba(30,20,10,0.4)",
-                      wordBreak: "break-word",
-                    }}
-                  >
-                    {line.text.split("").map((char, i) => (
-                      <span
-                        key={`${line.id}-${i}-${char === " " ? "space" : char}`}
-                        style={{
-                          display: "inline-block",
-                          opacity: 0,
-                          transform: "translateX(36px)",
-                          animation: "mlLetterInWarm 0.52s ease forwards",
-                          animationDelay: `${baseDelay + i * 24}ms`,
-                        }}
-                      >
-                        {char === " " ? "\u00A0" : char}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+      {/* Editor Window */}
+      <div style={{
+         position: "relative",
+         width: "min(680px, 90vw)",
+         background: "#0f111a", // Deep material ocean theme
+         borderRadius: "14px",
+         border: "1px solid rgba(255,255,255,0.06)",
+         boxShadow: "0 25px 50px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.8)",
+         overflow: "hidden",
+         transform: phase === 0 ? "translateY(20px) scale(0.95)" : phase === 1 || phase === 2 ? "translateY(0) scale(1)" : "translateY(-40px) scale(1.05)",
+         opacity: phase === 0 ? 0 : 1,
+         transition: "all 0.6s cubic-bezier(0.22,1,0.36,1)",
+      }}>
+
+        {/* Mac OS Header */}
+        <div style={{
+           display: "flex", alignItems: "center", padding: "14px 20px",
+           background: "#090b10", borderBottom: "1px solid rgba(255,255,255,0.04)",
+           gap: "8px"
+        }}>
+           <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#EF4444" }}></div>
+           <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#EAB308" }}></div>
+           <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#22C55E" }}></div>
+           <div style={{ flex: 1, textAlign: "center", fontFamily: "'Inter', sans-serif", fontSize: 12, color: "#64748B", letterSpacing: "1px", pointerEvents: "none" }}>
+              boot.json — backend-env
+           </div>
         </div>
 
-        <p
-          style={{
-            margin: "0 0 8px",
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 12,
-            letterSpacing: "1.8px",
-            color: "#FDBA74",
-            textTransform: "uppercase",
-          }}
-        >
-          berlin sugiyanto / web portfolio / backend developer
-        </p>
-        <p
-          style={{
-            margin: "0 0 18px",
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 15,
-            color: "rgba(254,215,170,0.9)",
-            letterSpacing: "0.15px",
-          }}
-        >
-          {statusText}
-        </p>
+        {/* Code Content */}
+        <div style={{
+           padding: "32px",
+           fontFamily: "'JetBrains Mono', monospace",
+           fontSize: "clamp(13px, 3vw, 15px)",
+           lineHeight: 1.7,
+           minHeight: "260px",
+           color: "#A6ACCD"
+        }}>
+           <div style={{ color: "#3B82F6", marginBottom: "16px" }}>
+              <span style={{ color: "#89DDFF" }}>{'>'}</span> <span style={{ color: "#E2E8F0" }}>npm run init</span>
+           </div>
+           
+           <div style={{ opacity: progress > 5 ? 1 : 0, transition: "opacity 0.2s" }}>
+              <span style={{ color: "#C3E88D" }}>✔</span> Mounting backend modules...
+           </div>
+           <div style={{ opacity: progress > 20 ? 1 : 0, transition: "opacity 0.2s" }}>
+              <span style={{ color: "#C3E88D" }}>✔</span> Establishing database connection...
+           </div>
 
-        <div
-          style={{
-            width: "min(620px, 96%)",
-            height: 10,
-            borderRadius: 999,
-            border: "1px solid rgba(251,146,60,0.35)",
-            background: "rgba(28,18,11,0.72)",
-            overflow: "hidden",
-            boxShadow: "inset 0 0 12px rgba(0,0,0,0.46)",
-          }}
-        >
-          <div
-            style={{
-              width: `${progress}%`,
-              height: "100%",
-              background:
-                "linear-gradient(90deg, #F97316 0%, #FB923C 48%, #FCD34D 100%)",
-              boxShadow: "0 0 16px rgba(249,115,22,0.52)",
-              transition: "width 0.15s linear",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <span
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.38) 52%, transparent 100%)",
-                animation: "mlBarShineWarm 1.5s linear infinite",
-              }}
-            />
-          </div>
+           <div style={{ 
+               opacity: progress > 40 ? 1 : 0, 
+               transition: "opacity 0.4s",
+               marginTop: "20px",
+               padding: "20px",
+               background: "rgba(0,0,0,0.25)",
+               borderRadius: "10px",
+               border: "1px solid rgba(255,255,255,0.03)"
+           }}>
+              <span style={{color:"#89DDFF"}}>{"{"}</span><br/>
+              {"  "}<span style={{color:"#C3E88D"}}>"developer"</span><span style={{color:"#89DDFF"}}>:</span> <span style={{color:"#F07178"}}>"Berlin Sugiyanto"</span><span style={{color:"#89DDFF"}}>,</span><br/>
+              {"  "}<span style={{color:"#C3E88D"}}>"position"</span><span style={{color:"#89DDFF"}}>:</span> <span style={{color:"#F07178"}}>"Junior Backend Developer"</span><span style={{color:"#89DDFF"}}>,</span><br/>
+              {"  "}<span style={{color:"#C3E88D"}}>"status"</span><span style={{color:"#89DDFF"}}>:</span> <span style={{color: progress >= 100 ? "#C3E88D" : "#FFCB6B"}}>{progress >= 100 ? '"System Ready"' : '"Initializing..."'}</span><span style={{color:"#89DDFF"}}>,</span><br/>
+              {"  "}<span style={{color:"#C3E88D"}}>"progress"</span><span style={{color:"#89DDFF"}}>:</span> <span style={{color:"#F78C6C"}}>{Math.floor(progress)}</span><br/>
+              <span style={{color:"#89DDFF"}}>{"}"}</span>
+           </div>
+
+           <div style={{ marginTop: "24px", display: "flex", alignItems: "center", gap: "10px" }}>
+              <span style={{ color: "#89DDFF" }}>{'>'}</span> {progress >= 100 ? "Boot complete. Launching interface." : "Loading dependencies..."}
+              {phase < 3 && <span style={{ width: "8px", height: "18px", background: "#3B82F6", animation: "cliBlink 1s step-end infinite" }} />}
+           </div>
         </div>
-        <div
-          style={{
-            marginTop: 8,
-            width: "min(620px, 96%)",
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 12,
-            color: "#FED7AA",
-            letterSpacing: "1.2px",
-            textAlign: "center",
-          }}
-        >
-          {Math.round(progress)}%
+
+        {/* Progress Bar inside Window */}
+        <div style={{ height: "3px", background: "#090b10", width: "100%" }}>
+           <div style={{ height: "100%", background: "linear-gradient(90deg, #1D4ED8, #3B82F6, #06B6D4)", width: `${progress}%`, transition: "width 0.1s linear" }} />
         </div>
+
       </div>
 
       <style>{`
-        @keyframes mlWarmAura {
-          0%,100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
-          50% { transform: scale(1.08) rotate(5deg); opacity: 1; }
-        }
-        @keyframes mlLinePulse {
-          0%,100% { opacity: 1; transform: scaleY(1); }
-          50% { opacity: 0.56; transform: scaleY(0.75); }
-        }
-        @keyframes mlLetterInWarm {
-          from { opacity: 0; transform: translateX(36px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes mlBarShineWarm {
-          from { transform: translateX(-110%); }
-          to { transform: translateX(160%); }
+        @keyframes cliBlink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
         }
       `}</style>
     </div>
   );
 };
+
+
 
 const sections = [
   {id:"hero",label:"Home"},{id:"about",label:"About"},{id:"skills",label:"Skills"},

@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { data } from "../data/portfolioData";
-import { motion, AnimatePresence, useMotionValue, useMotionTemplate, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from "framer-motion";
 
 function useCounter(target, duration = 1600, inView = false) {
   const [v, setV] = useState(0);
@@ -155,72 +155,21 @@ const StatItem = ({ n, l, suffix = "" }) => {
 const About = () => {
   const workspaceRef = useRef(null);
   const aboutRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const { scrollYProgress } = useScroll({
-    target: aboutRef,
-    offset: ["start end", "start 0.4"],
-  });
-  const { scrollYProgress: aboutExitProgress } = useScroll({
-    target: aboutRef,
-    offset: ["end end", "end start"],
-  });
-
-  const spring = { stiffness: 70, damping: 18, mass: 0.5 };
-
-  const rawClipTop    = useTransform(scrollYProgress, [0, 1], [50,  0]);
-  const rawClipBottom = useTransform(scrollYProgress, [0, 1], [50,  0]);
-  const rawOpacity    = useTransform(scrollYProgress, [0, 0.4], [0,  1]);
-  const rawY          = useTransform(scrollYProgress, [0, 1], [56,  0]);
-  const rawTopBlendOp = useTransform(scrollYProgress, [0, 0.35], [0, 1]);
-  const rawTopGlowOp  = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-  const rawTopGlowSc  = useTransform(scrollYProgress, [0, 0.5], [0.92, 1]);
-  const rawDepthBgY   = useTransform(scrollYProgress, [0, 1], [96, 0]);
-  const rawDepthBgSc  = useTransform(scrollYProgress, [0, 1], [1.12, 1]);
-  const rawDepthCtY   = useTransform(scrollYProgress, [0, 1], [72, 0]);
-  const rawDepthCtSc  = useTransform(scrollYProgress, [0, 1], [0.97, 1]);
-  const rawStackExitY = useTransform(aboutExitProgress, [0, 0.6, 1], [0, 22, 172]);
-  const rawStackExitOp = useTransform(aboutExitProgress, [0, 0.65, 0.92, 1], [1, 1, 0.42, 0.14]);
-  const rawStackExitSc = useTransform(aboutExitProgress, [0, 0.62, 1], [1, 1.04, 0.72]);
-  const rawStackExitBlur = useTransform(aboutExitProgress, [0, 0.68, 1], [0, 0, 12]);
-  const stackSnapClip = useTransform(aboutExitProgress, [0, 0.62, 1], [
-    "circle(140% at 50% 86%)",
-    "circle(140% at 50% 86%)",
-    "circle(11% at 50% 86%)",
-  ]);
-  const rawMagnetCoreOp = useTransform(aboutExitProgress, [0.45, 0.8, 1], [0, 0.75, 1]);
-  const rawMagnetCoreSc = useTransform(aboutExitProgress, [0.45, 1], [0.66, 1.22]);
-  const rawMagnetCoreY  = useTransform(aboutExitProgress, [0.45, 1], [26, 0]);
-
-  const clipTop = useSpring(rawClipTop, spring);
-  const clipBottom = useSpring(rawClipBottom, spring);
-  const opacity = useSpring(rawOpacity, spring);
-  const y = useSpring(rawY, spring);
-  const topBlendOp = useSpring(rawTopBlendOp, spring);
-  const topGlowOp = useSpring(rawTopGlowOp, spring);
-  const topGlowSc = useSpring(rawTopGlowSc, spring);
-  const depthBgY = useSpring(rawDepthBgY, spring);
-  const depthBgSc = useSpring(rawDepthBgSc, spring);
-  const depthCtY = useSpring(rawDepthCtY, spring);
-  const depthCtSc = useSpring(rawDepthCtSc, spring);
-  const stackExitY = useSpring(rawStackExitY, spring);
-  const stackExitOp = useSpring(rawStackExitOp, spring);
-  const stackExitSc = useSpring(rawStackExitSc, spring);
-  const stackExitBlur = useSpring(rawStackExitBlur, spring);
-  const stackFilter = useTransform(stackExitBlur, (v) => `blur(${v}px)`);
-  const magnetCoreOp = useSpring(rawMagnetCoreOp, spring);
-  const magnetCoreSc = useSpring(rawMagnetCoreSc, spring);
-  const magnetCoreY = useSpring(rawMagnetCoreY, spring);
-
-  const stackY = useTransform([depthCtY, stackExitY], ([entryY, exitY]) => entryY + exitY);
-  const stackScale = useTransform([depthCtSc, stackExitSc], ([entrySc, exitSc]) => entrySc * exitSc);
-
-  const clipPath = useTransform(
-    [clipTop, clipBottom],
-    ([t, b]) => `inset(${t}% 0 ${b}% 0)`
-  );
+  useEffect(() => {
+    const node = aboutRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      { threshold: 0.05, rootMargin: "60px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <motion.section
+    <section
       id="about"
       ref={aboutRef}
       style={{
@@ -228,62 +177,26 @@ const About = () => {
         padding: "120px 24px",
         position: "relative",
         overflow: "hidden",
-        clipPath,
-        opacity,
-        y,
-        willChange: "clip-path, opacity, transform",
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(48px)",
+        transition: "opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1)",
+        willChange: "opacity, transform",
       }}
     >
-      <motion.div style={{
-        position: "absolute",
-        top: 0, left: 0, right: 0,
-        height: "220px",
-        background: "linear-gradient(to bottom, rgba(4,9,20,0.88) 0%, rgba(2,6,23,0.45) 42%, rgba(2,6,23,0) 100%)",
-        opacity: topBlendOp,
-        pointerEvents: "none",
-        zIndex: 1,
-      }} />
-      <motion.div style={{
-        position: "absolute",
-        top: "-110px",
-        left: "6%",
-        right: "6%",
-        height: "280px",
-        background: "radial-gradient(ellipse at center, rgba(59,130,246,0.2) 0%, rgba(6,182,212,0.12) 35%, transparent 72%)",
-        filter: "blur(24px)",
-        opacity: topGlowOp,
-        scale: topGlowSc,
-        pointerEvents: "none",
-        zIndex: 1,
-      }} />
-      <motion.div style={{
-        position: "absolute",
-        left: "50%",
-        marginLeft: "-210px",
-        bottom: "7vh",
-        width: "420px",
-        height: "420px",
-        background: "radial-gradient(circle, rgba(59,130,246,0.26) 0%, rgba(6,182,212,0.2) 34%, rgba(2,6,23,0.02) 72%, transparent 88%)",
-        filter: "blur(34px)",
-        opacity: magnetCoreOp,
-        scale: magnetCoreSc,
-        y: magnetCoreY,
-        pointerEvents: "none",
-        zIndex: 1,
-      }} />
-      <motion.div style={{ position: "absolute", inset: 0, zIndex: 0, y: depthBgY, scale: depthBgSc, transformOrigin: "center top", willChange: "transform", pointerEvents: "none" }}>
+      {/* Background grid */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}>
         <div style={{ position: "absolute", inset: 0, backgroundSize: "40px 40px", backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)" }} />
         <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: "800px", height: "800px", background: "radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)" }} />
-      </motion.div>
+      </div>
 
-      <motion.div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2, y: stackY, scale: stackScale, opacity: stackExitOp, clipPath: stackSnapClip, filter: stackFilter, transformOrigin: "center top", willChange: "transform, opacity, clip-path, filter" }}>
+      <div ref={workspaceRef} style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
         <div style={{ textAlign: "center", marginBottom: "40px", pointerEvents: "none" }}>
            <p style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: "#3B82F6", letterSpacing: "2px", textTransform: "uppercase", fontWeight: 600 }}>01. PROFILE</p>
            <h2 style={{ fontFamily: "'Outfit',sans-serif", fontSize: "32px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.5px", marginTop: "8px" }}>Beyond the code.</h2>
            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "#64748B", marginTop: "8px" }}>* Move your cursor to explore</p>
         </div>
 
-        <div ref={workspaceRef} className="workspace-canvas" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "24px", alignContent: "flex-start", minHeight: "80vh" }}>
+        <div className="workspace-canvas" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "24px", alignContent: "flex-start", minHeight: "80vh" }}>
            <OSWindow title="viewer.exe - profile.jpg" className="win-1" noPadding>
                <PhotoSlideshow />
            </OSWindow>
@@ -326,7 +239,7 @@ const About = () => {
            </OSWindow>
 
         </div>
-      </motion.div>
+      </div>
 
       <style>{`
         .win-1 { width: 340px; height: 500px; }
@@ -340,7 +253,7 @@ const About = () => {
            .workspace-canvas { display: grid !important; gap: 32px !important; min-height: auto !important; }
         }
       `}</style>
-    </motion.section>
+    </section>
   );
 };
 

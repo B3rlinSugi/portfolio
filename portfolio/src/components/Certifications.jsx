@@ -39,6 +39,9 @@ const VaultCard = ({ cert, index, visible, dimmed }) => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
   const { a, b } = YEAR_COLORS[cert.year] || DEFAULT_COLOR;
+  const isBNSP = cert.isBNSP;
+  const bnspGold = "#F59E0B";
+  const bnspGoldDark = "#D97706";
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -54,6 +57,9 @@ const VaultCard = ({ cert, index, visible, dimmed }) => {
     setHovered(false);
     setTilt({ x: 0, y: 0 });
   };
+
+  const cardAccentA = isBNSP ? bnspGold : a;
+  const cardAccentB = isBNSP ? bnspGoldDark : b;
 
   return (
     <motion.div
@@ -71,7 +77,7 @@ const VaultCard = ({ cert, index, visible, dimmed }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        cursor: "default",
+        cursor: cert.driveLink ? "pointer" : "default",
         perspective: 600,
         transform: hovered
           ? `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateY(-8px) scale(1.04)`
@@ -81,19 +87,21 @@ const VaultCard = ({ cert, index, visible, dimmed }) => {
     >
       <div style={{
         position: "relative", borderRadius: 18, overflow: "hidden",
-        background: hovered ? "rgba(10,20,42,0.98)" : "rgba(5,10,22,0.72)",
-        border: `1px solid ${hovered ? a + "50" : "rgba(255,255,255,0.07)"}`,
+        background: hovered
+          ? (isBNSP ? "rgba(20,16,6,0.98)" : "rgba(10,20,42,0.98)")
+          : (isBNSP ? "rgba(12,10,4,0.72)" : "rgba(5,10,22,0.72)"),
+        border: `1px solid ${hovered ? cardAccentA + "50" : (isBNSP ? "rgba(245,158,11,0.12)" : "rgba(255,255,255,0.07)")}`,
         padding: "28px 20px 24px",
         boxShadow: hovered
-          ? `0 28px 56px rgba(0,0,0,0.65), 0 0 0 1px ${a}20, inset 0 1px 0 rgba(255,255,255,0.06)`
-          : "0 4px 20px rgba(0,0,0,0.3)",
+          ? `0 28px 56px rgba(0,0,0,0.65), 0 0 0 1px ${cardAccentA}20, inset 0 1px 0 rgba(255,255,255,0.06)`
+          : (isBNSP ? "0 4px 20px rgba(245,158,11,0.08)" : "0 4px 20px rgba(0,0,0,0.3)"),
         transition: "all 0.3s",
       }}>
         {/* Top gradient bar */}
         <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: 3,
-          background: `linear-gradient(to right, ${a}, ${b})`,
-          opacity: hovered ? 1 : 0.35, transition: "opacity 0.3s",
+          position: "absolute", top: 0, left: 0, right: 0, height: isBNSP ? 4 : 3,
+          background: `linear-gradient(to right, ${cardAccentA}, ${cardAccentB})`,
+          opacity: hovered ? 1 : (isBNSP ? 0.6 : 0.35), transition: "opacity 0.3s",
         }} />
 
         {/* Ambient glow behind icon */}
@@ -102,27 +110,41 @@ const VaultCard = ({ cert, index, visible, dimmed }) => {
             position: "absolute", top: "28%", left: "50%",
             transform: "translate(-50%, -50%)",
             width: 90, height: 90, borderRadius: "50%",
-            background: `radial-gradient(circle, ${a}28 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${cardAccentA}28 0%, transparent 70%)`,
             pointerEvents: "none",
           }} />
+        )}
+
+        {/* BNSP Badge */}
+        {isBNSP && (
+          <div style={{
+            position: "absolute", top: 13, left: 13,
+            fontFamily: "'JetBrains Mono',monospace", fontSize: 9, fontWeight: 800,
+            color: "#FDE68A", background: "linear-gradient(135deg, rgba(245,158,11,0.25), rgba(217,119,6,0.15))",
+            border: "1px solid rgba(245,158,11,0.35)",
+            padding: "3px 8px", borderRadius: 6, letterSpacing: "1.2px",
+            textTransform: "uppercase",
+            boxShadow: "0 0 12px rgba(245,158,11,0.15)",
+            animation: "bnspGlow 3s ease-in-out infinite",
+          }}>★ BNSP</div>
         )}
 
         {/* Year badge */}
         <div style={{
           position: "absolute", top: 13, right: 13,
           fontFamily: "'JetBrains Mono',monospace", fontSize: 10, fontWeight: 700,
-          color: a, background: `${a}12`, border: `1px solid ${a}28`,
+          color: cardAccentA, background: `${cardAccentA}12`, border: `1px solid ${cardAccentA}28`,
           padding: "3px 8px", borderRadius: 6,
         }}>{cert.year}</div>
 
         {/* Icon */}
         <div style={{
           width: 68, height: 68, borderRadius: 18, margin: "0 auto 18px",
-          background: hovered ? `${a}15` : "rgba(255,255,255,0.04)",
-          border: `1px solid ${hovered ? a + "40" : "rgba(255,255,255,0.07)"}`,
+          background: hovered ? `${cardAccentA}15` : "rgba(255,255,255,0.04)",
+          border: `1px solid ${hovered ? cardAccentA + "40" : "rgba(255,255,255,0.07)"}`,
           display: "flex", alignItems: "center", justifyContent: "center",
           transition: "all 0.3s",
-          boxShadow: hovered ? `0 8px 24px ${a}30` : "none",
+          boxShadow: hovered ? `0 8px 24px ${cardAccentA}30` : "none",
         }}>
           <img src={cert.icon} alt={cert.name} loading="lazy" decoding="async"
             style={{ width: 38, height: 38, objectFit: "contain" }}
@@ -133,7 +155,7 @@ const VaultCard = ({ cert, index, visible, dimmed }) => {
         {/* Name */}
         <div style={{
           fontFamily: "'Outfit',sans-serif", fontSize: 13, fontWeight: 700,
-          color: hovered ? "#F8FAFC" : "#94A3B8",
+          color: hovered ? (isBNSP ? "#FDE68A" : "#F8FAFC") : "#94A3B8",
           textAlign: "center", lineHeight: 1.45, marginBottom: 8,
           transition: "color 0.2s",
         }}>{cert.name}</div>
@@ -141,7 +163,7 @@ const VaultCard = ({ cert, index, visible, dimmed }) => {
         {/* Issuer */}
         <div style={{
           fontFamily: "'JetBrains Mono',monospace", fontSize: 10,
-          color: hovered ? a : "#475569",
+          color: hovered ? cardAccentA : "#475569",
           textAlign: "center", transition: "color 0.3s",
         }}>{cert.issuer}</div>
 
@@ -151,9 +173,44 @@ const VaultCard = ({ cert, index, visible, dimmed }) => {
           marginTop: 16,
           opacity: hovered ? 1 : 0, transition: "opacity 0.3s",
         }}>
-          <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#10B981", animation: "vPulse 2s infinite" }} />
-          <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#10B981", letterSpacing: "1.5px" }}>VERIFIED</span>
+          <div style={{ width: 5, height: 5, borderRadius: "50%", background: isBNSP ? bnspGold : "#10B981", animation: "vPulse 2s infinite" }} />
+          <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: isBNSP ? bnspGold : "#10B981", letterSpacing: "1.5px" }}>{isBNSP ? "BNSP CERTIFIED" : "VERIFIED"}</span>
         </div>
+
+        {/* View Certificate Link */}
+        {cert.driveLink && (
+          <a
+            href={cert.driveLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+              marginTop: 12, padding: "8px 14px", borderRadius: 10,
+              background: hovered
+                ? (isBNSP ? "rgba(245,158,11,0.12)" : `${a}12`)
+                : "rgba(255,255,255,0.03)",
+              border: `1px solid ${hovered ? (isBNSP ? "rgba(245,158,11,0.3)" : a + "30") : "rgba(255,255,255,0.06)"}`,
+              textDecoration: "none",
+              transition: "all 0.25s",
+              opacity: hovered ? 1 : 0.5,
+              cursor: "pointer",
+            }}
+          >
+            {/* External link icon */}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={hovered ? (isBNSP ? bnspGold : a) : "#475569"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.25s" }}>
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            <span style={{
+              fontFamily: "'JetBrains Mono',monospace", fontSize: 9, fontWeight: 600,
+              color: hovered ? (isBNSP ? "#FDE68A" : a) : "#475569",
+              letterSpacing: "1px", textTransform: "uppercase",
+              transition: "color 0.25s",
+            }}>View Certificate</span>
+          </a>
+        )}
       </div>
     </motion.div>
   );
@@ -373,6 +430,10 @@ const Certifications = () => {
         @keyframes vPulse {
           0%,100%{transform:scale(1);opacity:0.9}
           50%{transform:scale(2.2);opacity:0}
+        }
+        @keyframes bnspGlow {
+          0%,100%{box-shadow:0 0 12px rgba(245,158,11,0.15)}
+          50%{box-shadow:0 0 20px rgba(245,158,11,0.3), 0 0 40px rgba(245,158,11,0.1)}
         }
       `}</style>
     </section>
