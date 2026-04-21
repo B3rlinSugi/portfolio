@@ -1,67 +1,99 @@
-# React + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:020617,50:0f172a,100:1e293b&height=200&section=header&text=Hacker%20OS%20Portfolio&fontSize=50&fontColor=38bdf8&animation=fadeIn&fontAlignY=38&desc=Berlin%20Sugiyanto%20-%20Backend%20Engineer%20Portfolio&descAlignY=55&descColor=94a3b8" />
 
-Currently, two official plugins are available:
+<a href="https://readme-typing-svg.herokuapp.com"><img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=16&duration=3000&pause=1000&color=38BDF8&center=true&vCenter=true&width=435&lines=🚀+High-Performance+Interactive+Portfolio;🔥+React+%2B+Vite+%2B+GPU-Accelerated+CSS;💻+Built+for+Senior+Backend+Engineers" alt="Typing SVG" /></a>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://berlinsugi.vercel.app/)
 
-## React Compiler
+</div>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📌 Overview
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Hacker OS Portfolio** adalah portofolio interaktif berperforma tinggi yang mensimulasikan lingkungan ruang kontrol operasional (*mission control*). Dibangun menggunakan **React** dan **Vite**, aplikasi ini didesain khusus untuk menampilkan kapabilitas rekayasa teknis seorang **Backend Developer** kepada perekrut dan engineer senior, lengkap dengan efek visual 3D, animasi CSS terakselerasi GPU, dan performa mulus tanpa *lag*.
 
-## Backend-focused Portfolio Enhancements (April 2026)
+> 💡 **Tujuan Visual:** *"Don't just tell them you can code, show them a system initialization."* Dilengkapi dengan **CLI JSON Compiler Loading Screen** dan representasi layout arsitektur sistem.
 
-This project now includes a backend-first portfolio section:
+---
 
-- polished personal brand copy for Backend Developer (device reliability + metrics)
-- live GitHub metrics with API projects, PR count, top languages, and followers
-- API health check card (`https://httpstat.us/200?sleep=100`)
-- architecture deep dive in `ProjectDetailModal` (ERD + flow diagram via Mermaid)
-- streamlined project case studies (challenge → solution → result)
-- CI/CD-ready automation pipeline badges and status sections
-- operational dashboard (`OperationalReadiness`) with real-time KPI trend, SLO, and runbook
-- runbook export: copy to clipboard & download markdown
+## ✨ Fitur Unggulan
 
-## Deployment (Vercel)
+### 🖥️ CLI JSON Compiler Loader
+Saat pertama kali dikunjungi, pengguna akan disambut oleh simulasi *terminal boot sequence* bergaya IDE Material Theme. Animasi ini mengeksekusi inisialisasi lingkungan *backend* dan mencetak objek profil pengguna secara dinamis dalam format JSON dengan *neon syntax highlighting*.
 
-Recommended production deployment for this portfolio:
+### ⚡ GPU-Accelerated Scroll Hooks
+Sistem animasi gulir (*scroll*) menggunakan arsitektur kustom berbasis `IntersectionObserver` — memastikan portofolio ini mampu berjalan di atas 60 FPS pada semua perangkat pintar, membuang limitasi *main thread lag* yang kerap terjadi pada library animasi konvensional.
 
-1. Install Vercel CLI:
+### 🛠️ Architecture Case Studies
+Dilengkapi dengan modal **ProjectDetailModal** yang interaktif, menampilkan studi kasus proyek backend secara mendalam dengan penjabaran alur (workflow) diagram, mekanisme keamanan (seperti JWT & RBAC), serta rasionalisasi basis data (seperti InnoDB).
 
-```bash
-npm i -g vercel
+---
+
+## 🏗️ Struktur Arsitektur (Data Flow)
+
+Berikut adalah abstraksi dari alur pergerakan data pada sistem front-end interaktif ini (Diagram otomatis *Mermaid* ini dapat dirender langsung oleh GitHub):
+
+```mermaid
+graph TD
+    Client["🌐 Client Browser (React SPA)"]
+    Loader["⚙️ CLI JSON Loader Component"]
+    IntersectionObserver["👁️ Scroll Reveal Engine (Optimization)"]
+    Data["📊 portfolioData.js (Central State)"]
+    
+    UI["📱 Presentation Layer"]
+    Hero["Hero Section"]
+    About["About Section"]
+    Projects["Backend Projects Grid"]
+    
+    Client --> Loader
+    Loader -.->|System Ready 100%| Client
+    Client --> IntersectionObserver
+    
+    IntersectionObserver --> UI
+    Data --> UI
+    
+    UI --> Hero
+    UI --> About
+    UI --> Projects
 ```
 
-2. Log in:
+---
+
+## 🚀 Instalasi Lokal
+
+Ingin menjalankan arsitektur portofolio ini di mesin lokal Anda?
 
 ```bash
-vercel login
+# 1. Clone repositori ini
+git clone https://github.com/B3rlinSugi/portfolio.git
+
+# 2. Masuk ke direktori
+cd portfolio
+
+# 3. Install NPM dependencies
+npm install
+
+# 4. Jalankan server lokal (Vite)
+npm run dev
+
+# 5. Akses melalui peramban: 
+# http://localhost:5173
 ```
 
-3. Deploy:
+---
 
-```bash
-cd c:\\Users\\Berlin Sugiyanto\\Portfolio\\portfolio
-vercel --prod
-```
+## 👤 Tentang Author
 
-4. Build is configured by `vercel.json`:
+<div align="center">
 
-- `buildCommand`: `npm run build`
-- `outputDirectory`: `dist`
+**Berlin Sugiyanto Hutajulu**  
+*Junior Backend Developer*
 
-5. Optional: update Vercel project settings for environment variables (if future backend API keys needed).
+[![GitHub](https://img.shields.io/badge/GitHub-B3rlinSugi-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/B3rlinSugi)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-berlinsugi-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/berlinsugi)
 
-## Local Preview
-
-```bash
-npm run preview
-# open http://localhost:4173
-```
-
+</div>
