@@ -1,8 +1,7 @@
 <div align="center">
-  <img src="https://capsule-render.vercel.app/render?type=soft&color=auto&height=200&section=header&text=Berlin%20Sugiyanto&fontSize=70" width="100%" />
-</div>
+<img src="https://capsule-render.vercel.app/render?type=soft&color=auto&height=200&section=header&text=Berlin%20Sugiyanto&fontSize=70" width="100%" />
 
-<div align="center">
+<a href="https://readme-typing-svg.herokuapp.com"><img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&duration=3000&pause=1000&color=38BDF8&center=true&vCenter=true&width=600&lines=👋+Hello,+I'm+Berlin+Sugiyanto;💻+Passionate+Backend+Software+Engineer;🚀+Building+High-Performance+Scalable+APIs;🛠️+PHP,+Java,+Laravel+and+Spring+Boot+Expert" alt="Typing SVG" /></a>
   <img src="https://komarev.com/ghpvc/?username=B3rlinSugi&label=Profile%20views&color=0e75b6&style=flat" alt="B3rlinSugi" />
 </div>
 
