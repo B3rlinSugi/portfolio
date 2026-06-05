@@ -1,0 +1,223 @@
+export const portfolioData = {
+  name: "Berlin Sugiyanto",
+  headline: "Building reliable<br /><span class=\"text-[#FF6B00]\">backend systems</span><br />for real-world use.",
+  subheadline: "Backend Developer focused on APIs,<br class=\"hidden md:block\" />authentication systems, database design,<br class=\"hidden md:block\" />and applications that solve real problems.<br /><br />Prioritizing performance, reliability,<br class=\"hidden md:block\" />and scalable architecture.",
+  about: "I'm Berlin — a backend developer and Informatics graduate from Gunadarma University. I design and build REST APIs, authentication systems, and database architectures that are secure, scalable, and structured for production. I believe that great engineering deserves great design.",
+  email: "berlinsugiyanto23@gmail.com",
+  github: "https://github.com/B3rlinSugi",
+  linkedin: "https://linkedin.com/in/berlinsugi",
+  
+  techStack: [
+    { name: "Node.js", icon: "SiNodedotjs", category: "Backend" },
+    { name: "Laravel", icon: "SiLaravel", category: "Backend" },
+    { name: "Spring Boot", icon: "SiSpringboot", category: "Backend" },
+    { name: "Next.js", icon: "SiNextdotjs", category: "Frontend" },
+    { name: "TypeScript", icon: "SiTypescript", category: "Language" },
+    { name: "React", icon: "SiReact", category: "Frontend" },
+    { name: "PostgreSQL", icon: "SiPostgresql", category: "Database" },
+    { name: "MySQL", icon: "SiMysql", category: "Database" },
+  ],
+  
+  projects: [
+    {
+      title: "Prime Property",
+      description: "A modern full-stack property platform designed to provide a seamless property search experience. Built with Next.js 16 and TypeScript, the system features dynamic search and filtering, along with an elegant, responsive UI. This project demonstrates interactive frontend integration with robust state management, premium animations, and secure authentication.",
+      tech: [
+        { name: "TypeScript", icon: "SiTypescript" },
+        { name: "Next.js", icon: "SiNextdotjs" },
+        { name: "React", icon: "SiReact" },
+        { name: "PostgreSQL", icon: "SiPostgresql" },
+        { name: "Prisma ORM", icon: "SiPrisma" },
+        { name: "Auth.js", icon: "ShieldCheck" },
+        { name: "GSAP", icon: "SiGreensock" },
+        { name: "Framer Motion", icon: "SiFramer" }
+      ],
+      category: "Web Applications",
+      github: "https://github.com/B3rlinSugi/prime-property",
+      demo: "https://prime-property-sigma.vercel.app/",
+      image: "/projects/prime-property.png",
+      icon: "Building2",
+      features: ["Property Listings & Filtering", "Interactive Maps Integration", "Secure NextAuth Authentication", "Premium Scroll Animations", "Automated PDF Generation"],
+    },
+    {
+      title: "Tokoku E-Commerce",
+      description: "A comprehensive backend-first e-commerce web application built from scratch using PHP Native (MVC) and MySQL. The system handles the entire user shopping lifecycle, from product catalog management and persistent shopping carts to secure user authentication, stock tracking, and a full admin dashboard.",
+      tech: [
+        { name: "PHP 8", icon: "SiPhp" },
+        { name: "MySQL 8", icon: "SiMysql" },
+        { name: "Bootstrap 5", icon: "SiBootstrap" },
+        { name: "Chart.js", icon: "SiChartdotjs" },
+        { name: "PDO", icon: "Database" },
+        { name: "bcrypt", icon: "Lock" }
+      ],
+      category: "Web Applications",
+      github: "https://github.com/B3rlinSugi/tokoku-ecommerce",
+      demo: "https://tokoku-ecommerce.vercel.app/",
+      image: "/projects/tokoku.png",
+      icon: "ShoppingCart",
+      features: ["10-Table Relational Database", "Voucher Discount Engine", "RBAC Authentication (bcrypt)", "Real-time Stock Tracking", "Admin Revenue Dashboard"],
+    },
+    {
+      title: "Student Management API",
+      description: "A production-grade RESTful API for student data management, developed using the Laravel framework. The architecture highlights high-level security with JWT (JSON Web Tokens) and strict Role-Based Access Control (RBAC) implementation. Additionally, the API utilizes Eloquent ORM's Soft Delete feature to ensure data integrity.",
+      tech: [
+        { name: "Laravel", icon: "SiLaravel" },
+        { name: "PHP", icon: "SiPhp" },
+        { name: "MySQL", icon: "SiMysql" },
+        { name: "JWT", icon: "SiJsonwebtokens" },
+        { name: "Postman", icon: "SiPostman" }
+      ],
+      category: "APIs & Backends",
+      github: "https://github.com/B3rlinSugi/student-management-api",
+      demo: "https://berlinsugi.vercel.app/docs-student-api.html",
+      image: "/projects/student-api.png",
+      icon: "ShieldCheck",
+      features: ["Secure JWT Authentication", "Role-Based Access Control", "Soft Deletion Mechanism", "RESTful Architecture", "Scalable Database Design"],
+    },
+    {
+      title: "Spring Boot Student API",
+      description: "A centralized backend API service for managing academic entities, built within the Java Spring Boot ecosystem. This project implements clean REST API design concepts and utilizes JPA/Hibernate for advanced Object-Relational Mapping (ORM), ensuring efficient, secure, and easily scalable database transactions for enterprise-level requirements.",
+      tech: [
+        { name: "Java", icon: "FaJava" },
+        { name: "Spring Boot", icon: "SiSpringboot" },
+        { name: "Hibernate", icon: "SiSpring" },
+        { name: "Maven", icon: "SiApachemaven" }
+      ],
+      category: "APIs & Backends",
+      github: "https://github.com/B3rlinSugi/springboot-student-api",
+      demo: "https://berlinsugi.vercel.app/docs-springboot-api.html",
+      image: "/projects/springboot-api.png",
+      icon: "Database",
+      features: ["Enterprise-grade Architecture", "REST API Endpoints", "JPA/Hibernate ORM", "Secure Data Management", "Efficient Transactions"],
+    },
+    {
+      title: "CRUD Akademik",
+      description: "An interactive academic data management system with multi-role access (Admin & Staff). The project focuses on robust database integrity using foreign key constraints and PDO prepared statements for security. Features include advanced search, filtering, pagination, and automated PDF reporting.",
+      tech: [
+        { name: "PHP 8", icon: "SiPhp" },
+        { name: "MySQL 8", icon: "SiMysql" },
+        { name: "Bootstrap 5", icon: "SiBootstrap" },
+        { name: "Chart.js", icon: "SiChartdotjs" },
+        { name: "TCPDF/FPDF", icon: "FileText" },
+        { name: "Composer", icon: "SiComposer" }
+      ],
+      category: "Web Applications",
+      github: "https://github.com/B3rlinSugi/crud-akademik",
+      demo: "https://crud-akademik.vercel.app/",
+      image: "/projects/crud-akademik.png",
+      icon: "GraduationCap",
+      features: ["Multi-role System (RBAC)", "Database Integrity (ON DELETE RESTRICT)", "PDO Prepared Statements", "PDF Report Generation", "Real-time Statistics"],
+    },
+    {
+      title: "Cash Flow",
+      description: "A robust financial tracking application upgraded from legacy code, focusing on security migration (MD5 to bcrypt) and schema redesign. The system features interactive data visualization for 6-month cash flows, pending payment tracking, and advanced PDF export filtering. Supports dual databases (MySQL & PostgreSQL).",
+      tech: [
+        { name: "PHP 8", icon: "SiPhp" },
+        { name: "PostgreSQL", icon: "SiPostgresql" },
+        { name: "MySQL", icon: "SiMysql" },
+        { name: "Chart.js", icon: "SiChartdotjs" },
+        { name: "TCPDF/FPDF", icon: "FileText" },
+        { name: "bcrypt", icon: "Lock" }
+      ],
+      category: "Web Applications",
+      github: "https://github.com/B3rlinSugi/cash-flow",
+      demo: "https://cash-flow-pink.vercel.app/",
+      image: "/projects/cash-flow.png",
+      icon: "Wallet",
+      features: ["MD5 to Bcrypt Migration", "Dual Database Support", "Interactive Analytics Dashboard", "Advanced PDF Export", "InnoDB Schema Redesign"],
+    }
+  ],
+
+  experience: [
+    {
+      role: "Backend Developer",
+      company: "Independent",
+      date: "2021 - Present",
+      description: "Building REST APIs, authentication systems, and database architectures for personal and academic projects.",
+    }
+  ],
+
+  certifications: [
+    {
+      name: "Junior Web Developer",
+      issuer: "BNSP (Badan Nasional Sertifikasi Profesi)",
+      year: "2025",
+      description: "National professional certification for web development competency, covering full-stack development standards.",
+      icon: "/bnsp-logo.svg",
+      driveLink: "https://drive.google.com/drive/folders/1uYB927_zS42WQEeYKfcq5BH39QnOqW2q?usp=sharing",
+      isBNSP: true,
+    },
+    {
+      name: "Basic Web Application Development",
+      issuer: "Universitas Gunadarma",
+      year: "2025",
+      description: "Server-side web application development using PHP, covering MVC architecture and database integration.",
+      icon: "SiPhp",
+      driveLink: "https://drive.google.com/drive/folders/1uYB927_zS42WQEeYKfcq5BH39QnOqW2q?usp=sharing",
+    },
+    {
+      name: "Basic Web Application Design",
+      issuer: "Universitas Gunadarma",
+      year: "2024",
+      description: "Frontend web design fundamentals including responsive layouts, CSS frameworks, and UI/UX principles.",
+      icon: "SiCss3",
+      driveLink: "https://drive.google.com/drive/folders/1uYB927_zS42WQEeYKfcq5BH39QnOqW2q?usp=sharing",
+    },
+    {
+      name: "Linux System Administration",
+      issuer: "Universitas Gunadarma",
+      year: "2023",
+      description: "Server administration on Linux, including user management, networking, and system security configuration.",
+      icon: "SiLinux",
+      driveLink: "https://drive.google.com/drive/folders/1uYB927_zS42WQEeYKfcq5BH39QnOqW2q?usp=sharing",
+    },
+    {
+      name: "Oracle Database for Beginners",
+      issuer: "Universitas Gunadarma",
+      year: "2023",
+      description: "Enterprise database management with Oracle, covering SQL queries, PL/SQL, and database administration.",
+      icon: "SiOracle",
+      driveLink: "https://drive.google.com/drive/folders/1uYB927_zS42WQEeYKfcq5BH39QnOqW2q?usp=sharing",
+    },
+    {
+      name: "Fundamental Database Management System",
+      issuer: "Universitas Gunadarma",
+      year: "2022",
+      description: "Core DBMS concepts including relational modeling, normalization, and SQL query optimization.",
+      icon: "SiMysql",
+      driveLink: "https://drive.google.com/drive/folders/1uYB927_zS42WQEeYKfcq5BH39QnOqW2q?usp=sharing",
+    },
+    {
+      name: "Fundamental Server Operating System",
+      issuer: "Universitas Gunadarma",
+      year: "2022",
+      description: "Server OS fundamentals including installation, configuration, and management of server environments.",
+      icon: "SiLinux",
+      driveLink: "https://drive.google.com/drive/folders/1uYB927_zS42WQEeYKfcq5BH39QnOqW2q?usp=sharing",
+    },
+  ],
+
+  organizations: [
+    {
+      role: "Minister of Social & Political Affairs",
+      org: "BEM FTI — Universitas Gunadarma",
+      period: "Jul 2024 - Aug 2025",
+      desc: "Led two departments managing 15+ members with 100% program completion rate. Drove cross-functional coordination across faculty-level initiatives and represented the faculty in external institutional events.",
+      highlights: ["15+ Members Led", "100% Completion", "Faculty Representative", "Strategic Planning"],
+    },
+    {
+      role: "Head of Social Community Department",
+      org: "BEM FTI — Universitas Gunadarma",
+      period: "Jul 2023 - Jun 2024",
+      desc: "Directed and coordinated staff in planning and executing community social programs. Improved team efficiency through structured delegation, ensuring on-time delivery of all scheduled activities.",
+      highlights: ["Department Lead", "Program Delivery", "Team Coordination", "Community Outreach"],
+    },
+    {
+      role: "Staff of Social Community Department",
+      org: "BEM FTI — Universitas Gunadarma",
+      period: "Jul 2022 - Jun 2023",
+      desc: "Contributed as a core staff member in planning and executing social community programs. Actively participated in campus events and cross-departmental initiatives.",
+      highlights: ["Event Planning", "Community Programs", "Cross-dept Work", "Active Contributor"],
+    },
+  ],
+};
