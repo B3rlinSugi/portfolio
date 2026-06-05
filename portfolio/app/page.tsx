@@ -10,7 +10,6 @@ import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 import Certifications from "@/components/sections/Certifications";
 import GitHubStats from "@/components/sections/GitHubStats";
-import Blog from "@/components/sections/Blog";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
