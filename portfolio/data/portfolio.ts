@@ -14,11 +14,32 @@ export const portfolioData = {
     { name: "Next.js", icon: "SiNextdotjs", category: "Frontend" },
     { name: "TypeScript", icon: "SiTypescript", category: "Language" },
     { name: "React", icon: "SiReact", category: "Frontend" },
+    { name: "Supabase", icon: "SiSupabase", category: "Database" },
+    { name: "Tailwind CSS", icon: "SiTailwindcss", category: "Frontend" },
+    { name: "Framer Motion", icon: "SiFramer", category: "Frontend" },
     { name: "PostgreSQL", icon: "SiPostgresql", category: "Database" },
     { name: "MySQL", icon: "SiMysql", category: "Database" },
   ],
   
   projects: [
+    {
+      title: "HL Finance Management",
+      description: "A modern Sales & Receivables Management platform featuring an elegant Glassmorphism UI and robust real-time analytics. Built on Next.js 15+ and Supabase, it provides a comprehensive dashboard for tracking daily transactions, automated tier-based customer management, and sales target visualizations. Designed with scalable Server-Side Pagination and an Edge-based authentication proxy for maximum security.",
+      tech: [
+        { name: "Next.js", icon: "SiNextdotjs" },
+        { name: "Supabase", icon: "SiSupabase" },
+        { name: "TypeScript", icon: "SiTypescript" },
+        { name: "Tailwind CSS", icon: "SiTailwindcss" },
+        { name: "Zustand", icon: "SiReact" },
+        { name: "Framer Motion", icon: "SiFramer" }
+      ],
+      category: "Web Applications",
+      github: "https://github.com/B3rlinSugi/hl-finance-app",
+      demo: "https://hl-finance-app-six.vercel.app/",
+      image: "/projects/hl-finance.png",
+      icon: "Wallet",
+      features: ["Edge Authentication Proxy", "Tier-based Customer System", "Real-time Analytics Dashboard", "Glassmorphism UI Architecture", "Server-Side Pagination"]
+    },
     {
       title: "Prime Property",
       description: "A modern full-stack property platform designed to provide a seamless property search experience. Built with Next.js 16 and TypeScript, the system features dynamic search and filtering, along with an elegant, responsive UI. This project demonstrates interactive frontend integration with robust state management, premium animations, and secure authentication.",

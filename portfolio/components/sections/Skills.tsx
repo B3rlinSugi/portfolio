@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { 
   SiPhp, SiLaravel, SiNextdotjs, SiReact, SiTypescript, SiMysql, 
   SiPostgresql, SiGit, SiPostman, SiNodedotjs, SiHtml5, 
-  SiBootstrap, SiFramer, SiGreensock
+  SiBootstrap, SiFramer, SiGreensock, SiSupabase, SiTailwindcss
 } from "react-icons/si";
 import { FaJava } from "react-icons/fa";
 import { 
@@ -25,6 +25,8 @@ const mainSkills = [
   { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
   { name: "React", icon: SiReact, color: "#61DAFB" },
   { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
+  { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06B6D4" },
+  { name: "Supabase", icon: SiSupabase, color: "#3ECF8E" },
   { name: "Postman", icon: SiPostman, color: "#FF6C37" }
 ];
 
@@ -38,12 +40,12 @@ const skillCategories = [
   {
     title: "Frontend",
     icon: Layout,
-    skills: ["Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS", "Bootstrap 5"]
+    skills: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Zustand", "Framer Motion"]
   },
   {
     title: "Database",
     icon: Database,
-    skills: ["MySQL", "PostgreSQL", "Prisma ORM", "Eloquent", "JPA / Hibernate", "Migrations"]
+    skills: ["MySQL", "PostgreSQL", "Supabase", "Prisma ORM", "Eloquent", "Migrations"]
   },
   {
     title: "DevOps & Tools",

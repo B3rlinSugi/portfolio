@@ -15,7 +15,7 @@ import {
   SiPhp, SiMysql, SiJavascript, SiHtml5, SiCss, SiBootstrap,
   SiLaravel, SiJsonwebtokens, SiPostman, SiSpringboot, SiSpring,
   SiApachemaven, SiChartdotjs, SiPostgresql, SiPrisma, SiFramer, 
-  SiGreensock, SiComposer, SiXampp, SiVercel
+  SiGreensock, SiComposer, SiXampp, SiVercel, SiSupabase
 } from "react-icons/si";
 import { FaJava } from "react-icons/fa";
 
@@ -24,7 +24,7 @@ const iconMap: Record<string, any> = {
   SiPhp, SiMysql, SiJavascript, SiHtml5, SiCss, SiBootstrap,
   SiLaravel, SiJsonwebtokens, SiPostman, SiSpringboot, SiSpring,
   SiApachemaven, SiChartdotjs, FaJava, SiPostgresql, SiPrisma, 
-  SiFramer, SiGreensock, SiComposer, SiXampp, SiVercel
+  SiFramer, SiGreensock, SiComposer, SiXampp, SiVercel, SiSupabase
 };
 
 const techColorMap: Record<string, string> = {
@@ -36,7 +36,7 @@ const techColorMap: Record<string, string> = {
   SiSpring: "#6DB33F", SiApachemaven: "#C71A22", SiChartdotjs: "#FF6384", 
   FaJava: "#007396", SiPostgresql: "#4169E1", SiPrisma: "#FFFFFF", 
   SiFramer: "#0055FF", SiGreensock: "#88CE02", SiComposer: "#885630", 
-  SiXampp: "#FB7A24", SiVercel: "#FFFFFF"
+  SiXampp: "#FB7A24", SiVercel: "#FFFFFF", SiSupabase: "#3ECF8E"
 };
 
 const TechIcon = ({ iconName }: { iconName: string }) => {
