@@ -109,7 +109,7 @@ export default function GitHubStats() {
           >
             {mounted && (
               <ImageWithFallback
-                src={`https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=transparent&hide_border=true&title_color=${titleColor}&text_color=${textColor}&icon_color=${iconColor}&bg_color=${bgColor}&ring_color=${ringColor}`}
+                src={`https://github-readme-stats-sigma-five.vercel.app/api?username=${username}&show_icons=true&theme=transparent&hide_border=true&title_color=${titleColor}&text_color=${textColor}&icon_color=${iconColor}&bg_color=${bgColor}&ring_color=${ringColor}&count_private=true`}
                 alt="GitHub Stats"
                 className="w-full h-auto relative z-20 transition-opacity duration-300"
                 errorMsg={t('github_error')}
@@ -127,7 +127,7 @@ export default function GitHubStats() {
           >
             {mounted && (
               <ImageWithFallback
-                src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=transparent&hide_border=true&title_color=${titleColor}&text_color=${textColor}&bg_color=${bgColor}&langs_count=8`}
+                src={`https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=transparent&hide_border=true&title_color=${titleColor}&text_color=${textColor}&bg_color=${bgColor}&langs_count=8`}
                 alt="Top Languages"
                 className="w-full h-auto relative z-20 transition-opacity duration-300"
                 errorMsg={t('github_error')}
