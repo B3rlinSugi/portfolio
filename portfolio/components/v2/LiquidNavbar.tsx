@@ -26,13 +26,13 @@ const navItems = [
 ];
 
 const sectionColors: Record<string, string> = {
-  home: "rgba(23, 23, 23, 0.6)",
-  about: "rgba(30, 41, 59, 0.6)",
-  projects: "rgba(12, 74, 110, 0.6)",
-  skills: "rgba(66, 32, 6, 0.6)",
-  experience: "rgba(63, 10, 10, 0.6)",
-  certificates: "rgba(6, 78, 59, 0.6)",
-  contact: "rgba(49, 10, 78, 0.6)",
+  home: "rgba(24, 24, 27, 0.6)",       // zinc-900
+  about: "rgba(39, 39, 42, 0.6)",      // zinc-800
+  projects: "rgba(23, 23, 23, 0.6)",   // neutral-900
+  skills: "rgba(38, 38, 38, 0.6)",     // neutral-800
+  experience: "rgba(15, 23, 42, 0.6)", // slate-900
+  certificates: "rgba(30, 41, 59, 0.6)",// slate-800
+  contact: "rgba(17, 24, 39, 0.6)",    // gray-900
 };
 
 // 1. Liquid Cursor Component

@@ -5,14 +5,14 @@ import Image from "next/image";
 
 export default function HeroCinematic() {
   return (
-    <section className="relative w-full min-h-screen bg-[#121212] text-[#E0E0E0] overflow-hidden flex items-center justify-center selection:bg-[#D4AF37]/30">
+    <section className="relative w-full min-h-screen bg-[#121212] text-[#E0E0E0] overflow-hidden flex items-center justify-center selection:bg-white/20">
       
       {/* Full Bleed Container */}
       <div className="relative w-full h-full min-h-screen flex items-center justify-center">
         
-        {/* Soft Golden Glow Background */}
+        {/* Soft Glow Background */}
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-[#D4AF37]/5 rounded-full blur-[100px] md:blur-[150px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-white/5 rounded-full blur-[100px] md:blur-[150px]" />
         </div>
 
         {/* Cinematic Window Shadow (Blinds effect) */}
@@ -31,14 +31,14 @@ export default function HeroCinematic() {
           transition={{ duration: 2, ease: "easeOut" }}
           className="absolute z-10 w-full text-center select-none flex justify-center"
         >
-          <h1 className="text-[22vw] leading-none font-black text-[#D4AF37]/30 tracking-tighter uppercase whitespace-nowrap drop-shadow-2xl">
+          <h1 className="text-[22vw] leading-none font-black text-white/5 tracking-tighter uppercase whitespace-nowrap drop-shadow-2xl">
             BACKEND
           </h1>
         </motion.div>
 
         {/* Floating Typography: Top Left */}
         <div className="absolute top-28 left-8 lg:top-32 lg:left-12 z-30 flex flex-col gap-1 hidden md:flex">
-          <h2 className="text-[#D4AF37] font-bold text-xl lg:text-2xl tracking-widest uppercase">Berlin Sugiyanto</h2>
+          <h2 className="text-white font-bold text-xl lg:text-2xl tracking-widest uppercase">Berlin Sugiyanto</h2>
           <p className="text-gray-400 font-light text-xs lg:text-sm tracking-[0.2em] uppercase">Logic & Layers</p>
         </div>
 
@@ -57,7 +57,7 @@ export default function HeroCinematic() {
 
         {/* Floating Typography: Bottom Right */}
         <div className="absolute bottom-8 right-8 lg:bottom-12 lg:right-12 z-30 text-right hidden md:block">
-          <h3 className="text-[#D4AF37] font-bold text-2xl lg:text-5xl tracking-tighter uppercase">SOFTWARE ENGINEER</h3>
+          <h3 className="text-white font-bold text-2xl lg:text-5xl tracking-tighter uppercase">SOFTWARE ENGINEER</h3>
         </div>
 
         {/* Portrait Subject */}
@@ -79,15 +79,15 @@ export default function HeroCinematic() {
               alt="Berlin Sugiyanto"
               fill
               priority
-              className="object-contain object-bottom drop-shadow-[0_0_80px_rgba(212,175,55,0.15)]"
+              className="object-contain object-bottom drop-shadow-[0_0_80px_rgba(255,255,255,0.08)]"
             />
           </div>
         </motion.div>
 
         {/* Mobile View Typography Fallbacks */}
         <div className="absolute bottom-6 w-full px-6 flex flex-col gap-2 z-30 md:hidden items-center text-center">
-          <h2 className="text-[#D4AF37] font-bold text-lg tracking-widest uppercase">Berlin Sugiyanto</h2>
-          <h3 className="text-white font-bold text-2xl tracking-tighter uppercase">Software Engineer</h3>
+          <h2 className="text-white font-bold text-lg tracking-widest uppercase">Berlin Sugiyanto</h2>
+          <h3 className="text-gray-200 font-bold text-2xl tracking-tighter uppercase">Software Engineer</h3>
           <p className="text-gray-400 text-[10px] leading-relaxed font-light mt-2 max-w-[280px]">
             Building robust APIs, shaping seamless integrations, and writing code with precision.
           </p>

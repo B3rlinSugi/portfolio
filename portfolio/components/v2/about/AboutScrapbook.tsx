@@ -6,12 +6,12 @@ import { motion } from "framer-motion";
 export default function AboutScrapbook() {
   return (
     <section 
-      className="relative w-full min-h-screen bg-[#F3F0EC] text-[#222] overflow-x-hidden pt-20 pb-10 font-sans"
+      className="relative w-full min-h-screen bg-[#121212] text-gray-300 overflow-x-hidden pt-20 pb-10 font-sans"
       style={{
         // Grid paper texture
         backgroundImage: `
-          linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)
+          linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
         `,
         backgroundSize: '40px 40px'
       }}
@@ -22,8 +22,8 @@ export default function AboutScrapbook() {
         <filter id="sticker-outline">
           {/* Dilate the alpha channel to create a thick outline */}
           <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="12" />
-          {/* Fill the dilated area with red */}
-          <feFlood floodColor="#E74C3C" floodOpacity="1" result="RED" />
+          {/* Fill the dilated area with dark gray */}
+          <feFlood floodColor="#2A2A2A" floodOpacity="1" result="RED" />
           {/* Clip the red to the dilated alpha */}
           <feComposite in="RED" in2="DILATED" operator="in" result="OUTLINE" />
           {/* Merge the red outline behind the original image */}
@@ -34,9 +34,9 @@ export default function AboutScrapbook() {
         </filter>
       </svg>
 
-      {/* Decorative Red Stamp Top Right */}
-      <div className="absolute top-10 right-10 opacity-80 rotate-12 mix-blend-multiply">
-        <svg width="40" height="40" viewBox="0 0 100 100" className="text-[#E74C3C] fill-current">
+      {/* Decorative Stamp Top Right */}
+      <div className="absolute top-10 right-10 opacity-20 rotate-12 mix-blend-screen">
+        <svg width="40" height="40" viewBox="0 0 100 100" className="text-white fill-current">
           <path d="M50 0 A 50 50 0 1 0 50 100 A 50 50 0 1 0 50 0 Z M50 15 A 35 35 0 1 1 50 85 A 35 35 0 1 1 50 15 Z" />
         </svg>
       </div>
@@ -65,8 +65,8 @@ export default function AboutScrapbook() {
             </div>
 
             {/* Floating Tag */}
-            <div className="absolute top-[60%] -right-4 md:-right-6 bg-white border border-gray-300 shadow-sm px-4 py-2 rotate-[-8deg] z-30">
-              <span className="font-mono text-sm tracking-widest font-bold text-gray-800">MADE BY BERLIN</span>
+            <div className="absolute top-[60%] -right-4 md:-right-6 bg-[#1A1A1A] border border-white/10 shadow-sm px-4 py-2 rotate-[-8deg] z-30">
+              <span className="font-mono text-sm tracking-widest font-bold text-gray-300">MADE BY BERLIN</span>
             </div>
           </motion.div>
         </div>
@@ -76,12 +76,12 @@ export default function AboutScrapbook() {
           
           {/* Main Headline */}
           <div className="relative w-max mb-2">
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-gray-900 border-b border-gray-400 pb-2 inline-block">
-              Hello! I'm <span className="text-[#E74C3C]">Berlin</span>
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white border-b border-white/20 pb-2 inline-block">
+              Hello! I'm <span className="text-gray-400">Berlin</span>
             </h2>
             {/* Stamp sticker */}
-            <div className="absolute -top-6 -right-6 md:-right-10 bg-white border border-gray-400 rotate-12 px-2 py-1 shadow-sm">
-              <span className="font-mono text-xs text-gray-600">ID / YOG</span>
+            <div className="absolute -top-6 -right-6 md:-right-10 bg-[#1A1A1A] border border-white/10 rotate-12 px-2 py-1 shadow-sm">
+              <span className="font-mono text-xs text-gray-400">ID / YOG</span>
             </div>
           </div>
 
@@ -95,36 +95,36 @@ export default function AboutScrapbook() {
               <div className="flex flex-col md:flex-row gap-6 lg:gap-12">
                 
                 {/* Column 1: Intro */}
-                <div className="md:w-[60%] flex flex-col gap-4 text-[13px] md:text-sm font-medium text-gray-800 leading-snug tracking-tight pr-0 lg:pr-4">
+                <div className="md:w-[60%] flex flex-col gap-4 text-[13px] md:text-sm font-medium text-gray-400 leading-snug tracking-tight pr-0 lg:pr-4">
                   <p>
-                    It doesn't matter if I'm at my desk or out exploring; I'm always thinking about building something. I <span className="font-bold">love</span> coding, designing, reading, brewing coffee, and occasionally capturing moments through my lens.
+                    It doesn't matter if I'm at my desk or out exploring; I'm always thinking about building something. I <span className="font-bold text-white">love</span> coding, designing, reading, brewing coffee, and occasionally capturing moments through my lens.
                   </p>
                   <p>
-                    I am a Software Engineer and Backend Specialist. I dedicate myself to creating robust APIs, and currently, I work passionately as a <span className="font-bold">Backend Developer</span> crafting seamless integrations and scalable architectures for various impactful projects.
+                    I am a Software Engineer and Backend Specialist. I dedicate myself to creating robust APIs, and currently, I work passionately as a <span className="font-bold text-white">Backend Developer</span> crafting seamless integrations and scalable architectures for various impactful projects.
                   </p>
                 </div>
 
                 {/* Column 2: Experience */}
                 <div className="md:w-[40%] flex flex-col gap-4">
-                  <h3 className="text-xl font-bold border-b border-gray-300 pb-1">Experience</h3>
+                  <h3 className="text-xl font-bold border-b border-white/20 pb-1 text-white">Experience</h3>
                   
                   <div className="flex flex-col gap-1">
                     <div className="flex items-baseline gap-2">
-                      <span className="font-bold text-[#E74C3C]">2024</span>
-                      <span className="font-bold text-gray-900">Backend Dev</span>
+                      <span className="font-bold text-gray-400">2024</span>
+                      <span className="font-bold text-white">Backend Dev</span>
                     </div>
-                    <p className="text-xs font-medium text-gray-800">Freelance / Remote</p>
-                    <p className="text-[11px] text-[#2c7a3f] mt-1 font-medium leading-relaxed">
+                    <p className="text-xs font-medium text-gray-500">Freelance / Remote</p>
+                    <p className="text-[11px] text-gray-400 mt-1 font-medium leading-relaxed">
                       Building scalable backend architectures using Laravel, PostgreSQL, and Express for diverse clients.
                     </p>
                   </div>
 
                   <div className="flex flex-col gap-1 mt-2">
                     <div className="flex items-baseline gap-2">
-                      <span className="font-bold text-[#E74C3C]">2023</span>
-                      <span className="font-bold text-gray-900">Fullstack Web</span>
+                      <span className="font-bold text-gray-400">2023</span>
+                      <span className="font-bold text-white">Fullstack Web</span>
                     </div>
-                    <p className="text-xs font-medium text-gray-800">Tech Agency</p>
+                    <p className="text-xs font-medium text-gray-500">Tech Agency</p>
                   </div>
                 </div>
 
@@ -140,12 +140,12 @@ export default function AboutScrapbook() {
                   viewport={{ once: true }}
                   transition={{ type: "spring", stiffness: 100, delay: 0.1 }}
                   whileHover={{ scale: 1.05, rotate: 0, zIndex: 50 }}
-                  className="bg-white p-2 pb-6 md:p-3 md:pb-8 shadow-xl border border-gray-200 transform cursor-pointer flex-1 max-w-[200px] pointer-events-auto rotate-[-3deg]"
+                  className="bg-[#1A1A1A] p-2 pb-6 md:p-3 md:pb-8 shadow-xl border border-white/10 transform cursor-pointer flex-1 max-w-[200px] pointer-events-auto rotate-[-3deg]"
                 >
-                  <div className="relative aspect-square w-full bg-gray-200 overflow-hidden">
+                  <div className="relative aspect-square w-full bg-black overflow-hidden">
                     <Image src="/1.png" alt="Life 1" fill className="object-cover filter grayscale hover:grayscale-0 transition-all duration-500" />
                   </div>
-                  <p className="font-mono mt-1 text-center text-gray-700 text-lg font-bold uppercase tracking-widest">BEM</p>
+                  <p className="font-mono mt-1 text-center text-gray-300 text-lg font-bold uppercase tracking-widest">BEM</p>
                 </motion.div>
 
                 {/* Polaroid 2 */}
@@ -155,12 +155,12 @@ export default function AboutScrapbook() {
                   viewport={{ once: true }}
                   transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
                   whileHover={{ scale: 1.05, rotate: 0, zIndex: 50 }}
-                  className="bg-white p-2 pb-8 md:p-3 md:pb-10 shadow-xl border border-gray-200 transform cursor-pointer flex-1 max-w-[210px] pointer-events-auto rotate-[2deg] -mt-6"
+                  className="bg-[#1A1A1A] p-2 pb-8 md:p-3 md:pb-10 shadow-xl border border-white/10 transform cursor-pointer flex-1 max-w-[210px] pointer-events-auto rotate-[2deg] -mt-6"
                 >
-                  <div className="relative aspect-square w-full bg-gray-200 overflow-hidden">
+                  <div className="relative aspect-square w-full bg-black overflow-hidden">
                     <Image src="/2.png" alt="Life 2" fill className="object-cover filter sepia hover:sepia-0 transition-all duration-500" />
                   </div>
-                  <p className="font-mono mt-2 text-center text-gray-700 text-xl font-bold uppercase tracking-widest">HIMTI</p>
+                  <p className="font-mono mt-2 text-center text-gray-300 text-xl font-bold uppercase tracking-widest">HIMTI</p>
                 </motion.div>
 
                 {/* Polaroid 3 */}
@@ -170,12 +170,12 @@ export default function AboutScrapbook() {
                   viewport={{ once: true }}
                   transition={{ type: "spring", stiffness: 100, delay: 0.3 }}
                   whileHover={{ scale: 1.05, rotate: 0, zIndex: 50 }}
-                  className="bg-white p-2 pb-6 md:p-3 md:pb-8 shadow-xl border border-gray-200 transform cursor-pointer flex-1 max-w-[200px] pointer-events-auto rotate-[-2deg]"
+                  className="bg-[#1A1A1A] p-2 pb-6 md:p-3 md:pb-8 shadow-xl border border-white/10 transform cursor-pointer flex-1 max-w-[200px] pointer-events-auto rotate-[-2deg]"
                 >
-                  <div className="relative aspect-square w-full bg-gray-200 overflow-hidden">
+                  <div className="relative aspect-square w-full bg-black overflow-hidden">
                     <Image src="/3.png" alt="Life 3" fill className="object-cover filter brightness-75 hover:brightness-100 transition-all duration-500" />
                   </div>
-                  <p className="font-mono mt-1 text-center text-gray-700 text-lg font-bold uppercase tracking-widest">ME</p>
+                  <p className="font-mono mt-1 text-center text-gray-300 text-lg font-bold uppercase tracking-widest">ME</p>
                 </motion.div>
 
               </div>
@@ -186,28 +186,28 @@ export default function AboutScrapbook() {
             <div className="md:w-[25%] flex flex-col gap-6">
               
               <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-bold border-b border-gray-300 pb-1">Studies <span className="text-[#E74C3C] text-[10px] align-top font-normal ml-1">ID/EN</span></h3>
+                <h3 className="text-xl font-bold border-b border-white/20 pb-1 text-white">Studies <span className="text-gray-500 text-[10px] align-top font-normal ml-1">ID/EN</span></h3>
                 <div className="flex gap-2 items-baseline">
-                  <span className="font-bold text-[#2c7a3f] text-sm">2024</span>
-                  <span className="text-xs font-medium">Computer Science</span>
+                  <span className="font-bold text-gray-400 text-sm">2024</span>
+                  <span className="text-xs font-medium text-gray-300">Computer Science</span>
                 </div>
               </div>
 
               <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-bold border-b border-gray-300 pb-1">Focus</h3>
-                <ul className="text-xs font-medium text-gray-800 space-y-1">
-                  <li className="flex items-center gap-2"><span className="text-[#2c7a3f] text-[10px]">▶</span> Backend Dev</li>
-                  <li className="flex items-center gap-2"><span className="text-[#2c7a3f] text-[10px]">▶</span> API Design</li>
-                  <li className="flex items-center gap-2"><span className="text-[#2c7a3f] text-[10px]">▶</span> Databases</li>
-                  <li className="flex items-center gap-2"><span className="text-[#2c7a3f] text-[10px]">▶</span> Architecture</li>
+                <h3 className="text-xl font-bold border-b border-white/20 pb-1 text-white">Focus</h3>
+                <ul className="text-xs font-medium text-gray-400 space-y-1">
+                  <li className="flex items-center gap-2"><span className="text-gray-500 text-[10px]">▶</span> Backend Dev</li>
+                  <li className="flex items-center gap-2"><span className="text-gray-500 text-[10px]">▶</span> API Design</li>
+                  <li className="flex items-center gap-2"><span className="text-gray-500 text-[10px]">▶</span> Databases</li>
+                  <li className="flex items-center gap-2"><span className="text-gray-500 text-[10px]">▶</span> Architecture</li>
                 </ul>
               </div>
 
               <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-bold border-b border-gray-300 pb-1">Tools</h3>
+                <h3 className="text-xl font-bold border-b border-white/20 pb-1 text-white">Tools</h3>
                 <div className="flex flex-wrap gap-1.5 mt-1">
                   {['Laravel', 'PHP', 'NodeJS', 'NextJS', 'MySQL', 'Postgres', 'Git', 'Docker'].map((tool, idx) => (
-                    <span key={idx} className="bg-[#2c3e50] text-white text-[10px] px-1.5 py-0.5 rounded shadow-sm">
+                    <span key={idx} className="bg-white/10 text-gray-300 text-[10px] px-1.5 py-0.5 rounded shadow-sm border border-white/5">
                       {tool}
                     </span>
                   ))}

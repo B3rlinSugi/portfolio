@@ -37,7 +37,7 @@ import ContactSectionMinimalist from "@/components/v2/contact/ContactSectionMini
 
 export default function Home() {
   return (
-    <main className="min-h-[200vh] bg-[#0A0A0A] text-gray-900 selection:bg-[#D4AF37]/30 overflow-hidden">
+    <main className="min-h-[200vh] bg-[#121212] text-gray-100 selection:bg-gray-700/50 overflow-hidden">
       <LiquidNavbar />
       
       <HeroCinematic />

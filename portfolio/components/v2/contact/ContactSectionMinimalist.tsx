@@ -7,7 +7,7 @@ export default function ContactSectionMinimalist() {
   return (
     <footer 
       id="contact" 
-      className="w-full bg-[#0A0A0A] pt-40 pb-12 px-6 md:px-16 font-sans text-gray-400 selection:bg-gray-800 selection:text-white relative z-20"
+      className="w-full bg-[#121212] pt-40 pb-12 px-6 md:px-16 font-sans text-gray-400 selection:bg-gray-800 selection:text-white relative z-20"
     >
       
       {/* Garis Pemisah Super Tipis & Elegan */}
