@@ -18,10 +18,11 @@ export const metadata: Metadata = {
   keywords: ["Backend Developer", "REST API", "Laravel", "Node.js", "Spring Boot", "Portfolio", "Berlin Sugiyanto"],
   authors: [{ name: "Berlin Sugiyanto" }],
   creator: "Berlin Sugiyanto",
+  metadataBase: new URL("https://berlinsugi.vercel.app"),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://berlinsugi.vercel.app",
+    url: "/",
     siteName: "Berlin Sugiyanto Portfolio",
     title: "Berlin Sugiyanto | Backend Developer",
     description: "Backend Developer focused on APIs, authentication systems, database design, and applications that solve real problems.",
@@ -45,11 +46,10 @@ export const metadata: Metadata = {
   },
 };
 
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+
 import { LanguageProvider } from "@/components/providers/LanguageContext";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({
   children,
@@ -62,19 +62,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-white dark:bg-[#050505] text-neutral-900 dark:text-white font-sans transition-colors duration-500">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+      <body suppressHydrationWarning className="min-h-full flex flex-col bg-white dark:bg-[#050505] text-neutral-900 dark:text-white font-sans transition-colors duration-500">
           <LanguageProvider>
-            <Navbar />
             {children}
-            <Footer />
           </LanguageProvider>
-        </ThemeProvider>
         <Analytics />
       </body>
     </html>
