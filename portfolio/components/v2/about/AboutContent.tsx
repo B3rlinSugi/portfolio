@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Quote } from "lucide-react";
 
-const containerVariants = {
+const containerVariants: any = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -14,7 +14,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: any = {
   hidden: { opacity: 0, y: 24 },
   visible: { 
     opacity: 1, 
@@ -23,7 +23,7 @@ const itemVariants = {
   }
 };
 
-const quoteVariants = {
+const quoteVariants: any = {
   hidden: { opacity: 0, x: -30 },
   visible: { 
     opacity: 1, 

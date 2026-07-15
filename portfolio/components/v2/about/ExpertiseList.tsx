@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Server, Database, Key, ShieldCheck } from "lucide-react";
 
-const containerVariants = {
+const containerVariants: any = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -14,7 +14,7 @@ const containerVariants = {
   }
 };
 
-const cardVariants = {
+const cardVariants: any = {
   hidden: { opacity: 0, x: 20 },
   visible: { 
     opacity: 1, 

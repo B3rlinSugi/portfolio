@@ -213,6 +213,27 @@ export default function LiquidNavbar() {
     };
   }, [globalMouseX, globalMouseY]);
 
+  // Scroll Spy / Intersection Observer for sections
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTab(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-40% 0px -60% 0px" } // Triggers when section reaches top 40% of the screen
+    );
+
+    navItems.forEach((item) => {
+      const el = document.getElementById(item.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   // Scroll Behavior
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -252,7 +273,13 @@ export default function LiquidNavbar() {
       <MagneticItem
         key={item.id}
         isActive={activeTab === item.id}
-        onClick={() => setActiveTab(item.id)}
+        onClick={() => {
+          setActiveTab(item.id);
+          const element = document.getElementById(item.id);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }}
         onMouseEnter={() => setHoveredTab(item.id)}
         globalMouseX={globalMouseX}
         globalMouseY={globalMouseY}

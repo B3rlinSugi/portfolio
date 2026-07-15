@@ -3,41 +3,49 @@
 import { motion } from "framer-motion";
 
 const categorizedIcons = {
-  "Core Backend": [
-    { name: "Python", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
+  "Languages & Runtimes": [
+    { name: "PHP", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
+    { name: "Java", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
     { name: "Node.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
-    { name: "Django", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg" },
-    { name: "Express", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" }
-  ],
-  "Frontend UI": [
-    { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
-    { name: "Next.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
-    { name: "Tailwind CSS", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
     { name: "TypeScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
-    { name: "JavaScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
-    { name: "HTML5", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" },
-    { name: "CSS3", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" },
-    { name: "Figma", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" }
+    { name: "JavaScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" }
   ],
-  "Data Storage": [
+  "Frameworks & Libraries": [
+    { name: "Laravel", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" },
+    { name: "Spring Boot", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" },
+    { name: "Next.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
+    { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+    { name: "Tailwind CSS", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
+    { name: "Framer Motion", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/framermotion/framermotion-original.svg" }
+  ],
+  "Databases & ORM": [
+    { name: "Oracle", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oracle/oracle-original.svg" },
+    { name: "SQL Server", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" },
     { name: "PostgreSQL", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" },
     { name: "MySQL", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" },
-    { name: "MongoDB", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" },
-    { name: "Redis", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" }
+    { name: "Supabase", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
+    { name: "Prisma", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prisma/prisma-original.svg" },
+    { name: "Redis", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-plain.svg" }
   ],
   "DevOps & Tools": [
-    { name: "Docker", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
-    { name: "AWS", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
     { name: "Linux", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" },
-    { name: "Ubuntu", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/ubuntu/ubuntu-plain.svg" },
-    { name: "Nginx", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg" },
     { name: "Bash", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg" },
+    { name: "Vercel", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" },
     { name: "Git", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
-    { name: "GitHub", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" }
+    { name: "GitHub", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" },
+    { name: "Postman", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
+    { name: "Composer", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/composer/composer-original.svg" },
+    { name: "ESLint", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/eslint/eslint-original.svg" }
   ]
 };
 
-const containerVariants = {
+const otherSkills = [
+  "SDLC", "System Analysis & Design", "REST API", "MVC Pattern", "Object-Oriented Programming (OOP)", "Clean Code", 
+  "JWT / NextAuth", "RBAC / bcrypt", "Zustand", "Eloquent ORM", "Migrations", 
+  "Chart.js", "PDF Gen", "Maven", "PDO"
+];
+
+const containerVariants: any = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -45,7 +53,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: any = {
   hidden: { opacity: 0, scale: 0.5, y: 10 },
   show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 350, damping: 20 } }
 };
@@ -62,12 +70,12 @@ export default function SkillsSection() {
         
         {/* Header Layout (More compact) */}
         <div className="text-center md:text-left mb-10 md:mb-12">
-          <p className="font-mono text-xs md:text-sm tracking-[0.2em] text-gray-500 mb-2 font-bold">THE ARSENAL</p>
+          <p className="font-mono text-xs md:text-sm tracking-[0.2em] text-blue-500 mb-2 font-bold uppercase">EXPERTISE</p>
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-4">
-            Bookshelf.
+            TECH STACK.
           </h2>
           <p className="text-gray-400 max-w-2xl text-xs md:text-sm font-medium leading-relaxed">
-            A comprehensive collection of the frameworks, languages, and tools that power my engineering workflow, neatly categorized on their respective shelves.
+            An overview of the programming languages, frameworks, databases, and tools I use to build robust, scalable, and high-performance applications.
           </p>
         </div>
 
@@ -129,6 +137,23 @@ export default function SkillsSection() {
 
             </motion.div>
           ))}
+        </div>
+
+        {/* Other Skills & Concepts (Text Badges) */}
+        <div className="mt-16 pt-12 border-t border-white/5">
+          <div className="flex items-center gap-4 mb-6">
+            <h3 className="text-xl font-bold text-white uppercase tracking-wider">Other Skills & Concepts</h3>
+          </div>
+          <div className="flex flex-wrap gap-2 md:gap-3">
+            {otherSkills.map((skill, idx) => (
+              <span 
+                key={idx}
+                className="px-4 py-2 bg-white/5 border border-white/10 text-gray-300 rounded-lg text-xs md:text-sm font-semibold tracking-wide hover:bg-white/10 hover:text-white transition-colors cursor-default"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
         </div>
 
       </div>

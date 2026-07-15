@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { FaPhp, FaLaravel, FaJava, FaReact } from "react-icons/fa";
+import { SiSpringboot, SiMysql, SiTypescript } from "react-icons/si";
 
 export default function HeroCinematic() {
   return (
@@ -29,35 +31,56 @@ export default function HeroCinematic() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 2, ease: "easeOut" }}
-          className="absolute z-10 w-full text-center select-none flex justify-center"
+          className="absolute z-10 w-full text-center select-none flex flex-col justify-center items-center"
         >
-          <h1 className="text-[22vw] leading-none font-black text-white/5 tracking-tighter uppercase whitespace-nowrap drop-shadow-2xl">
-            BACKEND
+          <h1 className="text-[12vw] leading-[0.8] font-black tracking-tighter uppercase whitespace-nowrap drop-shadow-2xl bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-white/5 text-transparent bg-clip-text">
+            FULL-STACK<br/>WEB DEVELOPER
           </h1>
         </motion.div>
 
         {/* Floating Typography: Top Left */}
         <div className="absolute top-28 left-8 lg:top-32 lg:left-12 z-30 flex flex-col gap-1 hidden md:flex">
           <h2 className="text-white font-bold text-xl lg:text-2xl tracking-widest uppercase">Berlin Sugiyanto</h2>
-          <p className="text-gray-400 font-light text-xs lg:text-sm tracking-[0.2em] uppercase">Logic & Layers</p>
+          <p className="text-gray-400 font-light text-xs lg:text-sm tracking-[0.2em]">WEB SYSTEMS & APIs</p>
         </div>
 
         {/* Floating Typography: Top Right */}
         <div className="absolute top-28 right-8 lg:top-32 lg:right-12 z-30 text-right hidden md:block">
-          <p className="text-gray-400 font-light text-xs lg:text-sm tracking-[0.1em]">Design that speaks.</p>
-          <p className="text-gray-400 font-light text-xs lg:text-sm tracking-[0.1em]">Systems that scale.</p>
+          <p className="text-gray-400 font-light text-xs lg:text-sm tracking-[0.1em] uppercase">Logic that connects.</p>
+          <p className="text-gray-400 font-light text-xs lg:text-sm tracking-[0.1em] uppercase">Systems that scale.</p>
         </div>
 
-        {/* Floating Typography: Bottom Left */}
-        <div className="absolute bottom-8 left-8 lg:bottom-12 lg:left-12 z-30 max-w-sm lg:max-w-xl hidden md:block">
-          <p className="text-gray-400/80 text-xs lg:text-sm leading-relaxed font-light">
-            Between creativity and logic lies the space where I code. From building robust APIs to shaping digital presence, my work revolves around clarity, structure, and seamless integrations. I help businesses express their data with precision and scalability.
-          </p>
+        {/* Floating Typography: Bottom Left (Tech Stack Logos) */}
+        <div className="absolute bottom-8 left-8 lg:bottom-12 lg:left-12 z-30 hidden md:block">
+          <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-4 font-bold">Core Stack</p>
+          <div className="flex flex-wrap gap-4 items-center">
+            <div className="group relative">
+              <FaPhp className="w-8 h-8 text-gray-400 hover:text-[#777BB4] transition-colors cursor-pointer" />
+            </div>
+            <div className="group relative">
+              <FaLaravel className="w-8 h-8 text-gray-400 hover:text-[#FF2D20] transition-colors cursor-pointer" />
+            </div>
+            <div className="group relative">
+              <FaJava className="w-8 h-8 text-gray-400 hover:text-[#007396] transition-colors cursor-pointer" />
+            </div>
+            <div className="group relative">
+              <SiSpringboot className="w-8 h-8 text-gray-400 hover:text-[#6DB33F] transition-colors cursor-pointer" />
+            </div>
+            <div className="group relative">
+              <SiMysql className="w-8 h-8 text-gray-400 hover:text-[#4479A1] transition-colors cursor-pointer" />
+            </div>
+            <div className="group relative">
+              <SiTypescript className="w-7 h-7 text-gray-400 hover:text-[#3178C6] transition-colors cursor-pointer" />
+            </div>
+            <div className="group relative">
+              <FaReact className="w-8 h-8 text-gray-400 hover:text-[#61DAFB] transition-colors cursor-pointer" />
+            </div>
+          </div>
         </div>
 
         {/* Floating Typography: Bottom Right */}
         <div className="absolute bottom-8 right-8 lg:bottom-12 lg:right-12 z-30 text-right hidden md:block">
-          <h3 className="text-white font-bold text-2xl lg:text-5xl tracking-tighter uppercase">SOFTWARE ENGINEER</h3>
+          <h3 className="font-bold text-2xl lg:text-5xl tracking-tighter uppercase bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text drop-shadow-sm">SOFTWARE ENGINEER</h3>
         </div>
 
         {/* Portrait Subject */}
@@ -85,12 +108,16 @@ export default function HeroCinematic() {
         </motion.div>
 
         {/* Mobile View Typography Fallbacks */}
-        <div className="absolute bottom-6 w-full px-6 flex flex-col gap-2 z-30 md:hidden items-center text-center">
+        <div className="absolute bottom-6 w-full px-6 flex flex-col gap-3 z-30 md:hidden items-center text-center">
           <h2 className="text-white font-bold text-lg tracking-widest uppercase">Berlin Sugiyanto</h2>
-          <h3 className="text-gray-200 font-bold text-2xl tracking-tighter uppercase">Software Engineer</h3>
-          <p className="text-gray-400 text-[10px] leading-relaxed font-light mt-2 max-w-[280px]">
-            Building robust APIs, shaping seamless integrations, and writing code with precision.
-          </p>
+          <h3 className="font-bold text-2xl tracking-tighter uppercase bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">Software Engineer</h3>
+          <div className="flex flex-wrap justify-center gap-3 mt-1">
+            <FaPhp className="w-5 h-5 text-gray-400" />
+            <FaLaravel className="w-5 h-5 text-gray-400" />
+            <SiSpringboot className="w-5 h-5 text-gray-400" />
+            <SiMysql className="w-5 h-5 text-gray-400" />
+            <FaReact className="w-5 h-5 text-gray-400" />
+          </div>
         </div>
 
       </div>

@@ -6,7 +6,7 @@ import { FaGithub, FaLaravel, FaPhp } from "react-icons/fa";
 import { SiNextdotjs, SiPostgresql, SiMysql } from "react-icons/si";
 import { AuroraText } from "@/components/ui/aurora-text";
 
-const containerVariants = {
+const containerVariants: any = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -17,7 +17,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: any = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 

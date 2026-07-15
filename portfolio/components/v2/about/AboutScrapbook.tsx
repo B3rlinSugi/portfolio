@@ -22,8 +22,8 @@ export default function AboutScrapbook() {
         <filter id="sticker-outline">
           {/* Dilate the alpha channel to create a thick outline */}
           <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="12" />
-          {/* Fill the dilated area with dark gray */}
-          <feFlood floodColor="#2A2A2A" floodOpacity="1" result="RED" />
+          {/* Fill the dilated area with gradient/color */}
+          <feFlood floodColor="#4F46E5" floodOpacity="1" result="RED" />
           {/* Clip the red to the dilated alpha */}
           <feComposite in="RED" in2="DILATED" operator="in" result="OUTLINE" />
           {/* Merge the red outline behind the original image */}
@@ -53,8 +53,8 @@ export default function AboutScrapbook() {
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
             className="relative"
           >
-            {/* Main Portrait with SVG Sticker Filter */}
-            <div className="relative w-[320px] h-[400px] md:w-[420px] md:h-[500px] z-10" style={{ filter: 'url(#sticker-outline) drop-shadow(10px 10px 15px rgba(0,0,0,0.15))' }}>
+            {/* Main Portrait with SVG Sticker Filter & Glow */}
+            <div className="relative w-[320px] h-[400px] md:w-[420px] md:h-[500px] z-10" style={{ filter: 'url(#sticker-outline) drop-shadow(0px 0px 30px rgba(139,92,246,0.6))' }}>
               <Image 
                 src="/sugi.png" 
                 alt="Berlin Sugiyanto"
@@ -65,8 +65,8 @@ export default function AboutScrapbook() {
             </div>
 
             {/* Floating Tag */}
-            <div className="absolute top-[60%] -right-4 md:-right-6 bg-[#1A1A1A] border border-white/10 shadow-sm px-4 py-2 rotate-[-8deg] z-30">
-              <span className="font-mono text-sm tracking-widest font-bold text-gray-300">MADE BY BERLIN</span>
+            <div className="absolute top-[60%] -right-4 md:-right-6 bg-white shadow-md px-4 py-2 rotate-[-8deg] z-30">
+              <span className="font-mono text-sm tracking-widest font-black text-black">MADE BY BERLIN</span>
             </div>
           </motion.div>
         </div>
@@ -77,11 +77,11 @@ export default function AboutScrapbook() {
           {/* Main Headline */}
           <div className="relative w-max mb-2">
             <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white border-b border-white/20 pb-2 inline-block">
-              Hello! I'm <span className="text-gray-400">Berlin</span>
+              Hello! I'm <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">Berlin</span>
             </h2>
             {/* Stamp sticker */}
-            <div className="absolute -top-6 -right-6 md:-right-10 bg-[#1A1A1A] border border-white/10 rotate-12 px-2 py-1 shadow-sm">
-              <span className="font-mono text-xs text-gray-400">ID / YOG</span>
+            <div className="absolute -top-6 -right-6 md:-right-10 bg-white rotate-12 px-2 py-1 shadow-md">
+              <span className="font-mono text-xs font-bold text-black">ID / BKS</span>
             </div>
           </div>
 
@@ -97,10 +97,10 @@ export default function AboutScrapbook() {
                 {/* Column 1: Intro */}
                 <div className="md:w-[60%] flex flex-col gap-4 text-[13px] md:text-sm font-medium text-gray-400 leading-snug tracking-tight pr-0 lg:pr-4">
                   <p>
-                    It doesn't matter if I'm at my desk or out exploring; I'm always thinking about building something. I <span className="font-bold text-white">love</span> coding, designing, reading, brewing coffee, and occasionally capturing moments through my lens.
+                    I am a <span className="font-bold text-white">Full-Stack Web Developer</span> who loves solving complex problems. I enjoy designing architectures from the database layer all the way up to the frontend UI, ensuring every piece of the application is scalable, maintainable, and seamlessly connected.
                   </p>
                   <p>
-                    I am a Software Engineer and Backend Specialist. I dedicate myself to creating robust APIs, and currently, I work passionately as a <span className="font-bold text-white">Backend Developer</span> crafting seamless integrations and scalable architectures for various impactful projects.
+                    Currently, I focus on building data-driven systems and robust RESTful APIs. I work passionately utilizing my skills in <span className="font-bold text-white">PHP, Java,</span> and modern web frameworks to bring impactful projects to life.
                   </p>
                 </div>
 
@@ -110,75 +110,27 @@ export default function AboutScrapbook() {
                   
                   <div className="flex flex-col gap-1">
                     <div className="flex items-baseline gap-2">
-                      <span className="font-bold text-gray-400">2024</span>
-                      <span className="font-bold text-white">Backend Dev</span>
+                      <span className="font-bold text-blue-400">24-Now</span>
+                      <span className="font-bold text-white">Freelance Web Dev</span>
                     </div>
-                    <p className="text-xs font-medium text-gray-500">Freelance / Remote</p>
+                    <p className="text-xs font-medium text-gray-300">Skincare Stock & Prime Property</p>
                     <p className="text-[11px] text-gray-400 mt-1 font-medium leading-relaxed">
-                      Building scalable backend architectures using Laravel, PostgreSQL, and Express for diverse clients.
+                      Building full-stack platforms and participating in open-source developer bounties.
                     </p>
                   </div>
 
                   <div className="flex flex-col gap-1 mt-2">
                     <div className="flex items-baseline gap-2">
-                      <span className="font-bold text-gray-400">2023</span>
-                      <span className="font-bold text-white">Fullstack Web</span>
+                      <span className="font-bold text-blue-400">2021-24</span>
+                      <span className="font-bold text-white">Minister of Sospol</span>
                     </div>
-                    <p className="text-xs font-medium text-gray-500">Tech Agency</p>
+                    <p className="text-xs font-medium text-gray-300">BEM Universitas Gunadarma</p>
                   </div>
                 </div>
 
               </div>
 
-              {/* Polaroids Row Underneath Intro & Experience */}
-              <div className="flex justify-between items-end gap-2 md:gap-4 mt-6 pt-4 pointer-events-none z-30">
-                
-                {/* Polaroid 1 */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 50, rotate: -5 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: -3 }}
-                  viewport={{ once: true }}
-                  transition={{ type: "spring", stiffness: 100, delay: 0.1 }}
-                  whileHover={{ scale: 1.05, rotate: 0, zIndex: 50 }}
-                  className="bg-[#1A1A1A] p-2 pb-6 md:p-3 md:pb-8 shadow-xl border border-white/10 transform cursor-pointer flex-1 max-w-[200px] pointer-events-auto rotate-[-3deg]"
-                >
-                  <div className="relative aspect-square w-full bg-black overflow-hidden">
-                    <Image src="/1.png" alt="Life 1" fill className="object-cover filter grayscale hover:grayscale-0 transition-all duration-500" />
-                  </div>
-                  <p className="font-mono mt-1 text-center text-gray-300 text-lg font-bold uppercase tracking-widest">BEM</p>
-                </motion.div>
-
-                {/* Polaroid 2 */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 50, rotate: 0 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: 2 }}
-                  viewport={{ once: true }}
-                  transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
-                  whileHover={{ scale: 1.05, rotate: 0, zIndex: 50 }}
-                  className="bg-[#1A1A1A] p-2 pb-8 md:p-3 md:pb-10 shadow-xl border border-white/10 transform cursor-pointer flex-1 max-w-[210px] pointer-events-auto rotate-[2deg] -mt-6"
-                >
-                  <div className="relative aspect-square w-full bg-black overflow-hidden">
-                    <Image src="/2.png" alt="Life 2" fill className="object-cover filter sepia hover:sepia-0 transition-all duration-500" />
-                  </div>
-                  <p className="font-mono mt-2 text-center text-gray-300 text-xl font-bold uppercase tracking-widest">HIMTI</p>
-                </motion.div>
-
-                {/* Polaroid 3 */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 50, rotate: 6 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: -2 }}
-                  viewport={{ once: true }}
-                  transition={{ type: "spring", stiffness: 100, delay: 0.3 }}
-                  whileHover={{ scale: 1.05, rotate: 0, zIndex: 50 }}
-                  className="bg-[#1A1A1A] p-2 pb-6 md:p-3 md:pb-8 shadow-xl border border-white/10 transform cursor-pointer flex-1 max-w-[200px] pointer-events-auto rotate-[-2deg]"
-                >
-                  <div className="relative aspect-square w-full bg-black overflow-hidden">
-                    <Image src="/3.png" alt="Life 3" fill className="object-cover filter brightness-75 hover:brightness-100 transition-all duration-500" />
-                  </div>
-                  <p className="font-mono mt-1 text-center text-gray-300 text-lg font-bold uppercase tracking-widest">ME</p>
-                </motion.div>
-
-              </div>
+              {/* Polaroids Row (Removed per user request) */}
 
             </div> {/* End Left Area */}
 
@@ -186,27 +138,27 @@ export default function AboutScrapbook() {
             <div className="md:w-[25%] flex flex-col gap-6">
               
               <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-bold border-b border-white/20 pb-1 text-white">Studies <span className="text-gray-500 text-[10px] align-top font-normal ml-1">ID/EN</span></h3>
+                <h3 className="text-xl font-bold border-b border-white/20 pb-1 text-white">Studies <span className="text-gray-500 text-[10px] align-top font-normal ml-1">ID/BKS</span></h3>
                 <div className="flex gap-2 items-baseline">
-                  <span className="font-bold text-gray-400 text-sm">2024</span>
-                  <span className="text-xs font-medium text-gray-300">Computer Science</span>
+                  <span className="font-bold text-blue-400 text-sm">21-26</span>
+                  <span className="text-xs font-medium text-gray-300">Universitas Gunadarma</span>
                 </div>
+                <p className="text-xs font-medium text-gray-300">Informatics Engineering</p>
               </div>
 
               <div className="flex flex-col gap-2">
                 <h3 className="text-xl font-bold border-b border-white/20 pb-1 text-white">Focus</h3>
-                <ul className="text-xs font-medium text-gray-400 space-y-1">
-                  <li className="flex items-center gap-2"><span className="text-gray-500 text-[10px]">▶</span> Backend Dev</li>
-                  <li className="flex items-center gap-2"><span className="text-gray-500 text-[10px]">▶</span> API Design</li>
-                  <li className="flex items-center gap-2"><span className="text-gray-500 text-[10px]">▶</span> Databases</li>
-                  <li className="flex items-center gap-2"><span className="text-gray-500 text-[10px]">▶</span> Architecture</li>
+                <ul className="text-xs font-medium text-gray-300 space-y-1">
+                  <li className="flex items-center gap-2"><span className="text-purple-400 text-[10px]">▶</span> Full-Stack Web Dev</li>
+                  <li className="flex items-center gap-2"><span className="text-purple-400 text-[10px]">▶</span> Backend Architecture</li>
+                  <li className="flex items-center gap-2"><span className="text-purple-400 text-[10px]">▶</span> RESTful APIs</li>
                 </ul>
               </div>
 
               <div className="flex flex-col gap-2">
                 <h3 className="text-xl font-bold border-b border-white/20 pb-1 text-white">Tools</h3>
                 <div className="flex flex-wrap gap-1.5 mt-1">
-                  {['Laravel', 'PHP', 'NodeJS', 'NextJS', 'MySQL', 'Postgres', 'Git', 'Docker'].map((tool, idx) => (
+                  {['PHP', 'PostgreSQL', 'Laravel', 'Spring Boot', 'MySQL', 'React', 'TS', 'Tailwind'].map((tool, idx) => (
                     <span key={idx} className="bg-white/10 text-gray-300 text-[10px] px-1.5 py-0.5 rounded shadow-sm border border-white/5">
                       {tool}
                     </span>

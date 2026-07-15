@@ -6,42 +6,42 @@ import { motion, AnimatePresence } from "framer-motion";
 const experiences = [
   {
     id: 1,
-    year: "2024 - Present",
-    role: "Senior Software Engineer",
-    company: "TechCorp Global",
-    description: "Memimpin tim frontend dalam migrasi arsitektur dari monolith ke micro-frontends. Meningkatkan performa aplikasi secara keseluruhan hingga 40% dan mengurangi waktu muat halaman.",
+    year: "Jul 2026 - Present",
+    role: "Freelance Full-Stack Developer",
+    company: "Skincare Stock",
+    description: "Developed a comprehensive web application for managing skincare inventory, sales, and user transactions. Designed the system from scratch, ensuring scalability and a beautiful user interface.",
     achievements: [
-      "Mengurangi waktu muat awal (TTI) dari 4.2s menjadi 1.1s.",
-      "Mengimplementasikan CI/CD pipelines dengan GitHub Actions yang mempercepat rilis hingga 3x lipat.",
-      "Membimbing 3 junior developer hingga dipromosikan."
+      "Built a robust inventory tracking system that minimizes stock discrepancies.",
+      "Implemented secure user authentication and role-based access control (RBAC).",
+      "Optimized backend queries to ensure lightning-fast load times for transaction history."
     ],
-    tech: ["React", "Next.js", "TypeScript", "Tailwind CSS"]
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "PostgreSQL", "Prisma"]
   },
   {
     id: 2,
-    year: "2022 - 2024",
-    role: "Fullstack Web Developer",
-    company: "StartupXYZ",
-    description: "Mengembangkan RESTful API yang melayani lebih dari 100.000 pengguna aktif bulanan. Merancang dan mengoptimalkan skema database relasional untuk menekan biaya server.",
+    year: "May 2026 - Jun 2026",
+    role: "Freelance Full-Stack Developer",
+    company: "Prime Property",
+    description: "Engineered a full-stack property management platform designed to help real estate agencies manage property listings, agent assignments, and client inquiries efficiently.",
     achievements: [
-      "Menurunkan biaya server AWS sebesar $500/bulan dengan optimalisasi kueri PostgreSQL.",
-      "Membangun fitur real-time chat menggunakan WebSockets dan Redis.",
-      "Integrasi dengan sistem pembayaran pihak ketiga (Payment Gateway)."
+      "Developed advanced search filters for property listings (by location, price, and type).",
+      "Created secure agent dashboards for managing client inquiries and property updates.",
+      "Streamlined property management processes, significantly increasing lead generation."
     ],
-    tech: ["Node.js", "Express", "PostgreSQL", "Docker", "Redis"]
+    tech: ["Next.js", "React", "Node.js", "Tailwind CSS", "PostgreSQL"]
   },
   {
     id: 3,
-    year: "2021 - 2022",
-    role: "Junior Web Developer",
-    company: "Creative Agency",
-    description: "Membangun puluhan halaman pendaratan (landing pages) interaktif untuk klien korporat. Bekerja sama erat dengan tim UI/UX untuk memastikan desain yang pixel-perfect.",
+    year: "2023 - 2026",
+    role: "Kementerian / Kepala Bidang",
+    company: "BEM FTI Universitas Gunadarma",
+    description: "Served for three consecutive periods in the Student Executive Board (BEM FTI), progressively taking on higher leadership responsibilities within the Department of Social and Political Affairs.",
     achievements: [
-      "Menyelesaikan 15+ proyek website klien tepat waktu dengan tingkat kepuasan 98%.",
-      "Membuat sistem komponen UI yang dapat digunakan ulang, memotong waktu desain sebesar 30%.",
-      "Mengimplementasikan praktik SEO terbaik (Skor Lighthouse 95+)."
+      "2025-2026: Kementerian/Kepala Bidang Sosial & Politik — Directed overarching social initiatives and political advocacy.",
+      "2024-2025: Kepala Departemen Sosial Masyarakat — Led a dedicated team to execute impactful community service programs.",
+      "2023-2024: Staff Departemen Sosial Masyarakat — Organized and facilitated various student outreach events."
     ],
-    tech: ["HTML/CSS", "JavaScript", "Figma", "WordPress"]
+    tech: ["Leadership", "Project Management", "Public Speaking", "Event Organizing"]
   }
 ];
 
@@ -60,13 +60,13 @@ export default function ExperienceSection() {
         {/* Intro Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 md:mb-24">
           <div>
-            <p className="font-mono text-sm tracking-[0.2em] text-gray-500 mb-4 font-bold">CHAPTER II</p>
+            <p className="font-mono text-sm tracking-[0.2em] text-blue-500 mb-4 font-bold uppercase">CAREER</p>
             <h2 className="text-5xl md:text-7xl lg:text-[6rem] font-black uppercase tracking-tighter text-white leading-none">
-              History.
+              EXPERIENCE.
             </h2>
           </div>
           <p className="text-gray-400 max-w-sm text-sm md:text-base font-medium leading-relaxed pb-2">
-            A minimalist archive of my professional footprint. Click on any role to expand its details.
+            A timeline of my professional journey and freelance projects. Click on any role to expand its details.
           </p>
         </div>
 

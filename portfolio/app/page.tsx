@@ -5,6 +5,7 @@ import HeroCinematic from "@/components/v2/hero/HeroCinematic";
 import AboutScrapbook from "@/components/v2/about/AboutScrapbook";
 import ProjectsShowcase from "@/components/v2/projects/ProjectsShowcase";
 import SkillsSection from "@/components/v2/skills/SkillsSection";
+import GithubSectionGrid from "@/components/v2/github/GithubSectionGrid";
 import ExperienceSection from "@/components/v2/experience/ExperienceSection";
 import CertificatesSection from "@/components/v2/certificates/CertificatesSection";
 import CertificatesSectionBento from "@/components/v2/certificates/CertificatesSectionBento";
@@ -34,27 +35,46 @@ import ContactSectionForm from "@/components/v2/contact/ContactSectionForm";
 import ContactSectionExpanding from "@/components/v2/contact/ContactSectionExpanding";
 import ContactSection3DCards from "@/components/v2/contact/ContactSection3DCards";
 import ContactSectionMinimalist from "@/components/v2/contact/ContactSectionMinimalist";
+import { SplashScreen } from "@/components/v2/SplashScreen";
+
 
 export default function Home() {
   return (
-    <main className="min-h-[200vh] bg-[#121212] text-gray-100 selection:bg-gray-700/50 overflow-hidden">
+    <main className="min-h-[200vh] bg-[#121212] text-gray-100 selection:bg-gray-700/50 overflow-hidden relative">
+      <SplashScreen />
       <LiquidNavbar />
       
-      <HeroCinematic />
+      <section id="home">
+        <HeroCinematic />
+      </section>
 
-      <AboutScrapbook />
+      <section id="about">
+        <AboutScrapbook />
+      </section>
 
-      <ProjectsShowcase />
+      <section id="projects">
+        <ProjectsShowcase />
+      </section>
 
-      <SkillsSection />
+      <section id="skills">
+        <SkillsSection />
+      </section>
 
-      <ExperienceSection />
+      <section id="github">
+        <GithubSectionGrid />
+      </section>
+
+      <section id="experience">
+        <ExperienceSection />
+      </section>
 
       {/* Opsi 1: Desain Original (Scrapbook/Pin) */}
       {/* <CertificatesSection /> */}
 
-      {/* Opsi 2: Desain Bento Grid Modern */}
-      {/* <CertificatesSectionBento /> */}
+      {/* Opsi 2: Desain Bento Grid Modern (Warna Putih) */}
+      {/* <section id="certificates">
+        <CertificatesSectionBento />
+      </section> */}
 
       {/* Opsi 3: Desain Carousel Gelap (Premium & Smooth) */}
       {/* <CertificatesSectionCarousel /> */}
@@ -102,7 +122,9 @@ export default function Home() {
       {/* <CertificatesSectionBlueprint /> */}
 
       {/* Opsi 18: Editorial Magazine (Typographic Brutalism) (Aktif saat ini) */}
-      <CertificatesSectionEditorial />
+      <section id="certificates">
+        <CertificatesSectionEditorial />
+      </section>
 
       {/* --- CONTACT SECTION --- */}
       {/* Opsi 1: The Modern Bento Card */}
@@ -133,7 +155,9 @@ export default function Home() {
       {/* <ContactSection3DCards /> */}
 
       {/* Opsi 16: The Ultra-Minimalist Footer (Aktif saat ini) */}
-      <ContactSectionMinimalist />
+      <section id="contact">
+        <ContactSectionMinimalist />
+      </section>
     </main>
   );
 }

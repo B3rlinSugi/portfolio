@@ -18,9 +18,8 @@
   --color-cyber-border: rgba(255, 255, 255, 0.08);
 }
 
-/* Base Configuration */
 :root {
-  --background: #ffffff;
+  --background: #0A0A0A;
   --foreground: #171717;
 }
 
@@ -69,9 +68,11 @@ body {
   background: #374151;
 }
 
-/* Smooth Scrolling */
+/* Smooth Scrolling & Overscroll Fix */
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
+  background-color: #0A0A0A !important;
 }
 
 @theme inline {

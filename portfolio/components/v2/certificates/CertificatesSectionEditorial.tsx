@@ -15,9 +15,10 @@ export default function CertificatesSectionEditorial() {
     // 1, 2, 3, 4: Sertifikat standar -> Kecil (1 Kolom, 1 Baris)
     if (index >= 1 && index <= 4) return "md:col-span-1 md:row-span-1";
     
-    // 5, 6: Sertifikat sisa -> Lebar (2 Kolom, 1 Baris) untuk menyeimbangkan grid bawah
-    if (index === 5 || index === 6) return "md:col-span-2 md:row-span-1";
+    // 5: Oracle -> Lebar (2 Kolom, 1 Baris) agar pas mengisi sisa ruang
+    if (index === 5) return "md:col-span-2 md:row-span-1";
     
+    // 6, 7: Standar (1 Kolom, 1 Baris) untuk melengkapi total 4 kolom di baris terakhir
     return "md:col-span-1 md:row-span-1";
   };
 
@@ -66,7 +67,7 @@ export default function CertificatesSectionEditorial() {
                 </div>
                 
                 {/* Title */}
-                <h3 className={`${isHeadline ? 'text-5xl lg:text-7xl mb-6' : 'text-2xl lg:text-3xl mb-4'} font-serif leading-none uppercase text-white group-hover:text-gray-300 transition-colors cursor-default`}>
+                <h3 className={`${isHeadline ? 'text-3xl lg:text-5xl mb-4' : 'text-2xl lg:text-3xl mb-4'} font-serif leading-tight uppercase text-white group-hover:text-gray-300 transition-colors cursor-default`}>
                   {cert.name}
                 </h3>
                 

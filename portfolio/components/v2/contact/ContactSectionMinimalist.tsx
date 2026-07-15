@@ -30,17 +30,17 @@ export default function ContactSectionMinimalist() {
            </div>
            
            {/* Branding */}
-           <div>
+            <div>
               <h2 className="text-xl md:text-2xl font-light text-white tracking-widest uppercase mb-2">
                  Berlin Sugiyanto
               </h2>
               <p className="text-sm font-light tracking-wider text-gray-500">
-                Backend Systems Engineer
+                Full-Stack Software Engineer
               </p>
            </div>
 
            <p className="text-sm leading-relaxed text-gray-500 font-light max-w-sm">
-             Designing and building robust backend architectures. Open for discussions on system scalability, clean code, and new opportunities.
+             Designing and building scalable applications, from robust backend architectures to engaging user interfaces. Open for discussions on system architecture, clean code, and new opportunities.
            </p>
 
         </div>
@@ -67,6 +67,15 @@ export default function ContactSectionMinimalist() {
                 LinkedIn
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 -translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
               </a>
+              <a 
+                href={portfolioData.discord} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group flex items-center gap-1 hover:text-white transition-colors duration-300"
+              >
+                Discord
+                <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 -translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+              </a>
            </div>
 
            {/* Grup Tautan 2 */}
@@ -86,7 +95,7 @@ export default function ContactSectionMinimalist() {
            {/* Grup Info 3 */}
            <div className="flex flex-col gap-5">
               <span className="text-gray-600 mb-2 font-bold">Location</span>
-              <span className="text-gray-400">Jakarta, ID</span>
+              <span className="text-gray-400">{portfolioData.location || "Bekasi, ID"}</span>
               <span className="text-gray-600 mt-auto pt-5 border-t border-white/5 w-max">
                 © {new Date().getFullYear()}
               </span>
