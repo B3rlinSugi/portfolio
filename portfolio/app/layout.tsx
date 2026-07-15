@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Berlin Sugiyanto | Backend Developer Portfolio",
-  description: "Backend Developer specializing in REST APIs, authentication systems, and database architecture. Explore my projects, skills, and certifications.",
-  keywords: ["Backend Developer", "REST API", "Laravel", "Node.js", "Spring Boot", "Portfolio", "Berlin Sugiyanto"],
+  title: "Berlin | Full-Stack Developer",
+  description: "Full-Stack Web Developer specializing in backend architecture, REST APIs, and modern frontend interfaces. Explore my projects and skills.",
+  keywords: ["Full-Stack Developer", "Backend Developer", "REST API", "Laravel", "React", "Next.js", "Berlin Sugiyanto"],
   authors: [{ name: "Berlin Sugiyanto" }],
   creator: "Berlin Sugiyanto",
   metadataBase: new URL("https://berlinsugi.vercel.app"),
@@ -24,21 +24,21 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     siteName: "Berlin Sugiyanto Portfolio",
-    title: "Berlin Sugiyanto | Backend Developer",
-    description: "Backend Developer focused on APIs, authentication systems, database design, and applications that solve real problems.",
+    title: "Berlin | Full-Stack Developer",
+    description: "Full-Stack Web Developer focused on APIs, database design, and beautiful digital experiences.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Berlin Sugiyanto | Backend Developer Portfolio",
+        alt: "Berlin Sugiyanto | Full-Stack Developer Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Berlin Sugiyanto | Backend Developer",
-    description: "Backend Developer focused on APIs, authentication systems, and database design.",
+    title: "Berlin | Full-Stack Developer",
+    description: "Full-Stack Web Developer focused on robust systems and modern UI.",
   },
   robots: {
     index: true,
