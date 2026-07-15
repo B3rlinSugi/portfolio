@@ -56,7 +56,7 @@ export default function AboutScrapbook() {
             {/* Main Portrait with SVG Sticker Filter & Glow */}
             <div className="relative w-[320px] h-[400px] md:w-[420px] md:h-[500px] z-10" style={{ filter: 'url(#sticker-outline) drop-shadow(0px 0px 30px rgba(139,92,246,0.6))' }}>
               <Image 
-                src="/sugi.png" 
+                src="/Sugi.png" 
                 alt="Berlin Sugiyanto"
                 fill
                 priority
