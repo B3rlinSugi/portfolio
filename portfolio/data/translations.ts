@@ -11,15 +11,15 @@ export const translations = {
     nav_blog: "Blog",
 
     // Hero
-    hero_available: "Available for Backend Opportunities",
-    hero_headline: "Building reliable<br /><span class=\"text-[#FF6B00]\">backend systems</span><br />for real-world use.",
-    hero_subheadline: "Backend Developer focused on APIs,<br class=\"hidden md:block\" />authentication systems, database design,<br class=\"hidden md:block\" />and applications that solve real problems.<br /><br />Prioritizing performance, reliability,<br class=\"hidden md:block\" />and scalable architecture.",
+    hero_available: "Available for Full-Stack Opportunities",
+    hero_headline: "Engineering robust<br /><span class=\"text-[#FF6B00]\">full-stack systems</span><br />for real-world use.",
+    hero_subheadline: "Full-Stack Software Engineer focused on seamless UIs,<br class=\"hidden md:block\" />secure APIs, and scalable database architectures.<br class=\"hidden md:block\" />Bridging the gap between beautiful design<br /><br />and powerful system performance.",
     hero_view_projects: "View Projects",
     hero_download_cv: "Download CV",
 
     // About
     about_title: "About Me",
-    about_desc: "I'm Berlin — a backend developer and Informatics graduate from Gunadarma University. I design and build REST APIs, authentication systems, and database architectures that are secure, scalable, and structured for production. I believe that great engineering deserves great design.",
+    about_desc: "I'm Berlin — a Full-Stack Software Engineer and Informatics graduate from Gunadarma University. I design and build end-to-end applications, from engaging user interfaces to secure, scalable backend architectures. I believe that great engineering deserves both a solid foundation and an exceptional user experience.",
     about_projects: "PROJECTS",
     about_years: "YEARS LEARNING",
     about_tech: "TECH STACK",
@@ -49,8 +49,8 @@ export const translations = {
 
     // Experience
     experience_title: "Professional Journey",
-    experience_headline: "Grow together, <br /><span class=\"text-[#FF6B00]\">impact forever.</span>",
-    experience_subheadline: "Every period of leadership is a stepping stone toward becoming the best version of myself, learning to serve, manage, and create meaningful impacts.",
+    experience_headline: "Building real products, <br /><span class=\"text-[#FF6B00]\">delivering real impact.</span>",
+    experience_subheadline: "From freelance client projects to organizational leadership — every experience sharpens my ability to deliver scalable software and lead collaborative teams.",
     experience_present: "Present",
 
     // Certifications
@@ -93,15 +93,15 @@ export const translations = {
     nav_blog: "Blog",
 
     // Hero
-    hero_available: "Terbuka untuk Peluang Backend",
-    hero_headline: "Membangun sistem<br /><span class=\"text-[#FF6B00]\">backend handal</span><br />untuk dunia nyata.",
-    hero_subheadline: "Backend Developer yang fokus pada API,<br class=\"hidden md:block\" />sistem autentikasi, desain database,<br class=\"hidden md:block\" />dan aplikasi yang memecahkan masalah.<br /><br />Mengutamakan performa, keandalan,<br class=\"hidden md:block\" />dan arsitektur yang skalabel.",
+    hero_available: "Terbuka untuk Peluang Full-Stack",
+    hero_headline: "Membangun sistem<br /><span class=\"text-[#FF6B00]\">full-stack handal</span><br />untuk dunia nyata.",
+    hero_subheadline: "Full-Stack Software Engineer yang fokus pada antarmuka pengguna yang mulus,<br class=\"hidden md:block\" />API yang aman, dan arsitektur database yang skalabel.<br class=\"hidden md:block\" />Menjembatani antara desain yang indah<br /><br />dan performa sistem yang kuat.",
     hero_view_projects: "Lihat Proyek",
     hero_download_cv: "Unduh CV",
 
     // About
     about_title: "Tentang Saya",
-    about_desc: "Saya Berlin — seorang backend developer dan lulusan Informatika dari Universitas Gunadarma. Saya merancang dan membangun REST API, sistem autentikasi, dan arsitektur database yang aman, skalabel, dan terstruktur untuk tahap produksi. Saya percaya bahwa teknik perangkat lunak yang hebat layak mendapatkan desain yang hebat pula.",
+    about_desc: "Saya Berlin — seorang Full-Stack Software Engineer dan lulusan Informatika dari Universitas Gunadarma. Saya merancang dan membangun aplikasi end-to-end, dari antarmuka pengguna yang menarik hingga arsitektur backend yang aman dan skalabel. Saya percaya bahwa rekayasa perangkat lunak yang hebat layak mendapatkan fondasi yang kokoh dan pengalaman pengguna yang luar biasa.",
     about_projects: "PROYEK",
     about_years: "TAHUN BELAJAR",
     about_tech: "TEKNOLOGI",
@@ -131,8 +131,8 @@ export const translations = {
 
     // Experience
     experience_title: "Perjalanan Profesional",
-    experience_headline: "Tumbuh bersama, <br /><span class=\"text-[#FF6B00]\">berdampak selamanya.</span>",
-    experience_subheadline: "Setiap masa kepemimpinan adalah batu loncatan untuk menjadi versi terbaik dari diri saya, belajar melayani, mengelola, dan menciptakan dampak yang berarti.",
+    experience_headline: "Membangun produk nyata, <br /><span class=\"text-[#FF6B00]\">memberikan dampak nyata.</span>",
+    experience_subheadline: "Dari proyek klien freelance hingga kepemimpinan organisasi — setiap pengalaman mengasah kemampuan saya dalam membangun software yang skalabel dan memimpin tim yang kolaboratif.",
     experience_present: "Sekarang",
 
     // Certifications

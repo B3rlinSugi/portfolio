@@ -2,44 +2,50 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink } from "lucide-react";
+import { SiGithub } from "react-icons/si";
 
 const experiences = [
   {
     id: 1,
     year: "Jul 2026 - Present",
     role: "Freelance Full-Stack Developer",
-    company: "Skincare Stock",
-    description: "Developed a comprehensive web application for managing skincare inventory, sales, and user transactions. Designed the system from scratch, ensuring scalability and a beautiful user interface.",
+    company: "HL Finance Management",
+    description: "Built and delivered a sales & receivables management platform end-to-end as the sole developer using Next.js, TypeScript, and Supabase (PostgreSQL). The platform provides a comprehensive dashboard for tracking daily transactions, automated tier-based customer management, and sales target visualizations.",
     achievements: [
-      "Built a robust inventory tracking system that minimizes stock discrepancies.",
-      "Implemented secure user authentication and role-based access control (RBAC).",
-      "Optimized backend queries to ensure lightning-fast load times for transaction history."
+      "Designed an automated Gold/Silver/Bronze customer tier system that assigns discount levels based on configurable purchase thresholds.",
+      "Implemented an interactive financial dashboard covering revenue, receivables, and profit analytics with server-side pagination.",
+      "Built Edge-based authentication proxy with Zustand state management for maximum security and performance."
     ],
-    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "PostgreSQL", "Prisma"]
+    tech: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "Zustand", "Framer Motion", "Tailwind CSS"],
+    demo: "https://hl-finance-app-six.vercel.app/",
+    github: "https://github.com/B3rlinSugi/hl-finance-app"
   },
   {
     id: 2,
-    year: "May 2026 - Jun 2026",
+    year: "Jun 2026 - Jul 2026",
     role: "Freelance Full-Stack Developer",
     company: "Prime Property",
-    description: "Engineered a full-stack property management platform designed to help real estate agencies manage property listings, agent assignments, and client inquiries efficiently.",
+    description: "Delivered and deployed a full-stack property listing platform currently used by the client to manage property listings, customer-facing search, and brochure-generation workflows. Built with Next.js 16, TypeScript, PostgreSQL, and Prisma ORM.",
     achievements: [
-      "Developed advanced search filters for property listings (by location, price, and type).",
-      "Created secure agent dashboards for managing client inquiries and property updates.",
-      "Streamlined property management processes, significantly increasing lead generation."
+      "Implemented multi-criteria property search and filtering by location, price, and property type.",
+      "Built authentication and RBAC, audit logging for critical CRUD operations, and soft-delete recovery for reliable data management.",
+      "Developed a mortgage (KPR) payment calculator and automated PDF brochure generation from property data."
     ],
-    tech: ["Next.js", "React", "Node.js", "Tailwind CSS", "PostgreSQL"]
+    tech: ["Next.js 16", "TypeScript", "PostgreSQL", "Prisma ORM", "Auth.js", "GSAP", "Framer Motion"],
+    demo: "https://prime-property-sigma.vercel.app/",
+    github: "https://github.com/B3rlinSugi/prime-property"
   },
   {
     id: 3,
-    year: "2023 - 2026",
-    role: "Kementerian / Kepala Bidang",
+    year: "2022 - 2026",
+    role: "Minister / Head of Department",
     company: "BEM FTI Universitas Gunadarma",
     description: "Served for three consecutive periods in the Student Executive Board (BEM FTI), progressively taking on higher leadership responsibilities within the Department of Social and Political Affairs.",
     achievements: [
-      "2025-2026: Kementerian/Kepala Bidang Sosial & Politik — Directed overarching social initiatives and political advocacy.",
-      "2024-2025: Kepala Departemen Sosial Masyarakat — Led a dedicated team to execute impactful community service programs.",
-      "2023-2024: Staff Departemen Sosial Masyarakat — Organized and facilitated various student outreach events."
+      "2025-2026: Minister of Social & Political Affairs — Led two departments comprising 15+ members with 100% program completion rate.",
+      "2024-2025: Head of Social Community Department — Directed and coordinated staff in planning and executing community social programs.",
+      "2023-2024: Staff of Social Community Department — Organized and facilitated various student outreach events and cross-departmental initiatives."
     ],
     tech: ["Leadership", "Project Management", "Public Speaking", "Event Organizing"]
   }
@@ -66,7 +72,7 @@ export default function ExperienceSection() {
             </h2>
           </div>
           <p className="text-gray-400 max-w-sm text-sm md:text-base font-medium leading-relaxed pb-2">
-            A timeline of my professional journey and freelance projects. Click on any role to expand its details.
+            From freelance client projects to organizational leadership — every experience sharpens my ability to deliver scalable software.
           </p>
         </div>
 
@@ -134,6 +140,34 @@ export default function ExperienceSection() {
                               </span>
                             ))}
                           </div>
+
+                          {/* Links (Live Demo & GitHub) */}
+                          {(exp.demo || exp.github) && (
+                            <div className="flex items-center gap-4 mt-6">
+                              {exp.demo && (
+                                <a 
+                                  href={exp.demo}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-400 text-sm font-bold hover:bg-blue-500/20 transition-colors"
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                  Live Demo
+                                </a>
+                              )}
+                              {exp.github && (
+                                <a 
+                                  href={exp.github}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 text-sm font-bold hover:bg-white/10 transition-colors"
+                                >
+                                  <SiGithub className="w-4 h-4" />
+                                  Source Code
+                                </a>
+                              )}
+                            </div>
+                          )}
                         </div>
 
                         {/* Divider on Desktop */}

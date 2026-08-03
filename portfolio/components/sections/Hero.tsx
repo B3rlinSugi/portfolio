@@ -17,12 +17,12 @@ export default function Hero() {
         <h1 
           className="font-bold font-sans text-[16vw] md:text-[14vw] leading-[0.85] tracking-tighter text-transparent [-webkit-text-stroke:1px_rgba(0,0,0,0.1)] dark:[-webkit-text-stroke:1px_rgba(255,255,255,0.1)]" 
         >
-          BACKEND
+          FULL-STACK
         </h1>
         <h1 
-          className="font-bold font-sans text-[16vw] md:text-[14vw] leading-[0.85] tracking-tighter text-transparent [-webkit-text-stroke:1px_rgba(0,0,0,0.1)] dark:[-webkit-text-stroke:1px_rgba(255,255,255,0.1)]" 
+          className="font-bold font-sans text-[16vw] md:text-[12vw] leading-[0.85] tracking-tighter text-transparent [-webkit-text-stroke:1px_rgba(0,0,0,0.1)] dark:[-webkit-text-stroke:1px_rgba(255,255,255,0.1)]" 
         >
-          DEVELOPER
+          WEB DEVELOPER
         </h1>
       </div>
 

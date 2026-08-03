@@ -49,6 +49,7 @@ export const metadata: Metadata = {
 
 import { LanguageProvider } from "@/components/providers/LanguageContext";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import SmoothScroll from "@/components/providers/SmoothScroll";
 import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({
@@ -63,9 +64,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#0A0A0A] text-neutral-900 dark:text-white font-sans transition-colors duration-500">
+        <SmoothScroll>
           <LanguageProvider>
             {children}
           </LanguageProvider>
+        </SmoothScroll>
         <Analytics />
       </body>
     </html>

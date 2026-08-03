@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Calendar, ArrowRight } from "lucide-react";
-import { SiInstagram } from "react-icons/si";
+import { Calendar, ArrowRight, ExternalLink, Code2, Briefcase, Users } from "lucide-react";
+import { SiInstagram, SiGithub } from "react-icons/si";
 import Image from "next/image";
 import { useLanguage } from "@/components/providers/LanguageContext";
+import { portfolioData } from "@/data/portfolio";
 
-// Experience Data (Reverse Chronological Order)
-const experiences = [
+// Organization Data (Reverse Chronological Order)
+const organizations = [
   {
     year: "2025 - 2026",
     role: "Ministry of Social and Political Affairs",
@@ -39,12 +40,32 @@ export default function Experience() {
       
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <h2 className="text-sm font-bold text-[#FF6B00] tracking-[0.2em] uppercase mb-4">
+            {t('experience_title')}
+          </h2>
+          <h3 
+            className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white leading-[1.2] mb-6 transition-colors"
+            dangerouslySetInnerHTML={{ __html: t('experience_headline') }}
+          />
+          <p className="text-neutral-600 dark:text-neutral-400 text-lg leading-relaxed max-w-2xl transition-colors">
+            {t('experience_subheadline')}
+          </p>
+        </motion.div>
+
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           
-          {/* Left Side: Content & Timeline (50%) */}
+          {/* Left Side: Freelance Work + Organizations Timeline */}
           <div className="w-full lg:w-1/2 flex flex-col">
             
-            {/* Header */}
+            {/* === FREELANCE CLIENT WORK === */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -52,65 +73,146 @@ export default function Experience() {
               transition={{ duration: 0.6 }}
               className="mb-12"
             >
-              <h2 className="text-sm font-bold text-[#FF6B00] tracking-[0.2em] uppercase mb-4">
-                {t('experience_title')}
-              </h2>
-              <h3 
-                className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white leading-[1.2] mb-6 transition-colors"
-                dangerouslySetInnerHTML={{ __html: t('experience_headline') }}
-              />
-              <p className="text-neutral-600 dark:text-neutral-400 text-lg leading-relaxed max-w-md transition-colors">
-                {t('experience_subheadline')}
-              </p>
-            </motion.div>
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-xl bg-[#FF6B00]/10 border border-[#FF6B00]/20 flex items-center justify-center">
+                  <Briefcase className="w-5 h-5 text-[#FF6B00]" />
+                </div>
+                <h4 className="text-xl font-bold text-neutral-900 dark:text-white transition-colors">
+                  Freelance Client Work
+                </h4>
+              </div>
 
-            {/* Timeline */}
-            <div className="relative pl-4 md:pl-0">
-              {/* Vertical Line */}
-              <div className="absolute left-[27px] md:left-[31px] top-4 bottom-0 w-[2px] bg-gradient-to-b from-[#FF6B00]/50 to-transparent hidden md:block" />
-              
-              <div className="flex flex-col gap-10">
-                {experiences.map((exp, index) => (
-                  <motion.div 
+              <div className="flex flex-col gap-6">
+                {portfolioData.experience.map((exp, index) => (
+                  <motion.div
                     key={index}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.15 }}
-                    className="relative flex flex-col md:flex-row gap-6 md:gap-8 group"
+                    className="relative p-6 rounded-2xl bg-neutral-50 dark:bg-white/[0.03] border border-neutral-200 dark:border-white/10 hover:border-[#FF6B00]/30 dark:hover:border-[#FF6B00]/30 transition-all duration-300 group"
                   >
-                    {/* Icon / Marker */}
-                    <div className="hidden md:flex flex-col items-center z-10">
-                      <div className="w-16 h-16 rounded-2xl bg-neutral-100 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-white/10 flex items-center justify-center group-hover:border-[#FF6B00]/50 dark:group-hover:border-[#FF6B00]/50 group-hover:bg-[#FF6B00]/10 transition-all duration-300">
-                        <Calendar className="w-6 h-6 text-[#FF6B00]" />
-                      </div>
+                    {/* Date Badge */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <Calendar className="w-4 h-4 text-[#FF6B00]" />
+                      <span className="text-sm font-bold text-[#FF6B00] tracking-wider">{exp.date}</span>
                     </div>
 
-                    {/* Content */}
-                    <div className="flex-1 pt-2">
-                      <div className="md:hidden flex items-center gap-3 mb-3">
-                        <Calendar className="w-5 h-5 text-[#FF6B00]" />
-                        <span className="text-[#FF6B00] font-bold tracking-wider">{exp.year}</span>
+                    {/* Role & Company */}
+                    <h5 className="text-xl font-bold text-neutral-900 dark:text-white mb-1 transition-colors">{exp.role}</h5>
+                    <p className="text-neutral-600 dark:text-neutral-400 font-medium mb-3 transition-colors">{exp.company}</p>
+
+                    {/* Description */}
+                    <p className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed mb-4 transition-colors">{exp.description}</p>
+
+                    {/* Tech Tags */}
+                    {'tech' in exp && (exp as { tech: string[] }).tech && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {(exp as { tech: string[] }).tech.map((techItem: string, techIndex: number) => (
+                          <span 
+                            key={techIndex}
+                            className="px-2.5 py-1 text-xs font-medium rounded-md bg-[#FF6B00]/10 text-[#FF6B00] border border-[#FF6B00]/20"
+                          >
+                            {techItem}
+                          </span>
+                        ))}
                       </div>
-                      <h4 className="hidden md:block text-[#FF6B00] font-bold tracking-wider mb-2">{exp.year}</h4>
-                      
-                      <h5 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2 transition-colors">{exp.role}</h5>
-                      <p className="text-neutral-600 dark:text-neutral-400 mb-4 transition-colors">{exp.organization}</p>
-                      
-                      <a 
-                        href={exp.igLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-300 hover:text-[#FF6B00] dark:hover:text-[#FF6B00] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00] rounded"
-                      >
-                        <SiInstagram className="w-4 h-4" />
-                        {exp.igHandle}
-                      </a>
+                    )}
+
+                    {/* Links */}
+                    <div className="flex items-center gap-4">
+                      {'demo' in exp && (exp as { demo: string }).demo && (
+                        <a 
+                          href={(exp as { demo: string }).demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-300 hover:text-[#FF6B00] dark:hover:text-[#FF6B00] transition-colors"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          Live Demo
+                        </a>
+                      )}
+                      {'github' in exp && (exp as { github: string }).github && (
+                        <a 
+                          href={(exp as { github: string }).github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-300 hover:text-[#FF6B00] dark:hover:text-[#FF6B00] transition-colors"
+                        >
+                          <SiGithub className="w-3.5 h-3.5" />
+                          Source Code
+                        </a>
+                      )}
                     </div>
                   </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
+
+            {/* === ORGANIZATIONS (BEM) === */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
+                </div>
+                <h4 className="text-xl font-bold text-neutral-900 dark:text-white transition-colors">
+                  Organizations & Leadership
+                </h4>
+              </div>
+
+              {/* Timeline */}
+              <div className="relative pl-4 md:pl-0">
+                {/* Vertical Line */}
+                <div className="absolute left-[27px] md:left-[31px] top-4 bottom-0 w-[2px] bg-gradient-to-b from-[#FF6B00]/50 to-transparent hidden md:block" />
+                
+                <div className="flex flex-col gap-10">
+                  {organizations.map((exp, index) => (
+                    <motion.div 
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.15 }}
+                      className="relative flex flex-col md:flex-row gap-6 md:gap-8 group"
+                    >
+                      {/* Icon / Marker */}
+                      <div className="hidden md:flex flex-col items-center z-10">
+                        <div className="w-16 h-16 rounded-2xl bg-neutral-100 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-white/10 flex items-center justify-center group-hover:border-[#FF6B00]/50 dark:group-hover:border-[#FF6B00]/50 group-hover:bg-[#FF6B00]/10 transition-all duration-300">
+                          <Calendar className="w-6 h-6 text-[#FF6B00]" />
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 pt-2">
+                        <div className="md:hidden flex items-center gap-3 mb-3">
+                          <Calendar className="w-5 h-5 text-[#FF6B00]" />
+                          <span className="text-[#FF6B00] font-bold tracking-wider">{exp.year}</span>
+                        </div>
+                        <h4 className="hidden md:block text-[#FF6B00] font-bold tracking-wider mb-2">{exp.year}</h4>
+                        
+                        <h5 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2 transition-colors">{exp.role}</h5>
+                        <p className="text-neutral-600 dark:text-neutral-400 mb-4 transition-colors">{exp.organization}</p>
+                        
+                        <a 
+                          href={exp.igLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-300 hover:text-[#FF6B00] dark:hover:text-[#FF6B00] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00] rounded"
+                        >
+                          <SiInstagram className="w-4 h-4" />
+                          {exp.igHandle}
+                        </a>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
 
             {/* Main Instagram Button */}
             <motion.div 

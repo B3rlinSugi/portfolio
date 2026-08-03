@@ -70,10 +70,30 @@ body {
 
 /* Smooth Scrolling & Overscroll Fix */
 html {
-  scroll-behavior: smooth;
   color-scheme: dark;
   background-color: #0A0A0A !important;
 }
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 
 @theme inline {
   --animate-aurora: aurora 8s ease-in-out infinite alternate;

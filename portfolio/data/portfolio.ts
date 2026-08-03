@@ -153,10 +153,22 @@ export const portfolioData = {
 
   experience: [
     {
-      role: "Backend Developer",
-      company: "Independent",
-      date: "2021 - Present",
-      description: "Building REST APIs, authentication systems, and database architectures for personal and academic projects.",
+      role: "Freelance Full-Stack Developer",
+      company: "HL Finance Management",
+      date: "Jul 2026 - Present",
+      description: "Built and delivered a sales & receivables management platform end-to-end as the sole developer using Next.js, TypeScript, and Supabase (PostgreSQL). Features include automated Gold/Silver/Bronze customer tier system, interactive financial dashboard with revenue & profit analytics, and server-side pagination.",
+      tech: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "Zustand", "Framer Motion"],
+      demo: "https://hl-finance-app-six.vercel.app/",
+      github: "https://github.com/B3rlinSugi/hl-finance-app",
+    },
+    {
+      role: "Freelance Full-Stack Developer",
+      company: "Prime Property",
+      date: "Jun 2026 - Jul 2026",
+      description: "Delivered and deployed a full-stack property listing platform currently used by the client. Implemented multi-criteria search & filtering, RBAC authentication, audit logging, soft-delete recovery, mortgage (KPR) calculator, and automated PDF brochure generation.",
+      tech: ["Next.js 16", "TypeScript", "PostgreSQL", "Prisma ORM", "Auth.js", "GSAP"],
+      demo: "https://prime-property-sigma.vercel.app/",
+      github: "https://github.com/B3rlinSugi/prime-property",
     }
   ],
 
@@ -164,7 +176,7 @@ export const portfolioData = {
     {
       name: "Sertifikasi BNSP Junior Web Programmer",
       issuer: "BNSP (Badan Nasional Sertifikasi Profesi)",
-      year: "2024",
+      year: "2025",
       description: "Official national competency certification (SKKNI). Core units mastered: Data Structures, UI Implementation, Clean Code & Best Practices, Structured Programming, Pre-Existing Libraries integration, Code Documentation, and Debugging.",
       icon: "/bnsp-logo.svg",
       driveLink: "https://drive.google.com/file/d/1XmK5LrM0Ma_AXQ_9kAWvcWN_oIzUFYtB/view?usp=drive_link",
